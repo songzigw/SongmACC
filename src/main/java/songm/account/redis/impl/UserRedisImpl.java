@@ -17,7 +17,7 @@ public class UserRedisImpl implements UserRedis{
 
     @Autowired
     private RedisTemplate<Serializable, Serializable> redisTemplate;
-    
+
     @Override
     public void save(final User user) {
         redisTemplate.execute(new RedisCallback<Object>() {
@@ -33,6 +33,7 @@ public class UserRedisImpl implements UserRedis{
             }
         });
     }
+
     @Override
     public User read(final String uid) {
         return redisTemplate.execute(new RedisCallback<User>() {
@@ -55,6 +56,7 @@ public class UserRedisImpl implements UserRedis{
             }
         });
     }
+
     @Override
     public void delete(final String uid) {
         redisTemplate.execute(new RedisCallback<Object>() {
@@ -65,8 +67,6 @@ public class UserRedisImpl implements UserRedis{
             }
         });
     }
-    
-    
     
 }
 
