@@ -8,7 +8,7 @@ import java.util.List;
  * @author 张松
  * 
  */
-public class PageInfo<T> extends Result {
+public class PageInfo<T> extends Entity {
 
     private static final long serialVersionUID = 7422828225644996987L;
 

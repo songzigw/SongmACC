@@ -8,7 +8,7 @@ package songm.account.bean;
  * @author 张松
  * 
  */
-public abstract class LazyLoadEntity extends Result {
+public abstract class LazyLoadEntity extends Entity {
 
 	private static final long serialVersionUID = -3954368739089900341L;
 
