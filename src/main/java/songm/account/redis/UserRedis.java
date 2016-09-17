@@ -1,6 +1,6 @@
 package songm.account.redis;
 
-import songm.account.bean.User;
+import songm.account.entity.User;
 
 public interface UserRedis {
     /**

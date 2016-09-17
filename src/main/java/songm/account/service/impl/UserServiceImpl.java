@@ -3,9 +3,9 @@ package songm.account.service.impl;
 import java.util.Calendar;
 import java.util.Date;
 
-import songm.account.bean.PageInfo;
-import songm.account.bean.User;
 import songm.account.dao.UserDao;
+import songm.account.entity.PageInfo;
+import songm.account.entity.User;
 import songm.account.service.ServiceException;
 import songm.account.service.ServiceException.ErrorCode;
 import songm.account.service.UserService;

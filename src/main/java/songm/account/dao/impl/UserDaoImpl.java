@@ -10,13 +10,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowCallbackHandler;
 
-import songm.account.bean.PageInfo;
-import songm.account.bean.User;
 import songm.account.dao.BaseDao;
 import songm.account.dao.DaoUtils;
 import songm.account.dao.Database.Account;
 import songm.account.dao.Database.UserF;
 import songm.account.dao.UserDao;
+import songm.account.entity.PageInfo;
+import songm.account.entity.User;
 
 public class UserDaoImpl extends BaseDao<User> implements UserDao {
 

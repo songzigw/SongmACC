@@ -1,4 +1,4 @@
-package songm.account.bean;
+package songm.account.entity;
 
 
 

@@ -1,7 +1,7 @@
 package songm.account.service;
 
-import songm.account.bean.PageInfo;
-import songm.account.bean.User;
+import songm.account.entity.PageInfo;
+import songm.account.entity.User;
 
 /**
  * 用户业务逻辑

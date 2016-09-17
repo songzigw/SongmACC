@@ -9,7 +9,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import songm.account.bean.User;
+import songm.account.entity.User;
 import songm.account.redis.UserRedis;
 
 @Repository("userDao")

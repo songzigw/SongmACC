@@ -1,7 +1,7 @@
 package songm.account.dao;
 
-import songm.account.bean.PageInfo;
-import songm.account.bean.User;
+import songm.account.entity.PageInfo;
+import songm.account.entity.User;
 
 /**
  * 用户数据持久层
