@@ -19,7 +19,8 @@ package songm.account.dao.keygen;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import javax.sql.DataSource;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -67,7 +68,7 @@ public class KeyInfo {
         return keyName;
     }
     
-    public long getNextKey(BasicDataSource dataSource,
+    public long getNextKey(DataSource dataSource,
             PlatformTransactionManager tm) {
         if (nextKey > keyMax) {
             this.retrieveFromDB(dataSource, tm);
@@ -75,7 +76,7 @@ public class KeyInfo {
         return nextKey++;
     }
     
-    private void retrieveFromDB(final BasicDataSource dataSource,
+    private void retrieveFromDB(final DataSource dataSource,
             PlatformTransactionManager tm) {
         TransactionTemplate tt = new TransactionTemplate(tm);
         tt.execute(new TransactionCallback<Object>() {

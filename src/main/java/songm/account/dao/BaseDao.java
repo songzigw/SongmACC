@@ -21,8 +21,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -45,7 +45,7 @@ public abstract class BaseDao<T> {
     private JdbcTemplate jdbcTemplate;
 
     @Resource(name = "dataSource")
-    private BasicDataSource dataSource;
+    private DataSource dataSource;
 
     @Resource(name = "transactionManager")
     private PlatformTransactionManager transactionManager;

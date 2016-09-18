@@ -16,7 +16,7 @@
     http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
 	<!-- 定义数据源 -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		destroy-method="close">
 		<property name="driverClassName">
 			<!-- <value>oracle.jdbc.driver.OracleDriver</value> -->

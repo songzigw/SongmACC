@@ -19,7 +19,8 @@ package songm.account.dao.keygen;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import javax.sql.DataSource;
+
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
@@ -43,7 +44,7 @@ public class KeyGenerator {
     }
     
     public synchronized long getNextKey(String keyName,
-            BasicDataSource dataSource,
+            DataSource dataSource,
             PlatformTransactionManager tm) {
         KeyInfo keyInfo = null;
         if (keyInfos.containsKey(keyName)) {
