@@ -9,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowCallbackHandler;
+import org.springframework.stereotype.Repository;
 
 import songm.account.dao.BaseDao;
 import songm.account.dao.DaoUtils;
@@ -18,6 +19,7 @@ import songm.account.dao.UserDao;
 import songm.account.entity.PageInfo;
 import songm.account.entity.User;
 
+@Repository("userDao")
 public class UserDaoImpl extends BaseDao<User> implements UserDao {
 
     private User rowPrivacy(ResultSet rs, int rowNum, User user)
@@ -78,7 +80,7 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
 
     @Override
     protected String getParamMarks() {
-        return "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        return "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
     }
 
     @Override

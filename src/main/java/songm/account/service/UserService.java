@@ -29,8 +29,9 @@ public interface UserService {
      * @param account
      * @param password
      */
-    public void checkLogin(String account, String password) throws ServiceException;
-    
+    public void checkLogin(String account, String password)
+            throws ServiceException;
+
     /**
      * 获取注册用户信息
      * 
@@ -68,13 +69,15 @@ public interface UserService {
 
     /**
      * 根据ID获取用户隐私
+     * 
      * @param userId
      * @return
      */
     public User getUserPrivacyById(long userId);
-    
+
     /**
      * 根据账号获取用户隐私
+     * 
      * @param account
      * @return
      */
@@ -111,6 +114,7 @@ public interface UserService {
      * @param oldPsw
      * @param newPsw
      */
-    public void editUserPasswore(Long userId, String oldPsw, String newPsw) throws ServiceException;
+    public void editUserPasswore(Long userId, String oldPsw, String newPsw)
+            throws ServiceException;
 
 }

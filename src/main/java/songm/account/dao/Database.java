@@ -1,6 +1,5 @@
 package songm.account.dao;
 
-
 public interface Database {
 
     public static enum Account implements Tables {

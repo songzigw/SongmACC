@@ -3,6 +3,10 @@ package songm.account.service.impl;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import songm.account.dao.UserDao;
 import songm.account.entity.PageInfo;
 import songm.account.entity.User;
@@ -12,11 +16,13 @@ import songm.account.service.UserService;
 import songm.account.utils.PasswordMD;
 import songm.account.utils.StringUtils;
 
+@Service("userService")
 public class UserServiceImpl implements UserService {
-    
+
     private static String KEY_ACC = "songm";
     private static String KEY_NIC = "松美";
-    
+
+    @Resource(name = "userDao")
     private UserDao userDao;
 
     @Override
