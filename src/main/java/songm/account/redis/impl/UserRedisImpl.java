@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import songm.account.entity.User;
 import songm.account.redis.UserRedis;
 
-@Repository("userDao")
+//@Repository("userRedis")
 public class UserRedisImpl implements UserRedis{
 
     @Autowired

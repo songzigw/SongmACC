@@ -16,15 +16,9 @@
     http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
 	<context:property-placeholder location="classpath:config.properties" />
-	<context:component-scan base-package="songm.im" />
+	<context:component-scan base-package="songm.account" />
 
 	<import resource="application-mvc.xml" />
-	<!-- <import resource="application-dao.xml"/> -->
-
-	<bean id="imApplication" class="songm.im.IMApplication"
-		init-method="init">
-		<property name="tcpIMServer" ref="tcpIMServer"></property>
-		<property name="wsocketIMServer" ref="wsocketIMServer"></property>
-	</bean>
+	<import resource="application-dao.xml"/>
 
 </beans>
