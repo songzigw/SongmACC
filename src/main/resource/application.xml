@@ -18,7 +18,7 @@
 	<context:property-placeholder location="classpath:config.properties" />
 	<context:component-scan base-package="songm.account" />
 
-	<import resource="application-mvc.xml" />
 	<import resource="application-dao.xml"/>
+	<import resource="application-mvc.xml" />
 
 </beans>
