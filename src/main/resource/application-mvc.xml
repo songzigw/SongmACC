@@ -28,10 +28,14 @@
 	</bean>
 
 	<mvc:interceptors>
-		<bean class="songm.account.web.MustInterceptor" />
+		<bean class="songm.account.web.interceptor.MustInterceptor" />
 		<mvc:interceptor>
-			<mvc:mapping path="/api/*" />
-			<bean class="songm.account.web.LoginInterceptor" />
+            <mvc:mapping path="/api/*" />
+            <bean class="songm.account.web.interceptor.ApiInterceptor" />
+        </mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/member/*" />
+			<bean class="songm.account.web.interceptor.LoginInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
 
@@ -44,4 +48,9 @@
 		</property>
 	</bean>
 
+	<bean id="ssoAuth" class="songm.account.web.SSOAuth"
+	    destroy-method="stop" init-method="start">
+        <constructor-arg value="${songm.sso.ip}"></constructor-arg>
+        <constructor-arg value="${songm.sso.port}"></constructor-arg>
+    </bean>
 </beans>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta content="text/html; charset=UTF-8">
-<title>登入</title>
+<title>注册</title>
 </head>
 <body>
 

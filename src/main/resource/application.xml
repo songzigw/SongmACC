@@ -20,5 +20,5 @@
 
 	<import resource="application-dao.xml"/>
 	<import resource="application-mvc.xml" />
-
+	
 </beans>
