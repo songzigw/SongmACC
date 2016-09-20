@@ -15,7 +15,7 @@ import songm.sso.backstage.event.ConnectionListener;
 @Component("ssoAuth")
 public class SSOAuth {
 
-private static final Logger LOG = LoggerFactory.getLogger(SSOAuth.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SSOAuth.class);
     
     private ISSOClient ssoClient;
     
@@ -24,13 +24,13 @@ private static final Logger LOG = LoggerFactory.getLogger(SSOAuth.class);
     @Value("${songm.sso.secret}")
     private String secret;
     
-    @Value("${songm.sso.ip}")
-    private String ip;
+    @Value("${songm.sso.host}")
+    private String host;
     @Value("${songm.sso.port}")
     private int port;
 
     public SSOAuth() {
-        ssoClient = SSOClient.init(ip, port);
+        ssoClient = SSOClient.init(host, port);
         ssoClient.addListener(new ConnectionListener() {
             @Override
             public void onDisconnected(ErrorCode errorCode) {
@@ -39,7 +39,7 @@ private static final Logger LOG = LoggerFactory.getLogger(SSOAuth.class);
             
             @Override
             public void onConnecting() {
-                System.out.println("===============Connection");
+                System.out.println("===============Connecting");
             }
             
             @Override
