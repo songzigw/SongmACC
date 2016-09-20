@@ -6,7 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import songm.account.utils.CookieUtils;
 import songm.sso.backstage.ISSOClient;
+import songm.sso.backstage.SSOException.ErrorCode;
 import songm.sso.backstage.entity.Session;
+import songm.sso.backstage.event.ResponseListener;
 
 public class SSOAuthUtil {
 
@@ -42,8 +44,20 @@ public class SSOAuthUtil {
     public void report() {
         String sessionId = getSessionId();
         ISSOClient ssoClient = ssoAuth.getSSOClient();
-        Session session = null;
-        CookieUtils.addCookie(response, Session.USER_SESSION_KEY,
-                session.getSesId(), 0);
+        ssoClient.report(sessionId, new ResponseListener<Session>() {
+
+            @Override
+            public void onSuccess(Session entity) {
+                CookieUtils.addCookie(response, Session.USER_SESSION_KEY,
+                        entity.getSesId(), 0);
+                System.out.println("===============Session" + entity.getSesId());
+            }
+
+            @Override
+            public void onError(ErrorCode errorCode) {
+                
+            }
+            
+        });
     }
 }
