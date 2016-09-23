@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import songm.sso.backstage.ISSOClient;
+import songm.sso.backstage.SSOClient;
 import songm.sso.backstage.SSOException;
 import songm.sso.backstage.SSOException.ErrorCode;
-import songm.sso.backstage.client.SSOClient;
+import songm.sso.backstage.client.SSOClientImpl;
 import songm.sso.backstage.entity.Backstage;
 import songm.sso.backstage.event.ConnectionListener;
 
@@ -17,7 +17,7 @@ public class SSOAuth {
 
     private static final Logger LOG = LoggerFactory.getLogger(SSOAuth.class);
     
-    private ISSOClient ssoClient;
+    private SSOClient ssoClient;
     
     @Value("${songm.sso.key}")
     private String key;
@@ -30,7 +30,7 @@ public class SSOAuth {
     private int port;
 
     public SSOAuth() {
-        ssoClient = SSOClient.init(host, port);
+        ssoClient = SSOClientImpl.init(host, port);
         ssoClient.addListener(new ConnectionListener() {
             @Override
             public void onDisconnected(ErrorCode errorCode) {
@@ -61,7 +61,7 @@ public class SSOAuth {
         ssoClient.disconnect();
     }
     
-    public ISSOClient getSSOClient() {
+    public SSOClient getSSOClient() {
         return ssoClient;
     }
 }

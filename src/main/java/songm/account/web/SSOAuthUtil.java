@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import songm.account.utils.CookieUtils;
-import songm.sso.backstage.ISSOClient;
+import songm.sso.backstage.SSOClient;
 import songm.sso.backstage.SSOException.ErrorCode;
 import songm.sso.backstage.entity.Session;
 import songm.sso.backstage.event.ResponseListener;
@@ -43,7 +43,7 @@ public class SSOAuthUtil {
 
     public void report() {
         String sessionId = getSessionId();
-        ISSOClient ssoClient = ssoAuth.getSSOClient();
+        SSOClient ssoClient = ssoAuth.getSSOClient();
         ssoClient.report(sessionId, new ResponseListener<Session>() {
 
             @Override
