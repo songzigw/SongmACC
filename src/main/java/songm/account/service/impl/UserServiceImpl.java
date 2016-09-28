@@ -72,8 +72,8 @@ public class UserServiceImpl implements UserService {
         // 加密处理
         password = PasswordMD.md5(password);
         user.setPassword(password);
-        user.setNickName(nick);
-        user.setAddTime(new Date());
+        user.setNick(nick);
+        user.setCreated(new Date());
         return this.addUser(user);
     }
     
@@ -101,18 +101,15 @@ public class UserServiceImpl implements UserService {
     public void checkLogin(String account, String password) throws ServiceException {
         password = PasswordMD.md5(password);
         String pwd = userDao.queryPwdByAccount(account);
-        if (pwd == null) {
-            pwd = userDao.queryPwdByEnEmail(account);
-        }
         if (pwd == null || !password.equals(pwd)) {
             throw new ServiceException(ErrorCode.ACC_109, "用户账号或者密码错误");
         }
     }
 
     @Override
-    public PageInfo<User> getUserList(String nickName, int currPage,
+    public PageInfo<User> getUserList(String nick, int currPage,
             int pageSize) {
-        return userDao.queryListByKeyword(nickName, currPage, pageSize);
+        return userDao.queryListByKeyword(nick, currPage, pageSize);
     }
 
     @Override
@@ -168,23 +165,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserPhoto(Long userId, String photoPath) {
-        userDao.updatePhoto(userId, photoPath);
+    public void editUserPhoto(Long userId, String avatar) {
+        userDao.updatePhoto(userId, avatar);
     }
 
     @Override
-    public void editUserBasic(Long userId, String nickName, String userName,
-            Integer sex, int birthdayYear, int birthdayMonth, int birthdayDay,
+    public void editUserBasic(Long userId, String nick, String userName,
+            Integer gender, int birthdayYear, int birthdayMonth, int birthdayDay,
             String summary) throws ServiceException {
         // 数据不能为空
-        if (userId <= 0 || nickName.trim().equals("")
+        if (userId <= 0 || nick.trim().equals("")
                 || userName.trim().equals("")) {
             throw new IllegalArgumentException();
         }
         // 验证昵称格式
-        if (!StringUtils.match(nickName, "^.{1,12}$")) {
+        if (!StringUtils.match(nick, "^.{1,12}$")) {
             throw new ServiceException(ErrorCode.ACC_106, "昵称：“"
-                    + nickName + "”格式错误。");
+                    + nick + "”格式错误。");
         }
         // 验证生日格式
         Calendar calendar = Calendar.getInstance();
@@ -197,16 +194,16 @@ public class UserServiceImpl implements UserService {
         }
         // 验证昵称
         User user = userDao.queryById(userId);
-        if (!user.getNickName().equals(nickName)) {
+        if (!user.getNick().equals(nick)) {
             // 验证昵称中的关键字
-            verifyNicKey(nickName);
-            if (this.verifyNickRep(nickName)) {
+            verifyNicKey(nick);
+            if (this.verifyNickRep(nick)) {
                 throw new ServiceException(ErrorCode.ACC_102, "昵称：“"
-                        + nickName + "”已经被使用。");
+                        + nick + "”已经被使用。");
             }
         }
 
-        userDao.update(userId, nickName, userName, sex, birthdayYear,
+        userDao.update(userId, nick, userName, gender, birthdayYear,
                 birthdayMonth, birthdayDay, summary);
     }
 

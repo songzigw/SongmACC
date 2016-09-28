@@ -1,3 +1,4 @@
+
 package songm.account.dao;
 
 public interface Database {
@@ -21,29 +22,32 @@ public interface Database {
         /** 密码 */
         PASSWORD,
         /** 昵称 */
-        NICK_NAME,
-        /** 用户姓名 */
-        USER_NAME,
+        NICK,
+        /** 真实姓名 */
+        REAL_NAME,
         /** 添加时间 */
-        ADD_TIME,
+        CREATED,
+        /** 修改时间 */
+        UPDATED,
         /** 头像路径 */
-        PHOTO_PATH,
+        AVATAR,
         /** 性别 */
-        SEX,
-        /** 电子邮箱 */
-        EMAIL,
-        /** Enable(激活的) */
-        EN_EMAIL,
-        /** 电子邮件激活验证码 */
-        EM_IC_ID,
+        GENDER,
         /** 生日-年 */
-        BIRTHDAY_YEAR,
+        BIRTH_YEAR,
         /** 生日-月 */
-        BIRTHDAY_MONTH,
+        BIRTH_MONTH,
         /** 生日-日 */
-        BIRTHDAY_DAY,
+        BIRTH_DAY,
         /** 简介 */
         SUMMARY,
+        
+        /** 电子邮箱 */
+        //EMAIL,
+        /** ENABLE(激活的) */
+        //EN_EMAIL,
+        /** 电子邮件激活验证码 */
+        //EM_IC_ID,
     }
 
 }

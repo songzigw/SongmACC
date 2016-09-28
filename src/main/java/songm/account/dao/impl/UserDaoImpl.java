@@ -26,10 +26,7 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
             throws SQLException {
         // user.setPassword(rs.getString(UserF.PASSWORD.name()));
         user.setAccount(rs.getString(UserF.ACCOUNT.name()));
-        user.setUserName(rs.getString(UserF.USER_NAME.name()));
-        user.setEmail(rs.getString(UserF.EMAIL.name()));
-        user.setEnEmail(rs.getString(UserF.EN_EMAIL.name()));
-        user.setEmIcId(rs.getLong(UserF.EM_IC_ID.name()));
+        user.setRealName(rs.getString(UserF.REAL_NAME.name()));
 
         return user;
     }
@@ -38,14 +35,15 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
     protected User rowMapper(ResultSet rs, int rowNum) throws SQLException {
         User user = new User();
         user.setUserId(rs.getLong(UserF.USER_ID.name()));
-        user.setAddTime(rs.getTimestamp(UserF.ADD_TIME.name()));
-        user.setSex(rs.getInt(UserF.SEX.name()));
-        user.setBirthYear(rs.getInt(UserF.BIRTHDAY_YEAR.name()));
-        user.setBirthMonth(rs.getInt(UserF.BIRTHDAY_MONTH.name()));
-        user.setBirthDay(rs.getInt(UserF.BIRTHDAY_DAY.name()));
-        user.setNickName(rs.getString(UserF.NICK_NAME.name()));
+        user.setCreated(rs.getTimestamp(UserF.CREATED.name()));
+        user.setUpdated(rs.getTimestamp(UserF.UPDATED.name()));
+        user.setGender(rs.getInt(UserF.GENDER.name()));
+        user.setBirthYear(rs.getInt(UserF.BIRTH_YEAR.name()));
+        user.setBirthMonth(rs.getInt(UserF.BIRTH_MONTH.name()));
+        user.setBirthDay(rs.getInt(UserF.BIRTH_DAY.name()));
+        user.setNick(rs.getString(UserF.NICK.name()));
         user.setSummary(rs.getString(UserF.SUMMARY.name()));
-        user.setPhotoPath(rs.getString(UserF.PHOTO_PATH.name()));
+        user.setAvatar(rs.getString(UserF.AVATAR.name()));
 
         return user;
     }
@@ -61,37 +59,34 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
 
         StringBuffer fields = new StringBuffer();
         fields.append(tabPoint).append(UserF.USER_ID).append(",");
-        fields.append(tabPoint).append(UserF.USER_NAME).append(",");
-        fields.append(tabPoint).append(UserF.ADD_TIME).append(",");
+        fields.append(tabPoint).append(UserF.REAL_NAME).append(",");
+        fields.append(tabPoint).append(UserF.CREATED).append(",");
+        fields.append(tabPoint).append(UserF.UPDATED).append(",");
         fields.append(tabPoint).append(UserF.ACCOUNT).append(",");
         fields.append(tabPoint).append(UserF.PASSWORD).append(",");
-        fields.append(tabPoint).append(UserF.NICK_NAME).append(",");
-        fields.append(tabPoint).append(UserF.PHOTO_PATH).append(",");
-        fields.append(tabPoint).append(UserF.SEX).append(",");
-        fields.append(tabPoint).append(UserF.EMAIL).append(",");
-        fields.append(tabPoint).append(UserF.BIRTHDAY_YEAR).append(",");
-        fields.append(tabPoint).append(UserF.BIRTHDAY_MONTH).append(",");
-        fields.append(tabPoint).append(UserF.BIRTHDAY_DAY).append(",");
-        fields.append(tabPoint).append(UserF.SUMMARY).append(",");
-        fields.append(tabPoint).append(UserF.EN_EMAIL).append(",");
-        fields.append(tabPoint).append(UserF.EM_IC_ID).append("");
+        fields.append(tabPoint).append(UserF.NICK).append(",");
+        fields.append(tabPoint).append(UserF.AVATAR).append(",");
+        fields.append(tabPoint).append(UserF.GENDER).append(",");
+        fields.append(tabPoint).append(UserF.BIRTH_YEAR).append(",");
+        fields.append(tabPoint).append(UserF.BIRTH_MONTH).append(",");
+        fields.append(tabPoint).append(UserF.BIRTH_DAY).append(",");
+        fields.append(tabPoint).append(UserF.SUMMARY).append("");
         return fields.toString();
     }
 
     @Override
     protected String getParamMarks() {
-        return "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        return "?,?,?,?,?,?,?,?,?,?,?,?,?";
     }
 
     @Override
     protected Object[] getParams(final User user) {
-        return new Object[] { user.getUserId(), user.getUserName(),
-                user.getAddTime(), user.getAccount(), user.getPassword(),
-                user.getNickName(), user.getPhotoPath(), user.getSex(),
-                user.getEmail(), user.getBirthYear(),
+        return new Object[] { user.getUserId(), user.getRealName(),
+                user.getCreated(), user.getUpdated(), user.getAccount(),
+                user.getPassword(), user.getNick(), user.getAvatar(),
+                user.getGender(), user.getBirthYear(),
                 user.getBirthMonth(), user.getBirthDay(),
-                user.getSummary(),  user.getEnEmail(),
-                user.getEmIcId() };
+                user.getSummary()};
     }
 
     @Override
@@ -103,9 +98,9 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
 
         List<Object> params = new ArrayList<Object>();
         sqlWhere.append(" where 1=1 ");
-        if (user.getNickName() != null && !"".equals(user.getNickName())) {
-            sqlWhere.append(" and ").append(UserF.NICK_NAME).append(" like ?");
-            params.add("%" + user.getNickName() + "%");
+        if (user.getNick() != null && !"".equals(user.getNick())) {
+            sqlWhere.append(" and ").append(UserF.NICK).append(" like ?");
+            params.add("%" + user.getNick() + "%");
         }
         if (user.getUserId() != null) {
             sqlWhere.append(" and ").append(UserF.USER_ID).append("=?");
@@ -186,7 +181,7 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
         StringBuilder sql = new StringBuilder();
         sql.append("select count(").append(UserF.USER_ID).append(")");
         sql.append(" from ").append(Account.ACC_USER).append(" where ");
-        sql.append(UserF.NICK_NAME).append("=?");
+        sql.append(UserF.NICK).append("=?");
 
         return (int) getForLong(sql.toString(),
                 new Object[] { nick });
@@ -196,8 +191,8 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
     public PageInfo<User> queryListByKeyword(String keyword, int currPage,
             int pageSize) {
         User user = new User();
-        user.setNickName(keyword);
-        UserF field = UserF.ADD_TIME;
+        user.setNick(keyword);
+        UserF field = UserF.CREATED;
         DaoUtils.Order order = DaoUtils.Order.DESC;
         return this.queryList(user, field, order, currPage, pageSize);
     }
@@ -216,49 +211,37 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
             sql.append(",").append(UserF.ACCOUNT).append("=?");
             params.add(user.getAccount());
         }
-        if (user.getNickName() != null) {
-            sql.append(",").append(UserF.NICK_NAME).append("=?");
-            params.add(user.getNickName());
+        if (user.getNick() != null) {
+            sql.append(",").append(UserF.NICK).append("=?");
+            params.add(user.getNick());
         }
-        if (user.getUserName() != null) {
-            sql.append(",").append(UserF.USER_NAME).append("=?");
-            params.add(user.getUserName());
+        if (user.getRealName() != null) {
+            sql.append(",").append(UserF.REAL_NAME).append("=?");
+            params.add(user.getRealName());
         }
-        if (user.getSex() != null) {
-            sql.append(",").append(UserF.SEX).append("=?");
-            params.add(user.getSex());
+        if (user.getGender() != null) {
+            sql.append(",").append(UserF.GENDER).append("=?");
+            params.add(user.getGender());
         }
         if (user.getBirthDay() != null) {
-            sql.append(",").append(UserF.BIRTHDAY_DAY).append("=?");
+            sql.append(",").append(UserF.BIRTH_DAY).append("=?");
             params.add(user.getBirthDay());
         }
         if (user.getBirthMonth() != null) {
-            sql.append(",").append(UserF.BIRTHDAY_MONTH).append("=?");
+            sql.append(",").append(UserF.BIRTH_MONTH).append("=?");
             params.add(user.getBirthMonth());
         }
         if (user.getBirthYear() != null) {
-            sql.append(",").append(UserF.BIRTHDAY_YEAR).append("=?");
+            sql.append(",").append(UserF.BIRTH_YEAR).append("=?");
             params.add(user.getBirthYear());
         }
-        if (user.getPhotoPath() != null) {
-            sql.append(",").append(UserF.PHOTO_PATH).append("=?");
-            params.add(user.getPhotoPath());
+        if (user.getAvatar() != null) {
+            sql.append(",").append(UserF.AVATAR).append("=?");
+            params.add(user.getAvatar());
         }
         if (user.getPassword() != null) {
             sql.append(",").append(UserF.PASSWORD).append("=?");
             params.add(user.getPassword());
-        }
-        if (user.getEmail() != null) {
-            sql.append(",").append(UserF.EMAIL).append("=?");
-            params.add(user.getEmail());
-        }
-        if (user.getEnEmail() != null) {
-            sql.append(",").append(UserF.EN_EMAIL).append("=?");
-            params.add(user.getEnEmail());
-        }
-        if (user.getEmIcId() != null) {
-            sql.append(",").append(UserF.EM_IC_ID).append("=?");
-            params.add(user.getEmIcId());
         }
 
         sql.append(" where ").append(UserF.USER_ID).append("=?");
@@ -268,22 +251,22 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
     }
 
     @Override
-    public int update(Long userId, String nickName, String userName,
-            Integer sex, int birthdayYear, int birthdayMonth, int birthdayDay,
+    public int update(Long userId, String nick, String realName,
+            Integer gender, int birthdayYear, int birthdayMonth, int birthdayDay,
             String summary) {
         User user = new User();
         user.setUserId(userId);
-        user.setNickName(nickName);
-        user.setUserName(userName);
-        user.setSex(sex);
+        user.setNick(nick);
+        user.setRealName(realName);
+        user.setGender(gender);
         user.setBirthDay(birthdayDay);
         user.setBirthMonth(birthdayMonth);
         user.setBirthYear(birthdayYear);
         user.setSummary(summary);
         User userOld = this.queryById(userId);
         if (userOld != null) {
-            String photoPath = userOld.getPhotoPath();
-            user.setPhotoPath(photoPath);
+            String avatar = userOld.getAvatar();
+            user.setAvatar(avatar);
         }
         return this.update(user);
     }
@@ -297,10 +280,10 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
     }
 
     @Override
-    public int updatePhoto(Long userId, String photoPath) {
+    public int updatePhoto(Long userId, String avatar) {
         User user = new User();
         user.setUserId(userId);
-        user.setPhotoPath(photoPath);
+        user.setAvatar(avatar);
         return this.update(user);
     }
 
@@ -309,32 +292,6 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
         User user = new User();
         user.setUserId(userId);
         user.setPassword(newPsw);
-        return this.update(user);
-    }
-
-    @Override
-    public int updateEnEmail(Long userId, String enEmail) {
-        User user = new User();
-        user.setUserId(userId);
-        user.setEnEmail(enEmail);
-        return this.update(user);
-    }
-
-    @Override
-    public int updateEmIcId(Long userId, Long emIcId) {
-        User user = new User();
-        user.setUserId(userId);
-        user.setEmIcId(emIcId);
-        return this.update(user);
-    }
-
-    @Override
-    public int updateEmail(Long userId, String email) {
-        User user = new User();
-        user.setUserId(userId);
-        user.setEmail(email);
-        user.setEnEmail("");
-        user.setEmIcId(0l);
         return this.update(user);
     }
 
@@ -370,16 +327,6 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
         return this.getEntity(sql.toString(), account);
     }
 
-    @Override
-    public User queryByEnEmail(String enEmail) {
-        StringBuilder sql = new StringBuilder();
-        sql.append("select ").append(getFields(null));
-        sql.append(" from ").append(Account.ACC_USER).append(" where ");
-        sql.append(UserF.EN_EMAIL).append("=?");
-
-        return this.getEntity(sql.toString(), enEmail);
-    }
-    
     private User getPrivacy(String sql, Object... params) {
         JdbcTemplate jTemplate = this.getJdbcTemplate();
         return jTemplate.query(sql, new ResultSetExtractor<User>() {
@@ -416,30 +363,6 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
         sql.append(UserF.ACCOUNT).append("=?");
 
         return this.getPrivacy(sql.toString(), account);
-    }
-
-    @Override
-    public String queryPwdByEnEmail(String enEmail) {
-        final StringBuffer password = new StringBuffer();
-
-        StringBuilder sql = new StringBuilder();
-        sql.append("select ").append(UserF.PASSWORD);
-        sql.append(" from ").append(Account.ACC_USER).append(" where ");
-        sql.append(UserF.EN_EMAIL).append("=?");
-
-        this.getJdbcTemplate().query(sql.toString(), new Object[] { enEmail },
-                new RowCallbackHandler() {
-                    @Override
-                    public void processRow(ResultSet rs) throws SQLException {
-                        password.append(rs.getString(UserF.PASSWORD.name()));
-                    }
-                });
-
-        if ("".equals(password.toString())) {
-            return null;
-        } else {
-            return password.toString();
-        }
     }
 
     @Override

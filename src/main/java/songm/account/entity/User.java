@@ -38,15 +38,17 @@ public class User extends LazyLoadEntity {
     /** 密码 */
     private String password;
     /** 昵称 */
-    private String nickName;
-    /** 用户姓名 */
-    private String userName;
+    private String nick;
+    /** 真实姓名 */
+    private String realName;
     /** 添加时间 */
-    private Date addTime;
+    private Date created;
+    /** 修改时间 */
+    private Date updated;
     /** 头像路径 */
-    private String photoPath;
+    private String avatar;
     /** 性别 */
-    private Integer sex;
+    private Integer gender;
     /** 生日-年 */
     private Integer birthYear;
     /** 生日-月 */
@@ -55,13 +57,6 @@ public class User extends LazyLoadEntity {
     private Integer birthDay;
     /** 简介 */
     private String summary;
-    
-    /** 电子邮箱 */
-    private String email;
-    /** Enable(激活的) */
-    private String enEmail;
-    /** 电子邮件激活验证码 */
-    private Long emIcId;
 
     public User() {
         super();
@@ -73,8 +68,11 @@ public class User extends LazyLoadEntity {
     }
 
     public void init() {
-        if (this.addTime == null)
-            this.addTime = new Date();
+        if (this.created == null)
+            this.created = new Date();
+        if (this.updated == null) {
+            this.updated = this.created;
+        }
     }
 
     /** 用户ID */
@@ -85,26 +83,6 @@ public class User extends LazyLoadEntity {
     /** 用户ID */
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    /** 用户姓名 */
-    public String getUserName() {
-        return userName;
-    }
-
-    /** 用户姓名 */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /** 添加时间 */
-    public Date getAddTime() {
-        return addTime;
-    }
-
-    /** 添加时间 */
-    public void setAddTime(Date addTime) {
-        this.addTime = addTime;
     }
 
     /** 账号 */
@@ -125,40 +103,6 @@ public class User extends LazyLoadEntity {
     /** 密码 */
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    /** 昵称 */
-    public String getNickName() {
-        return nickName;
-    }
-
-    /** 昵称 */
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getPhotoPath() {
-        return photoPath;
-    }
-
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
-    }
-
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getSummary() {
@@ -193,20 +137,54 @@ public class User extends LazyLoadEntity {
         this.birthDay = birthDay;
     }
 
-    public void setEnEmail(String enEmail) {
-        this.enEmail = enEmail;
+    public String getNick() {
+        return nick;
     }
 
-    public void setEmIcId(Long emIcId) {
-        this.emIcId = emIcId;
+    public void setNick(String nick) {
+        this.nick = nick;
     }
 
-    public String getEnEmail() {
-        return enEmail;
+    public String getRealName() {
+        return realName;
     }
 
-    public Long getEmIcId() {
-        return emIcId;
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+        if (this.updated == null)
+            this.updated = this.created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 
     @Override
@@ -232,6 +210,14 @@ public class User extends LazyLoadEntity {
         } else if (!userId.equals(other.userId))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User [userId=" + userId + ", account=" + account + ", password=" + password + ", nick=" + nick
+                + ", realName=" + realName + ", created=" + created + ", updated=" + updated + ", avatar=" + avatar
+                + ", gender=" + gender + ", birthYear=" + birthYear + ", birthMonth=" + birthMonth + ", birthDay="
+                + birthDay + ", summary=" + summary + "]";
     }
 
 }

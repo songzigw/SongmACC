@@ -42,14 +42,6 @@ public interface UserDao {
     public User queryByAccount(String account);
 
     /**
-     * 根据EnEmail查询用户数据
-     * 
-     * @param enEmail
-     * @return
-     */
-    public User queryByEnEmail(String enEmail);
-
-    /**
      * 根据ID获取用户隐私
      * @param userId
      * @return
@@ -103,51 +95,25 @@ public interface UserDao {
      * 修改头像
      * 
      * @param userId
-     * @param photoPath
+     * @param avatar
      */
-    public int updatePhoto(Long userId, String photoPath);
+    public int updatePhoto(Long userId, String avatar);
 
     /**
      * 修改用户信息
      * 
      * @param userId
-     * @param nickName
-     * @param userName
-     * @param sex
+     * @param nick
+     * @param realName
+     * @param gender
      * @param birthdayYear
      * @param birthdayMonth
      * @param birthdayDay
      * @param summary
      */
-    public int update(Long userId, String nickName, String userName,
-            Integer sex, int birthdayYear, int birthdayMonth, int birthdayDay,
+    public int update(Long userId, String nick, String realName,
+            Integer gender, int birthdayYear, int birthdayMonth, int birthdayDay,
             String summary);
-
-    /**
-     * 修改用户EMAIL
-     * 
-     * @param userId
-     * @param email
-     * @return
-     */
-    public int updateEmail(Long userId, String email);
-
-    /**
-     * 修改用户激活EMAIL
-     * 
-     * @param userId
-     * @param enEmail
-     * @return
-     */
-    public int updateEnEmail(Long userId, String enEmail);
-
-    /**
-     * 修改用户邮箱验证码
-     * 
-     * @param userId
-     * @param emIcId
-     */
-    public int updateEmIcId(Long userId, Long emIcId);
 
     /**
      * 修改用户rongToken
@@ -166,13 +132,6 @@ public interface UserDao {
      * @return
      */
     public int updateAccount(Long userId, String account);
-
-    /**
-     * 根据EnEmail获取密码
-     * @param enEmail
-     * @return
-     */
-    public String queryPwdByEnEmail(String enEmail);
 
     /**
      * 根据账号获取密码

@@ -35,12 +35,12 @@ public interface UserService {
     /**
      * 获取注册用户信息
      * 
-     * @param nickName
+     * @param nick
      * @param currPage
      * @param pageSize
      * @return
      */
-    public PageInfo<User> getUserList(String nickName, int currPage,
+    public PageInfo<User> getUserList(String nick, int currPage,
             int pageSize);
 
     /**
@@ -87,25 +87,25 @@ public interface UserService {
      * 编辑用户基本信息
      * 
      * @param userId
-     * @param nickName
-     * @param userName
-     * @param sex
+     * @param nick
+     * @param realName
+     * @param gender
      * @param birthdayYear
      * @param birthdayMonth
      * @param birthdayDay
      * @param summary
      */
-    public void editUserBasic(Long userId, String nickName, String userName,
-            Integer sex, int birthdayYear, int birthdayMonth, int birthdayDay,
+    public void editUserBasic(Long userId, String nick, String realName,
+            Integer gender, int birthdayYear, int birthdayMonth, int birthdayDay,
             String summary) throws ServiceException;
 
     /**
      * 修改用户头像
      * 
      * @param userId
-     * @param photoPath
+     * @param avatar
      */
-    public void editUserPhoto(Long userId, String photoPath);
+    public void editUserPhoto(Long userId, String avatar);
 
     /**
      * 修改用户登入密码
