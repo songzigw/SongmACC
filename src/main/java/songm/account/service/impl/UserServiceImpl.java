@@ -13,7 +13,7 @@ import songm.account.entity.User;
 import songm.account.service.ServiceException;
 import songm.account.service.ServiceException.ErrorCode;
 import songm.account.service.UserService;
-import songm.account.utils.PasswordMD;
+import songm.account.utils.CodeUtils;
 import songm.account.utils.StringUtils;
 
 @Service("userService")
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setAccount(account);
         // 加密处理
-        password = PasswordMD.md5(password);
+        password = CodeUtils.md5(password);
         user.setPassword(password);
         user.setNick(nick);
         user.setCreated(new Date());
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void checkLogin(String account, String password) throws ServiceException {
-        password = PasswordMD.md5(password);
+        password = CodeUtils.md5(password);
         String pwd = userDao.queryPwdByAccount(account);
         if (pwd == null || !password.equals(pwd)) {
             throw new ServiceException(ErrorCode.ACC_109, "用户账号或者密码错误");
@@ -153,14 +153,14 @@ public class UserServiceImpl implements UserService {
         }
 
         // 密码MD5加密
-        oldPsw = PasswordMD.md5(oldPsw);
+        oldPsw = CodeUtils.md5(oldPsw);
         User user = userDao.queryById(userId);
         if (!user.getPassword().equals(oldPsw)) {
             throw new ServiceException(ErrorCode.ACC_103, "用户：“"
                     + userId + "”原始密码错误。");
         }
 
-        newPsw = PasswordMD.md5(newPsw);
+        newPsw = CodeUtils.md5(newPsw);
         userDao.updatePsw(userId, newPsw);
     }
 

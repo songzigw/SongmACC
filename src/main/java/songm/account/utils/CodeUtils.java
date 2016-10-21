@@ -3,6 +3,8 @@ package songm.account.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import sun.misc.BASE64Encoder;
+
 /**
  * 编码帮助类
  * @author zhangsong
@@ -39,6 +41,24 @@ public class CodeUtils {
         return outStr;
     }
 
+    public static String md5(String text) {
+        MessageDigest md = null;
+        String outStr = null;
+        try {
+            md = MessageDigest.getInstance("MD5");
+            byte[] digest = md.digest(text.getBytes());
+            outStr = bytes2hex(digest);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        return outStr;
+    }
+    
+    public static String encode64(byte[] bytes) {
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(bytes);
+    }
+    
     /**
      * 16进制编码
      * <p>
@@ -87,5 +107,4 @@ public class CodeUtils {
         }
         return bytes;
     }
-    
 }

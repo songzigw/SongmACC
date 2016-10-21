@@ -4,23 +4,23 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import songm.account.service.SSOAuthServer;
 import songm.account.utils.CookieUtils;
 import songm.sso.backstage.SSOClient;
-import songm.sso.backstage.SSOException.ErrorCode;
+import songm.sso.backstage.SSOException;
 import songm.sso.backstage.entity.Session;
-import songm.sso.backstage.event.ResponseListener;
 
 public class SSOAuthUtil {
 
     protected HttpServletRequest request;
     protected HttpServletResponse response;
-    private SSOAuth ssoAuth;
+    private SSOAuthServer ssoAuthServer;
 
     public SSOAuthUtil(HttpServletRequest request,
-            HttpServletResponse response, SSOAuth ssoAuth) {
+            HttpServletResponse response, SSOAuthServer ssoAuthServer) {
         this.request = request;
         this.response = response;
-        this.ssoAuth = ssoAuth;
+        this.ssoAuthServer = ssoAuthServer;
     }
 
     /**
@@ -30,7 +30,7 @@ public class SSOAuthUtil {
      */
     public String getSessionId() {
         Cookie c = CookieUtils.getCookieByName(request,
-                Session.USER_SESSION_KEY);
+                    Session.USER_SESSION_KEY);
         String sessionId = null;
         if (c != null) {
             sessionId = c.getValue();
@@ -41,23 +41,9 @@ public class SSOAuthUtil {
         return sessionId;
     }
 
-    public void report() {
+    public Session report() throws SSOException {
         String sessionId = getSessionId();
-        SSOClient ssoClient = ssoAuth.getSSOClient();
-        ssoClient.report(sessionId, new ResponseListener<Session>() {
-
-            @Override
-            public void onSuccess(Session entity) {
-                CookieUtils.addCookie(response, Session.USER_SESSION_KEY,
-                        entity.getSesId(), 0);
-                System.out.println("===============Session" + entity.getSesId());
-            }
-
-            @Override
-            public void onError(ErrorCode errorCode) {
-                
-            }
-            
-        });
+        SSOClient ssoClient = ssoAuthServer.getSSOClient();
+        return ssoClient.report(sessionId);
     }
 }
