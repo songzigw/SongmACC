@@ -2,8 +2,6 @@ package songm.account.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import songm.sso.backstage.SSOClient;
 import songm.sso.backstage.SSOException;
@@ -18,29 +16,29 @@ import songm.sso.backstage.event.ConnectionListener;
  * @author zhangsong
  *
  */
-@Component("ssoAuthServer")
+//@Component("ssoAuthServer")
 public class SSOAuthServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(SSOAuthServer.class);
 
     private SSOClient ssoClient;
 
-    @Value("${songm.sso.key}")
+    //@Value("${songm.sso.key}")
     private String key;
-    @Value("${songm.sso.secret}")
+    //@Value("${songm.sso.secret}")
     private String secret;
 
-    @Value("${songm.sso.host}")
+    //@Value("${songm.sso.host}")
     private String host;
-    @Value("${songm.sso.port}")
+    //@Value("${songm.sso.port}")
     private int port;
 
-    public SSOAuthServer() {
+    public void init() {
         ssoClient = SSOClientImpl.init(host, port);
         ssoClient.addListener(new ConnectionListener() {
             @Override
             public void onDisconnected(ErrorCode errorCode) {
-                LOG.info("Disconnected >>> SSOServer, ErrorCode: ", errorCode.name());
+                LOG.info("Disconnected >>> SSOServer, ErrorCode: {}", errorCode.name());
             }
 
             @Override
@@ -50,7 +48,7 @@ public class SSOAuthServer {
 
             @Override
             public void onConnected(Backstage backstage) {
-                LOG.info("Connected >>> SSOServer, BackId: ", backstage.getBackId());
+                LOG.info("Connected >>> SSOServer, BackId: {}", backstage.getBackId());
             }
         });
 
@@ -62,12 +60,13 @@ public class SSOAuthServer {
             @Override
             public void run() {
                 try {
+                    Thread.sleep(20 * 1000);
                     do {
-                        if (ssoClient.getConnState() == SSOClient.DISCONNECTED) {
-                            ssoClient.connect(key, secret);
-                        }
+                        ssoClient.connect(key, secret);
                     } while (true);
                 } catch (SSOException e) {
+                    LOG.error(e.getMessage(), e);
+                } catch (InterruptedException e) {
                     LOG.error(e.getMessage(), e);
                 }
             }
@@ -77,5 +76,21 @@ public class SSOAuthServer {
 
     public SSOClient getSSOClient() {
         return ssoClient;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }
