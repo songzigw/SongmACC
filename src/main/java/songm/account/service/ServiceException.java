@@ -33,13 +33,13 @@ public class ServiceException extends Exception {
     private String description;
 
     public ServiceException(ErrorCode errorCode, String description) {
-        super(errorCode + ":" + description);
+        super(errorCode + ": " + description);
         this.errorCode = errorCode;
         this.description = description;
     }
 
     public ServiceException(ErrorCode errorCode, String description, Throwable cause) {
-        super(errorCode + ":" + description, cause);
+        super(errorCode + ": " + description, cause);
         this.errorCode = errorCode;
         this.description = description;
     }

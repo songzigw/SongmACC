@@ -16,7 +16,8 @@
     http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<context:property-placeholder location="classpath:config.properties" />
-	<bean id="ssoAuthServer" class="songm.account.service.SSOAuthServer" init-method="init">
+	<bean id="ssoAuthServer" class="songm.account.service.SSOAuthServer"
+	   init-method="init">
 	   <property name="key" value="${songm.sso.key}"></property>
 	   <property name="secret" value="${songm.sso.secret}"></property>
 	   <property name="host" value="${songm.sso.host}"></property>

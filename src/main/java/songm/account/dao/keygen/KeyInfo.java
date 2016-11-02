@@ -36,6 +36,10 @@ import org.springframework.transaction.support.TransactionTemplate;
  */
 public class KeyInfo {
 
+    private final String SQL1 = "UPDATE KEY_TABLE SET KEY_VALUE=KEY_VALUE+? WHERE KEY_NAME=?";
+    private final String SQL2 = "SELECT KEY_VALUE FROM KEY_TABLE WHERE KEY_NAME=?";
+    private final String SQL3 = "insert into KEY_TABLE(KEY_NAME, KEY_VALUE) values(?, ?)";
+    
     /** 最小值 */
     private long keyMin;
     /** 最大值 */
@@ -70,7 +74,7 @@ public class KeyInfo {
     
     public long getNextKey(DataSource dataSource,
             PlatformTransactionManager tm) {
-        if (nextKey > keyMax) {
+        if (nextKey == 0 || nextKey > keyMax) {
             this.retrieveFromDB(dataSource, tm);
         }
         return nextKey++;
@@ -82,27 +86,22 @@ public class KeyInfo {
         tt.execute(new TransactionCallback<Object>() {
             public Object doInTransaction(TransactionStatus status) {
                 JdbcTemplate jt = new JdbcTemplate(dataSource);
-                String sql1 = "UPDATE KEY_TABLE SET KEY_VALUE=KEY_VALUE+"
-                        + poolSize + " WHERE KEY_NAME='" + keyName + "'";
-                String sql2 = "SELECT KEY_VALUE FROM KEY_TABLE WHERE KEY_NAME='"
-                        + keyName + "'";
-
-                jt.update(sql1);
-                long keyFormDB = jt.query(sql2, new ResultSetExtractor<Long>() {
-
-                    @Override
-                    public Long extractData(ResultSet rs) throws SQLException,
-                            DataAccessException {
-                        if (rs.next()) {
-                            return rs.getLong("KEY_VALUE");
-                        } else {
-                            return 0l;
+                jt.update(SQL1, new Object[] { poolSize, keyName });
+                long keyFormDB = jt.query(SQL2, new Object[] { keyName },
+                        new ResultSetExtractor<Long>() {
+                        @Override
+                        public Long extractData(ResultSet rs) throws
+                                SQLException, DataAccessException {
+                            if (rs.next()) {
+                                return rs.getLong("KEY_VALUE");
+                            } else {
+                                jt.update(SQL3, new Object[] {keyName, poolSize});
+                                return (long) poolSize;
+                            }
                         }
-                    }
-
                 });
-                keyMax = keyFormDB;
                 keyMin = keyFormDB - poolSize + 1;
+                keyMax = keyFormDB;
                 nextKey = keyMin;
                 return null;
             }
