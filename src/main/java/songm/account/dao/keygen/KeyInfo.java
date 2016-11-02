@@ -72,7 +72,7 @@ public class KeyInfo {
         return keyName;
     }
     
-    public long getNextKey(DataSource dataSource,
+    public synchronized long getNextKey(DataSource dataSource,
             PlatformTransactionManager tm) {
         if (nextKey == 0 || nextKey > keyMax) {
             this.retrieveFromDB(dataSource, tm);
@@ -88,7 +88,7 @@ public class KeyInfo {
                 JdbcTemplate jt = new JdbcTemplate(dataSource);
                 jt.update(SQL1, new Object[] { poolSize, keyName });
                 long keyFormDB = jt.query(SQL2, new Object[] { keyName },
-                        new ResultSetExtractor<Long>() {
+                    new ResultSetExtractor<Long>() {
                         @Override
                         public Long extractData(ResultSet rs) throws
                                 SQLException, DataAccessException {
@@ -99,7 +99,7 @@ public class KeyInfo {
                                 return (long) poolSize;
                             }
                         }
-                });
+                    });
                 keyMin = keyFormDB - poolSize + 1;
                 keyMax = keyFormDB;
                 nextKey = keyMin;

@@ -74,14 +74,12 @@ public class UserServiceImpl implements UserService {
     
     private void verifyAccKey(String word) throws ServiceException {
         if (word.indexOf(KEY_ACC) > -1)
-            throw new ServiceException(ErrorCode.ACC_113, "账号中不能包含关键字："
-                    + KEY_ACC);
+            throw new ServiceException(ErrorCode.ACC_113, "账号中不能包含关键字");
     }
     
     private void verifyNicKey(String word) throws ServiceException {
         if (word.indexOf(KEY_NIC) > -1)
-            throw new ServiceException(ErrorCode.ACC_114, "昵称中不能包含关键字："
-                    + KEY_NIC);
+            throw new ServiceException(ErrorCode.ACC_114, "昵称中不能包含关键字");
     }
     
     private User addUser(User user) {
