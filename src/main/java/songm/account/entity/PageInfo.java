@@ -8,115 +8,115 @@ import java.util.List;
  * @author 张松
  * 
  */
-public class PageInfo<T> extends Entity {
+public class PageInfo<T> extends Result {
 
     private static final long serialVersionUID = 7422828225644996987L;
 
     /** 当前页码 */
-	public static final String CURRPAGE = "curr_page";
+    public static final String CURRPAGE = "curr_page";
 
-	/** 每页显示数 */
-	public static final String PAGESIZE = "page_size";
-	
-	/** 当前页码 */
-	private int currPage;
+    /** 每页显示数 */
+    public static final String PAGESIZE = "page_size";
 
-	/** 页尺寸（显示数量） */
-	private int pageSize;
+    /** 当前页码 */
+    private int currPage;
 
-	/** 数据总数 */
-	private int totalNum;
+    /** 页尺寸（显示数量） */
+    private int pageSize;
 
-	/** 总页数 */
-	private int totalPage;
+    /** 数据总数 */
+    private int totalNum;
 
-	/** 结果集 */
-	private List<T> items;
+    /** 总页数 */
+    private int totalPage;
 
-	public PageInfo(int currPage, int pageSize, int totalNum) {
-		if (pageSize <= 0) {
-			this.pageSize = 1;
-		} else {
-			this.pageSize = pageSize;
-		}
-		this.totalNum = totalNum;
-		// 计算总页数
-		this.totalPage = countTotalPage();
+    /** 结果集 */
+    private List<T> items;
 
-		this.currPage = currPage;
-		if (this.currPage < 1) {
-			this.currPage = 1;
-		} else if (this.currPage > totalPage) {
-			this.currPage = totalPage;
-		}
-	}
+    public PageInfo(int currPage, int pageSize, int totalNum) {
+        if (pageSize <= 0) {
+            this.pageSize = 1;
+        } else {
+            this.pageSize = pageSize;
+        }
+        this.totalNum = totalNum;
+        // 计算总页数
+        this.totalPage = countTotalPage();
 
-	private int countTotalPage() {
-		int n = 0;
-		if (totalNum % pageSize == 0) {
-			n = totalNum / pageSize;
-		} else {
-			n = totalNum / pageSize + 1;
-		}
-		return n == 0 ? 1 : n;
-	}
+        this.currPage = currPage;
+        if (this.currPage < 1) {
+            this.currPage = 1;
+        } else if (this.currPage > totalPage) {
+            this.currPage = totalPage;
+        }
+    }
 
-	public void setItems(List<T> items) {
-		this.items = items;
-	}
+    private int countTotalPage() {
+        int n = 0;
+        if (totalNum % pageSize == 0) {
+            n = totalNum / pageSize;
+        } else {
+            n = totalNum / pageSize + 1;
+        }
+        return n == 0 ? 1 : n;
+    }
 
-	public List<T> getItems() {
-		return items;
-	}
+    public void setItems(List<T> items) {
+        this.items = items;
+    }
 
-	public int getCurrPage() {
-		return currPage;
-	}
+    public List<T> getItems() {
+        return items;
+    }
 
-	public int getPageSize() {
-		return pageSize;
-	}
+    public int getCurrPage() {
+        return currPage;
+    }
 
-	public int getTotalNum() {
-		return totalNum;
-	}
+    public int getPageSize() {
+        return pageSize;
+    }
 
-	public int getTotalPage() {
-		return totalPage;
-	}
+    public int getTotalNum() {
+        return totalNum;
+    }
 
-	/**
-	 * 获取数据起始序列（偏移量）
-	 * 
-	 * @param currPage
-	 *            当前页码
-	 * @param pageSize
-	 *            页尺寸（没有显示数）
-	 * @return
-	 */
-	public static int getSkips(int currPage, int pageSize) {
-		return (pageSize * currPage) - pageSize;
-	}
+    public int getTotalPage() {
+        return totalPage;
+    }
 
-	public static int parseCurrPage(String currPage) {
-		if (currPage == null || currPage.equals("")) {
-			return 1;
-		}
-		try {
-			return Integer.parseInt(currPage);
-		} catch (Exception e) {
-			return 1;
-		}
-	}
+    /**
+     * 获取数据起始序列（偏移量）
+     * 
+     * @param currPage
+     *            当前页码
+     * @param pageSize
+     *            页尺寸（没有显示数）
+     * @return
+     */
+    public static int getSkips(int currPage, int pageSize) {
+        return (pageSize * currPage) - pageSize;
+    }
 
-	public static int parsePageSize(String pageSize) {
-		if (pageSize == null || pageSize.equals("")) {
-			return 10;
-		}
-		try {
-			return Integer.parseInt(pageSize);
-		} catch (Exception e) {
-			return 10;
-		}
-	}
+    public static int parseCurrPage(String currPage) {
+        if (currPage == null || currPage.equals("")) {
+            return 1;
+        }
+        try {
+            return Integer.parseInt(currPage);
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+
+    public static int parsePageSize(String pageSize) {
+        if (pageSize == null || pageSize.equals("")) {
+            return 10;
+        }
+        try {
+            return Integer.parseInt(pageSize);
+        } catch (Exception e) {
+            return 10;
+        }
+    }
 }

@@ -61,34 +61,29 @@
         <div class="form-group">
         <div class="input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-        <input type="text" class="form-control" placeholder="账号"/>
+        <input type="text" class="form-control" placeholder="账号" name="account"/>
         </div></div>
         <div class="form-group">
         <div class="input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-        <input type="password" class="form-control" placeholder="密码"/>
+        <input type="password" class="form-control" placeholder="密码" name="password"/>
         </div></div>
         <div class="form-group">
         <div class="input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-screenshot"></i></span>
-        <input type="text" class="form-control" placeholder="验证码"/>
-        <span id="login_vcode" class="input-group-addon" style="padding: 0; cursor: pointer;"><img alt="vcode" src="vcode" /> </span>
+        <input type="text" class="form-control" placeholder="验证码" name="vcode"/>
+        <span id="login_vcode" class="input-group-addon" style="padding: 0 10px; cursor: pointer;"> </span>
         </div></div>
         <div class="form-group">
             <label>
-                <input type="checkbox" class="cbr" checked />
+                <input type="checkbox" class="cbr" name="agreement" value="1" checked="checked"/>
                 同意协议
             </label>
             <a>查看协议</a>
         </div>
-        <div class="alert alert-danger">
-            <button type="button" class="close" data-dismiss="alert">
-                <span aria-hidden="true">×</span> <span class="sr-only">Close</span>
-            </button>
-            账号格式错误
-        </div>
+        <div id="login_error"></div>
         <div class="form-group">
-        <button class="btn btn-primary btn-block">登入</button>
+        <button class="btn btn-primary btn-block btn-login">登入</button>
         </div>
         </form>
         </div>
@@ -99,12 +94,63 @@
 <!-- JavaScripts initializations and stuff -->
 <script type="text/javascript">
     $(document).ready(function() {
+        loadVcode();
         $('#login_vcode').on('click', function(ev) {
             ev.preventDefault();
-            var $t = $(this);
-            $t.html('<i>加载中...</i>');
-            $t.html('<img alt="vcode" src="vcode?' + (new Date()).getTime() + '" />');
+            loadVcode();
+        });
+        $('#login_form').on('submit', function(ev) {
+            ev.preventDefault();
+            var $form = $(this);
+            if ($form.data('runing')) {
+                return;
+            }
+            
+            $form.data('runing', true);
+            var acc = $('[name=account]', $form).val();
+            var pwd = $('[name=password]', $form).val();
+            var vco = $('[name=vcode]', $form).val();
+            var agr = $('[name=agreement]:checked', $form).val();
+            if (!agr) {
+                showError('必须同意协议');
+                return;
+            }
+            var $btn = $('.btn-login', $form).text('登入中...');
+            $.ajax({
+                url: 'login_check',
+                method: 'post',
+                data: {account: acc, password: pwd, vcode: vco},
+                dataType: 'json',
+                success: function(ret) {
+                    if (!ret.succeed) {
+                        showError('登入失败');
+                    } else {
+                        alert("登入成功 Success!!!");
+                    }
+                    $btn.text('登入');
+                    $form.data('runing', false);
+                },
+                error: function() {
+                    showError('登入失败');
+                    $btn.text('登入');
+                    $form.data('runing', false);
+                }
+            });
         });
     });
+    function showError(info) {
+        var $error = $('#login_error');
+        $error.html('<div class="alert alert-danger">\
+			            <button type="button" class="close" data-dismiss="alert">\
+			                <span aria-hidden="true">×</span> <span class="sr-only">Close</span>\
+			            </button>\
+			            <span class="text">'+ info +'</span>\
+			        </div>');
+    }
+    function loadVcode() {
+        var $t = $('#login_vcode');
+        $t.html('<i>加载中...</i>');
+        $t.html('<img alt="vcode" src="vcode?' + (new Date()).getTime() + '" />');
+    }
 </script>
 </html>

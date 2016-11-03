@@ -1,6 +1,6 @@
 package songm.account.entity;
 
-
+import java.io.Serializable;
 
 /**
  * 实体延迟加载
@@ -8,7 +8,7 @@ package songm.account.entity;
  * @author 张松
  * 
  */
-public abstract class LazyLoadEntity extends Entity {
+public abstract class LazyLoadEntity implements Serializable {
 
 	private static final long serialVersionUID = -3954368739089900341L;
 
