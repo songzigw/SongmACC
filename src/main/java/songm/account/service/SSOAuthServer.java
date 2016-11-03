@@ -19,6 +19,7 @@ import songm.sso.backstage.event.ConnectionListener;
 //@Component("ssoAuthServer")
 public class SSOAuthServer {
 
+    private static final long TIME_OUT = 10 * 1000;
     private static final Logger LOG = LoggerFactory.getLogger(SSOAuthServer.class);
 
     private SSOClient ssoClient;
@@ -60,7 +61,7 @@ public class SSOAuthServer {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(20 * 1000);
+                    Thread.sleep(TIME_OUT);
                     do {
                         ssoClient.connect(key, secret);
                     } while (true);

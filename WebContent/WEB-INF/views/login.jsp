@@ -57,7 +57,7 @@
         
         <div class="panel panel-default center-block login-width">
         <div class="panel-body">
-        <form action="" role="form">
+        <form id="login_form" role="form">
         <div class="form-group">
         <div class="input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -72,7 +72,7 @@
         <div class="input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-screenshot"></i></span>
         <input type="text" class="form-control" placeholder="验证码"/>
-        <span class="input-group-addon"><img alt="" src="vcode"> </span>
+        <span id="login_vcode" class="input-group-addon" style="padding: 0; cursor: pointer;"><img alt="vcode" src="vcode" /> </span>
         </div></div>
         <div class="form-group">
             <label>
@@ -98,7 +98,13 @@
 </body>
 <!-- JavaScripts initializations and stuff -->
 <script type="text/javascript">
-    jQuery(document).ready(function($) {
+    $(document).ready(function() {
+        $('#login_vcode').on('click', function(ev) {
+            ev.preventDefault();
+            var $t = $(this);
+            $t.html('<i>加载中...</i>');
+            $t.html('<img alt="vcode" src="vcode?' + (new Date()).getTime() + '" />');
+        });
     });
 </script>
 </html>

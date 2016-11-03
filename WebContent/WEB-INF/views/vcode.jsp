@@ -5,11 +5,14 @@
 	pageEncoding="UTF-8"%>
 
 <%
+response.setHeader("Pragma","No-cache");
+response.setHeader("Cache-Control","no-cache");
+response.setDateHeader("Expires", -10);
     out.clearBuffer();
     SSOAuthServer ssoServer = (SSOAuthServer) request.getAttribute("ssoAuthServer");
     SSOAuthUtil ssoAuthUtil = new SSOAuthUtil(request, response, ssoServer);
     RandomCode rcode = new RandomCode();
-    rcode.getRandcode(request, response);
-    //ssoServer.getSSOClient().setAttribute(ssoAuthUtil.getSessionId(), "V_CODE",
-    //        rcode.getRandomString());
+    ssoServer.getSSOClient().setAttribute(ssoAuthUtil.getSessionId(), "V_CODE",
+            rcode.getCode());
+    rcode.getRandcode(response.getOutputStream());
 %>

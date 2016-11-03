@@ -33,9 +33,9 @@ public class UserController {
     }
     
     @RequestMapping(value = "vcode", method = RequestMethod.GET)
-    public String validateCode() {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("ssoAuthServer");
-        return "/vcode";
+    public ModelAndView validateCode() {
+        ModelAndView mv = new ModelAndView("/vcode");
+        mv.addObject("ssoAuthServer", ssoAuthServer);
+        return mv;
     }
 }
