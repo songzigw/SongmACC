@@ -29,7 +29,7 @@ public interface UserService {
      * @param account
      * @param password
      */
-    public void checkLogin(String account, String password)
+    public User checkLogin(String account, String password)
             throws ServiceException;
 
     /**

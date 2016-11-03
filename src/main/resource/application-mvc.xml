@@ -30,6 +30,10 @@
 	<mvc:interceptors>
 		<bean class="songm.account.web.interceptor.MustInterceptor" />
 		<mvc:interceptor>
+            <mvc:mapping path="/login_check" />
+            <bean class="songm.account.web.interceptor.VcodeInterceptor" />
+        </mvc:interceptor>
+		<mvc:interceptor>
 			<mvc:mapping path="/api/*" />
 			<bean class="songm.account.web.interceptor.ApiInterceptor" />
 		</mvc:interceptor>

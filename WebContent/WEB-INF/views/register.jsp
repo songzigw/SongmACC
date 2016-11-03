@@ -65,6 +65,11 @@
         </div></div>
         <div class="form-group">
         <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+        <input type="text" class="form-control" placeholder="昵称" name="nick"/>
+        </div></div>
+        <div class="form-group">
+        <div class="input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
         <input type="password" class="form-control" placeholder="密码" name="password"/>
         </div></div>
@@ -108,6 +113,7 @@
             
             $form.data('runing', true);
             var acc = $('[name=account]', $form).val();
+            var nic = $('[name=nick]', $form).val();
             var pwd = $('[name=password]', $form).val();
             var vco = $('[name=vcode]', $form).val();
             var agr = $('[name=agreement]:checked', $form).val();
@@ -119,7 +125,7 @@
             $.ajax({
                 url: 'registry',
                 method: 'post',
-                data: {account: acc, password: pwd, vcode: vco},
+                data: {account: acc, password: pwd, nick: nic, vcode: vco},
                 dataType: 'json',
                 success: function(ret) {
                     if (!ret.succeed) {

@@ -91,12 +91,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void checkLogin(String account, String password) throws ServiceException {
+    public User checkLogin(String account, String password) throws ServiceException {
         password = CodeUtils.md5(password);
         String pwd = userDao.queryPwdByAccount(account);
         if (pwd == null || !password.equals(pwd)) {
             throw new ServiceException(ErrorCode.ACC_109, "用户账号或者密码错误");
         }
+        return userDao.queryByAccount(account);
     }
 
     @Override

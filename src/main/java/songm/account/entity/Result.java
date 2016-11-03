@@ -58,6 +58,7 @@ public class Result<T> implements Serializable {
     }
 
     public void setErrorCode(String errorCode) {
+        this.succeed = false;
         this.errorCode = errorCode;
     }
 
@@ -66,6 +67,7 @@ public class Result<T> implements Serializable {
     }
 
     public void setErrorDesc(String errorDesc) {
+        this.succeed = false;
         this.errorDesc = errorDesc;
     }
 
