@@ -123,7 +123,7 @@
                 dataType: 'json',
                 success: function(ret) {
                     if (!ret.succeed) {
-                        showError('登入失败');
+                        showError(ret.errorDesc);
                     } else {
                         alert("登入成功 Success!!!");
                     }
@@ -141,9 +141,9 @@
     function showError(info) {
         var $error = $('#login_error');
         $error.html('<div class="alert alert-danger">\
-			            <button type="button" class="close" data-dismiss="alert">\
-			                <span aria-hidden="true">×</span> <span class="sr-only">Close</span>\
-			            </button>\
+                        <!--<button type="button" class="close" data-dismiss="alert">-->\
+			            <!--    <span aria-hidden="true">×</span> <span class="sr-only">Close</span>-->\
+			            <!--</button>-->\
 			            <span class="text">'+ info +'</span>\
 			        </div>');
     }
