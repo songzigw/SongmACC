@@ -3,10 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>songm.account</groupId>
 	<artifactId>SongmAccount</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>SongmAccount</name>
 	<description>SongmAccount</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 	<dependencies>
 		<dependency>
@@ -120,6 +124,17 @@
 			<version>2.4</version>
 			<classifier>jdk15</classifier>
 		</dependency>
+		
+		<dependency>
+            <groupId>songm.sso</groupId>
+            <artifactId>songm.sso.backstage.java</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>songm.im</groupId>
+            <artifactId>songm.im.backstage.java</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 
 	<build>

@@ -3,7 +3,6 @@
 	<name>SongmAccount</name>
 	<comment></comment>
 	<projects>
-		<project>songm.sso.backstage.java</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
