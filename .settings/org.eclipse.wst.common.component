@@ -11,7 +11,7 @@
         <dependent-module archiveName="songm.im.backstage.java-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/songm.im.backstage.java/songm.im.backstage.java">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="context-root" value="SongmAccount"/>
         <property name="java-output-path" value="/SongmAccount/build/classes"/>
+        <property name="context-root" value="songm.account"/>
     </wb-module>
 </project-modules>
