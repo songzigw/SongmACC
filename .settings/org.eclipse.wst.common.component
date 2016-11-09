@@ -5,9 +5,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
-        <dependent-module archiveName="songm.sso.backstage.java-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/songm.sso.backstage.java/songm.sso.backstage.java">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="songm.im.backstage.java-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/songm.im.backstage.java/songm.im.backstage.java">
             <dependency-type>uses</dependency-type>
         </dependent-module>
