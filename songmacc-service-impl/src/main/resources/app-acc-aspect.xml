@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+
+    <aop:aspectj-autoproxy proxy-target-class="false"/>
+	<!-- 开启aop注解 <aop:aspectj-autoproxy /> -->
+
+	<aop:config>
+		<aop:aspect ref="loggingAspect">
+			<aop:pointcut expression="execution(* cn.songm.acc.service.impl.*.*(..))"
+				id="pointcutLogging" />
+			<aop:around method="around" pointcut-ref="pointcutLogging" />
+		</aop:aspect>
+		
+		<aop:aspect ref="userDaoAspect">
+			<aop:after-returning method="insertAfterReturning"
+				pointcut="execution(* cn.songm.acc.dao.impl.UserDaoImpl.insert(cn.songm.acc.entity.User))"
+				returning="result" />
+			<aop:around method="queryByIdBefore"
+				pointcut="execution(* cn.songm.acc.dao.impl.UserDaoImpl.getById(java.lang.Object))" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>

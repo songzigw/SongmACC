@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MQTT Test</title>
+<script type="text/javascript" src="mqttws31.js"></script>
+<script type="text/javascript">
+    // 定义客户端
+    var ip = 'q.emqtt.com';
+    var port = 8083;
+    var clientId = "id_abc";
+    var mqClient = new Paho.MQTT.Client(ip, port, clientId);
+    mqClient.onConnectionLost = function(responseObject) {
+        console.log("onConnectionLost: " + responseObject.errorMessage);
+    }
+    mqClient.onMessageArrived = function(message) {
+        try {
+            message.msgString = message.payloadString;
+        } catch (e) {
+            message.msgString = message.payloadBytes.length;
+        }
+        console.log(message);
+    }
+    
+    // 建立连接
+    var options = {
+        onSuccess : function() {
+            console.log("The client connect success.");
+        },
+        onFailure : function(err) {
+            console.log("==========." + err.errorMessage);
+            console.log("==========." + JSON.stringify(err));
+            console.log("The client connect failure.");
+        }
+    };
+    //options.userName = "zhangsong";
+    //options.password = "123456";
+    //options.keepAliveInterval = 60;
+    //options.cleanSession = true;
+    //options.useSSL = false;
+    mqClient.connect(options);
+
+    var topic ="+/#";
+    // 订阅
+    window.setTimeout(function() {
+        mqClient.subscribe(topic, {
+            qos : 0,
+            onSuccess : function(msg) {
+                console.log(JSON.stringify(msg));
+            },
+            onFailure : function(err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }, 3000);
+    
+    // 发布
+    /*
+    var message = new Paho.MQTT.Message("我是一个消息");
+    message.destinationName = topic;
+    message.qos = 0;
+    message.retained = true;
+    mqClient.send(message);
+    */
+    
+</script>
+</head>
+<body>
+
+</body>
+</html>

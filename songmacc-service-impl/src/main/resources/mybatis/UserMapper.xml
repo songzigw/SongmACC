@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.songm.acc.dao.impl.UserDaoImpl">
+	<resultMap id="BaseResultMap" type="cn.songm.acc.entity.User">
+	    <id column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="no" property="no" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="created" property="created" jdbcType="TIMESTAMP" />
+		<result column="updated" property="updated" jdbcType="TIMESTAMP" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="nick" property="nick" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="INTEGER" />
+		<result column="birth_year" property="birthYear" jdbcType="INTEGER" />
+		<result column="birth_month" property="birthMonth" jdbcType="INTEGER" />
+		<result column="birth_day" property="birthDay" jdbcType="INTEGER" />
+		<result column="summary" property="summary" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="table_name"> acc_user </sql>
+
+	<sql id="Base_Column_List">
+		no, version, created, updated, remark, user_id, account,
+		password, nick, real_name, avatar, gender, birth_year,
+		birth_month, birth_day, summary
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="table_name" />
+		where user_id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		<include refid="table_name" />
+		where user_id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="cn.songm.acc.entity.User">
+		insert into
+		<include refid="table_name" />
+		(no, version, created, updated, remark, user_id, account,password,
+		nick, real_name, avatar, gender, birth_year, birth_month, birth_day, summary)
+		values (#{no,jdbcType=VARCHAR},
+		#{version,jdbcType=VARCHAR},
+		#{created,jdbcType=TIMESTAMP},
+		#{updated,jdbcType=TIMESTAMP},
+		#{remark,jdbcType=VARCHAR},
+		#{userId,jdbcType=BIGINT},
+		#{account,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{nick,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR},
+		#{avatar,jdbcType=VARCHAR},
+		#{gender,jdbcType=VARCHAR},
+		#{birthYear,jdbcType=VARCHAR},
+		#{birthMonth,jdbcType=VARCHAR},
+		#{birthDay,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterType="cn.songm.acc.entity.User">
+		update
+		<include refid="table_name" />
+		set updated = #{updated,jdbcType=TIMESTAMP}
+		<if test="version != null">, version = #{version,jdbcType=VARCHAR}</if>
+		<if test="remark != null">, remark = #{remark,jdbcType=VARCHAR}</if>
+		<if test="password != nul">, password = #{password,jdbcType=VARCHAR}</if>
+		<if test="avatar != null">, avatar = #{avatar,jdbcType=VARCHAR}</if>
+		<if test="nick != null">, nick = #{nick,jdbcType=VARCHAR}</if>
+		<if test="realName != null">, real_name = #{realName,jdbcType=VARCHAR}</if>
+		<if test="gender != null">, gender = #{gender,jdbcType=INTEGER}</if>
+		<if test="birthYear != null">, birth_year = #{birthYear,jdbcType=INTEGER}</if>
+		<if test="birthMonth != null">, birth_month = #{birthMonth,jdbcType=INTEGER}</if>
+		<if test="birthDay != null">, birth_day = #{birthDay,jdbcType=INTEGER}</if>
+		<if test="summary != null">, summary = #{summary,jdbcType=VARCHAR}</if>
+		where user_id = #{userId,jdbcType=BIGINT}
+	</update>
+	<!-- 根据搜索条件获取数据 -->
+	<sql id="condition_sql">
+		<!-- Equal query -->
+		<if
+			test="beginDate != null and endDate != null and endDate !='' and beginDate != ''">
+			and created between #{beginDate} and CONCAT(#{endDate},'23:59:59')
+		</if>
+		<if test="userId != null and userId !=''"> and user_id = #{userId,jdcbType=BIGINT}</if>
+		<if test="account != null"> and account = #{account,jdbcType=VARCHAR}</if>
+		<if test="nick != null"> and nick = #{nick,jdbcType=VARCHAR}</if>
+		<!-- 是否行锁，要放在查询条件最后 -->
+		<if test="isPessimist != null and isPessimist == true "> for update</if>
+	</sql>
+
+	<select id="listBy" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="table_name" />
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		order by created desc
+	</select>
+	
+	<select id="listByColumn" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from
+        <include refid="table_name" />
+        <where>
+            <include refid="condition_sql" />
+        </where>
+        order by created desc
+    </select>
+    
+    <select id="countByColumn" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(1) from
+        <include refid="table_name" />
+        <where>
+            <include refid="condition_sql" />
+        </where>
+    </select>
+
+	<!-- 分页查询 -->
+	<select id="listPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="table_name" />
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		order by created desc limit #{pageFirst}, #{pageSize}
+	</select>
+
+	<!-- 分页查询时要用到的总数统计 -->
+	<select id="listPageCount" parameterType="java.util.Map"
+		resultType="java.lang.Long">
+		select count(1) from
+		<include refid="table_name" />
+		<where>
+			<include refid="condition_sql" />
+		</where>
+	</select>
+
+    <select id="pwdByAccount" parameterType="java.lang.String"
+        resultType="java.lang.String">
+        select password from
+        <include refid="table_name" />
+        where account = #{account,jdbcType=VARCHAR}
+    </select>
+</mapper>

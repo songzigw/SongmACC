@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.songm.acc.dao.impl.Tab01DaoImpl">
+	<resultMap id="BaseResultMap" type="cn.songm.acc.entity.Tab01">
+		<id column="no" property="no" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="created" property="created" jdbcType="TIMESTAMP" />
+		<result column="updated" property="updated" jdbcType="TIMESTAMP" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="count" property="count" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="table_name"> test_tab01 </sql>
+
+	<sql id="Base_Column_List">
+		no, version, created, updated, remark, status, count
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="table_name" />
+		where no = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		<include refid="table_name" />
+		where no = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="cn.songm.acc.entity.Tab01">
+		insert into
+		<include refid="table_name" />
+		(no, version, created, updated, remark, status, count)
+		values (#{no,jdbcType=VARCHAR},
+		#{version,jdbcType=VARCHAR},
+		#{created,jdbcType=TIMESTAMP},
+		#{updated,jdbcType=TIMESTAMP},
+		#{remark,jdbcType=VARCHAR},
+		#{status,jdbcType=TINYINT},
+		#{count,jdbcType=INTEGER})
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterType="cn.songm.acc.entity.Tab01">
+		update
+		<include refid="table_name" />
+		set updated = #{updated,jdbcType=TIMESTAMP}
+		<if test="version != null">, version = #{version,jdbcType=VARCHAR}</if>
+		<if test="remark != null">, remark = #{remark,jdbcType=VARCHAR}</if>
+		<if test="count != null">, count = #{count,jdbcType=INTEGER}</if>
+		where no = #{no,jdbcType=VARCHAR}
+	</update>
+	<!-- 根据搜索条件获取数据 -->
+	<sql id="condition_sql">
+		<!-- Equal query -->
+		<if
+			test="beginDate != null and endDate != null and endDate !='' and beginDate != ''">
+			and created between #{beginDate} and CONCAT(#{endDate},'23:59:59')
+		</if>
+		<!-- 是否行锁，要放在查询条件最后 -->
+		<if test="isPessimist != null and isPessimist == true "> for update</if>
+	</sql>
+
+	<select id="listBy" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="table_name" />
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		order by created desc
+	</select>
+	
+	<select id="listByColumn" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from
+        <include refid="table_name" />
+        <where>
+            <include refid="condition_sql" />
+        </where>
+        order by created desc
+    </select>
+    
+    <select id="countByColumn" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(1) from
+        <include refid="table_name" />
+        <where>
+            <include refid="condition_sql" />
+        </where>
+    </select>
+
+	<!-- 分页查询 -->
+	<select id="listPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from
+		<include refid="table_name" />
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		order by created desc limit #{pageFirst}, #{pageSize}
+	</select>
+
+	<!-- 分页查询时要用到的总数统计 -->
+	<select id="listPageCount" parameterType="java.util.Map"
+		resultType="java.lang.Long">
+		select count(1) from
+		<include refid="table_name" />
+		<where>
+			<include refid="condition_sql" />
+		</where>
+	</select>
+
+    <update id="updateCountIncr" parameterType="java.lang.String">
+        update
+        <include refid="table_name" />
+        set count = count + 1
+        where no = #{no,jdbcType=VARCHAR}
+    </update>
+</mapper>
