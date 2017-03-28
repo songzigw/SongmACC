@@ -33,9 +33,7 @@
     <bean id="handlerExceptionResolver"
         class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
-            <props>
-                <prop key="cn.songm.acc.service.ServiceException">redirect:/data.jsp</prop>
-            </props>
+            
         </property>
     </bean>
 

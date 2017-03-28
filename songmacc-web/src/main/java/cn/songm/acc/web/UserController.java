@@ -61,8 +61,7 @@ public class UserController {
         }
 
         ModelAndView mv = new ModelAndView("/data");
-        mv.addObject("data", JsonUtils.toJson(result, result.getClass()));
-        return mv;
+        return mv.addObject("data", JsonUtils.toJson(result, result.getClass()));
     }
 
     @RequestMapping(value = "register", method = RequestMethod.GET)

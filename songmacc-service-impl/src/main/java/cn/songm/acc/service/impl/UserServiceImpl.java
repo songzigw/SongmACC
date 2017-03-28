@@ -10,8 +10,8 @@ import cn.songm.acc.dao.UserDao;
 import cn.songm.acc.dao.UserReportDao;
 import cn.songm.acc.entity.User;
 import cn.songm.acc.entity.UserReport;
-import cn.songm.acc.service.UserError;
 import cn.songm.acc.service.ServiceConfig;
+import cn.songm.acc.service.UserError;
 import cn.songm.acc.service.UserService;
 import cn.songm.common.dao.SeqBuild;
 import cn.songm.common.dao.SeqTableDao;
@@ -46,30 +46,30 @@ public class UserServiceImpl implements UserService {
         if (!StringUtils.isEmptyOrNull(account)) {
             // 验证账号格式
             if (!StringUtils.matches(account, "^\\w{5,50}$")) {
-                throw new ServiceException(UserError.ACC_105, "账号格式错误");
+                throw new ServiceException(UserError.ACC_105.getErrCode(), "账号格式错误");
             }
             account = account.toLowerCase();
             // 验证账号中的关键字
             verifyAccKey(account);
             // 验证账号是否重复
             if (this.verifyAccountRep(account)) {
-                throw new ServiceException(UserError.ACC_101, "账号已经被使用");
+                throw new ServiceException(UserError.ACC_101.getErrCode(), "账号已经被使用");
             }
         }
 
         // 验证昵称格式
         if (!StringUtils.matches(nick, "^.{1,12}$")) {
-            throw new ServiceException(UserError.ACC_106, "昵称格式错误");
+            throw new ServiceException(UserError.ACC_106.getErrCode(), "昵称格式错误");
         }
         // 验证密码格式
         if (!StringUtils.matches(password, "^.{6,20}$")) {
-            throw new ServiceException(UserError.ACC_107, "密码格式错误");
+            throw new ServiceException(UserError.ACC_107.getErrCode(), "密码格式错误");
         }
         // 验证昵称中的关键字
         verifyNicKey(nick);
         // 验证昵称是否重复
         if (this.verifyNickRep(nick)) {
-            throw new ServiceException(UserError.ACC_102, "昵称已经被使用");
+            throw new ServiceException(UserError.ACC_102.getErrCode(), "昵称已经被使用");
         }
 
         User user = new User();
@@ -84,12 +84,12 @@ public class UserServiceImpl implements UserService {
 
     private void verifyAccKey(String word) throws ServiceException {
         if (word.indexOf(KEY_ACC) > -1)
-            throw new ServiceException(UserError.ACC_113, "账号中不能包含关键字");
+            throw new ServiceException(UserError.ACC_113.getErrCode(), "账号中不能包含关键字");
     }
 
     private void verifyNicKey(String word) throws ServiceException {
         if (word.indexOf(KEY_NIC) > -1)
-            throw new ServiceException(UserError.ACC_114, "昵称中不能包含关键字");
+            throw new ServiceException(UserError.ACC_114.getErrCode(), "昵称中不能包含关键字");
     }
 
     private User addUser(User user) {
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
         password = CodeUtils.md5(password);
         String pwd = userDao.queryPwdByAccount(account);
         if (pwd == null || !password.equals(pwd)) {
-            throw new ServiceException(UserError.ACC_109, "用户账号或者密码错误");
+            throw new ServiceException(UserError.ACC_109.getErrCode(), "用户账号或者密码错误");
         }
         return userDao.queryByAccount(account);
     }
@@ -146,14 +146,14 @@ public class UserServiceImpl implements UserService {
             throws ServiceException {
         // 验证密码格式
         if (!StringUtils.matches(newPsw, "^.{6,20}$")) {
-            throw new ServiceException(UserError.ACC_107, "密码格式错误");
+            throw new ServiceException(UserError.ACC_107.getErrCode(), "密码格式错误");
         }
 
         // 密码MD5加密
         oldPsw = CodeUtils.md5(oldPsw);
         User user = this.getUserById(userId);
         if (!user.getPassword().equals(oldPsw)) {
-            throw new ServiceException(UserError.ACC_103, "用户原始密码错误");
+            throw new ServiceException(UserError.ACC_103.getErrCode(), "用户原始密码错误");
         }
 
         newPsw = CodeUtils.md5(newPsw);
@@ -176,14 +176,14 @@ public class UserServiceImpl implements UserService {
         }
         // 验证昵称格式
         if (!StringUtils.matches(nick, "^.{1,12}$")) {
-            throw new ServiceException(UserError.ACC_106, "昵称格式错误");
+            throw new ServiceException(UserError.ACC_106.getErrCode(), "昵称格式错误");
         }
         // 验证生日格式
         Calendar calendar = Calendar.getInstance();
         try {
             calendar.set(birthdayYear, birthdayMonth - 1, birthdayDay);
         } catch (Exception e) {
-            throw new ServiceException(UserError.ACC_104, "生日格式错误", e);
+            throw new ServiceException(UserError.ACC_104.getErrCode(), "生日格式错误", e);
         }
         // 验证昵称
         User user = this.getUserById(userId);
@@ -191,7 +191,7 @@ public class UserServiceImpl implements UserService {
             // 验证昵称中的关键字
             verifyNicKey(nick);
             if (this.verifyNickRep(nick)) {
-                throw new ServiceException(UserError.ACC_102, "昵称已经被使用");
+                throw new ServiceException(UserError.ACC_102.getErrCode(), "昵称已经被使用");
             }
         }
 
