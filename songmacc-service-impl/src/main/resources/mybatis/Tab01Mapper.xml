@@ -7,14 +7,13 @@
 		<result column="created" property="created" jdbcType="TIMESTAMP" />
 		<result column="updated" property="updated" jdbcType="TIMESTAMP" />
 		<result column="remark" property="remark" jdbcType="VARCHAR" />
-		<result column="status" property="status" jdbcType="TINYINT" />
 		<result column="count" property="count" jdbcType="INTEGER" />
 	</resultMap>
 
 	<sql id="table_name"> test_tab01 </sql>
 
 	<sql id="Base_Column_List">
-		no, version, created, updated, remark, status, count
+		no, version, created, updated, remark, count
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
@@ -32,13 +31,12 @@
 	<insert id="insert" parameterType="cn.songm.acc.entity.Tab01">
 		insert into
 		<include refid="table_name" />
-		(no, version, created, updated, remark, status, count)
+		(no, version, created, updated, remark, count)
 		values (#{no,jdbcType=VARCHAR},
 		#{version,jdbcType=VARCHAR},
 		#{created,jdbcType=TIMESTAMP},
 		#{updated,jdbcType=TIMESTAMP},
 		#{remark,jdbcType=VARCHAR},
-		#{status,jdbcType=TINYINT},
 		#{count,jdbcType=INTEGER})
 	</insert>
 
