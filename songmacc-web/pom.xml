@@ -27,27 +27,11 @@
             <artifactId>songmsso-service</artifactId>
             <version>${songmsso.service.version}</version>
         </dependency>
-        <dependency>
-            <groupId>cn.songm.common</groupId>
-            <artifactId>songm-common-utils</artifactId>
-        </dependency>
+        
         <dependency>
             <groupId>cn.songm.common</groupId>
             <artifactId>songm-common-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.songm.common</groupId>
-            <artifactId>songm-common-beans</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.101tec</groupId>
-            <artifactId>zkclient</artifactId>
-        </dependency>
+        </dependency>        
     </dependencies>
 
 	<build>
