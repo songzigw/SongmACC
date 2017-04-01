@@ -20,7 +20,7 @@
 	<mvc:interceptors>
 		<bean class="cn.songm.acc.webapi.interceptor.MustInterceptor" />
 		<mvc:interceptor>
-			<mvc:mapping path="/login_check" />
+			<mvc:mapping path="/login/check" />
 			<bean class="cn.songm.acc.webapi.interceptor.VcodeInterceptor" />
 		</mvc:interceptor>
 		<mvc:interceptor>
