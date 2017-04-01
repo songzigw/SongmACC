@@ -5,7 +5,7 @@
 		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
 	<!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
-	<dubbo:application name="consumer-songmacc-web" />
+	<dubbo:application name="consumer-songmacc-webapi" />
 
 	<!-- 使用注册中心暴露发现服务地址 -->
 	<dubbo:registry address="${dubbo.registry.server}" />

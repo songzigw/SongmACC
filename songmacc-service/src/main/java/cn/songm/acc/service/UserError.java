@@ -48,10 +48,13 @@ public enum UserError implements ErrorInfo {
     ACC_113("ACC_113"),
     /** 昵称禁止使用关键字 */
     ACC_114("ACC_114"),
+    /** 用户登入Session失效 */
+    ACC_115("ACC_115"),
     
     
     // 验证码异常-------------
-    ;
+    /** 验证码错误 */
+    ACC_116("ACC_116");
 
     private final String errCode;
     

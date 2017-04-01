@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.songm.acc.service.UserError;
 import cn.songm.acc.webapi.Browser;
 import cn.songm.common.beans.Result;
 import cn.songm.common.utils.JsonUtils;
@@ -30,6 +31,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         Result<Object> result = new Result<Object>();
         result.setSucceed(false);
+        result.setErrorCode(UserError.ACC_115.getErrCode());
         result.setErrorDesc("Session失效");
         response.setContentType("text/json; charset=UTF-8");
         PrintWriter out = response.getWriter();

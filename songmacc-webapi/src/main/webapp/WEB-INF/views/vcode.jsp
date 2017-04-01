@@ -1,5 +1,5 @@
 <%@page import="cn.songm.common.utils.RandomCode"%>
-<%@page import="cn.songm.acc.web.Browser"%>
+<%@page import="cn.songm.acc.webapi.Browser"%>
 <%@page import="cn.songm.sso.service.SongmSSOService"%>
 <%@page language="java" contentType="image/jpeg; charset=UTF-8"
 	pageEncoding="UTF-8"%>

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.songm.acc.service.UserError;
 import cn.songm.acc.webapi.Browser;
 import cn.songm.common.beans.Result;
 import cn.songm.common.utils.JsonUtils;
@@ -34,6 +35,7 @@ public class VcodeInterceptor implements HandlerInterceptor {
 
         Result<Object> result = new Result<Object>();
         result.setSucceed(false);
+        result.setErrorCode(UserError.ACC_116.getErrCode());
         result.setErrorDesc("验证码错误");
         response.setContentType("text/json; charset=UTF-8");
         PrintWriter out = response.getWriter();

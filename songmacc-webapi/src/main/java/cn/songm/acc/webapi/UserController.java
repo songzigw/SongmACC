@@ -32,7 +32,7 @@ public class UserController extends BaseController {
     @Resource(name = "userService")
     private UserService userService;
 
-    @RequestMapping(value = "login/check", method = RequestMethod.POST)
+    @RequestMapping(value = "loginc", method = RequestMethod.POST)
     public ModelAndView loginCheck(String account, String password) {
         Result<Object> result = new Result<Object>();
 
@@ -68,7 +68,8 @@ public class UserController extends BaseController {
         }
 
         ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data", JsonUtils.toJson(result, result.getClass()));
+        return mv.addObject("data",
+                JsonUtils.toJson(result, result.getClass()));
     }
 
     @RequestMapping(value = "vcode", method = RequestMethod.GET)
@@ -81,5 +82,17 @@ public class UserController extends BaseController {
 
         ModelAndView mv = new ModelAndView("/vcode");
         return mv.addObject("rcode", rcode);
+    }
+
+    @RequestMapping(value = "member/user", method = RequestMethod.POST)
+    public ModelAndView member() {
+        HttpServletRequest req = this.getRequest();
+
+        System.out.println("=========" + Browser.getSessionId(req));
+        String uinfo = songmSsoService.getUserInfo(Browser.getSessionId(req));
+        // User user = JsonUtils.fromJson(uinfo, User.class);
+
+        ModelAndView mv = new ModelAndView("/data");
+        return mv.addObject("data", uinfo);
     }
 }
