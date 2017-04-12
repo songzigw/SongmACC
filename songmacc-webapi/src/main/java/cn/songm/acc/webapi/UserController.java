@@ -32,6 +32,28 @@ public class UserController extends BaseController {
     @Resource(name = "userService")
     private UserService userService;
 
+    /**
+     * 验证码
+     * @return
+     */
+    @RequestMapping(value = "vcode", method = RequestMethod.GET)
+    public ModelAndView validateCode() {
+        HttpServletRequest req = this.getRequest();
+
+        RandomCode rcode = new RandomCode();
+        songmSsoService.setValidateCode(
+                Browser.getSessionId(req), rcode.getCode());
+
+        ModelAndView mv = new ModelAndView("/vcode");
+        return mv.addObject("rcode", rcode);
+    }
+    
+    /**
+     * 登入检查
+     * @param account
+     * @param password
+     * @return
+     */
     @RequestMapping(value = "loginc", method = RequestMethod.POST)
     public ModelAndView loginCheck(String account, String password) {
         Result<Object> result = new Result<Object>();
@@ -56,6 +78,13 @@ public class UserController extends BaseController {
                 JsonUtils.toJson(result, result.getClass()));
     }
 
+    /**
+     * 账号注册
+     * @param account
+     * @param password
+     * @param nick
+     * @return
+     */
     @RequestMapping(value = "registry", method = RequestMethod.POST)
     public ModelAndView registry(String account, String password, String nick) {
         Result<Object> result = new Result<Object>();
@@ -72,23 +101,14 @@ public class UserController extends BaseController {
                 JsonUtils.toJson(result, result.getClass()));
     }
 
-    @RequestMapping(value = "vcode", method = RequestMethod.GET)
-    public ModelAndView validateCode() {
-        HttpServletRequest req = this.getRequest();
-
-        RandomCode rcode = new RandomCode();
-        songmSsoService.setValidateCode(Browser.getSessionId(req),
-                rcode.getCode());
-
-        ModelAndView mv = new ModelAndView("/vcode");
-        return mv.addObject("rcode", rcode);
-    }
-
+    /**
+     * 获取登入用户
+     * @return
+     */
     @RequestMapping(value = "member/user", method = RequestMethod.POST)
     public ModelAndView member() {
         HttpServletRequest req = this.getRequest();
 
-        System.out.println("=========" + Browser.getSessionId(req));
         String uinfo = songmSsoService.getUserInfo(Browser.getSessionId(req));
         // User user = JsonUtils.fromJson(uinfo, User.class);
 
