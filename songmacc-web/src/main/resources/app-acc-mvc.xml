@@ -30,11 +30,12 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+    <!-- 
     <bean id="handlerExceptionResolver"
         class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             
         </property>
     </bean>
-
+    -->
 </beans>

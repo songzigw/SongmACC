@@ -167,8 +167,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void editUserBasic(Long userId, String nick, String userName,
-            Integer gender, int birthdayYear, int birthdayMonth,
-            int birthdayDay, String summary) throws ServiceException {
+            Integer gender, int birthYear, int birthMonth,
+            int birthDay, String summary) throws ServiceException {
         // 数据不能为空
         if (userId <= 0 || nick.trim().equals("")
                 || userName.trim().equals("")) {
@@ -181,7 +181,7 @@ public class UserServiceImpl implements UserService {
         // 验证生日格式
         Calendar calendar = Calendar.getInstance();
         try {
-            calendar.set(birthdayYear, birthdayMonth - 1, birthdayDay);
+            calendar.set(birthYear, birthMonth - 1, birthDay);
         } catch (Exception e) {
             throw new ServiceException(UserError.ACC_104.getErrCode(), "生日格式错误", e);
         }
@@ -195,8 +195,8 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        userDao.update(userId, nick, userName, gender, birthdayYear,
-                birthdayMonth, birthdayDay, summary);
+        userDao.update(userId, nick, userName, gender, birthYear,
+                birthMonth, birthDay, summary);
     }
 
     @Override
@@ -212,6 +212,81 @@ public class UserServiceImpl implements UserService {
         SeqBuild seqBuild = new SeqBuild();
         seqBuild.setSeqName(seqName);
         return seqTableDao.getSeqNextValue(seqBuild);
+    }
+
+    @Override
+    public void editUserNick(long userId, String nick) throws ServiceException {
+        // 数据不能为空
+        if (userId <= 0 || nick.trim().equals("")) {
+            throw new IllegalArgumentException();
+        }
+        
+        // 验证昵称格式
+        if (!StringUtils.matches(nick, "^.{1,12}$")) {
+            throw new ServiceException(UserError.ACC_106.getErrCode(), "昵称格式错误");
+        }
+        
+        // 验证昵称
+        User user = this.getUserById(userId);
+        if (!user.getNick().equals(nick)) {
+            // 验证昵称中的关键字
+            verifyNicKey(nick);
+            if (this.verifyNickRep(nick)) {
+                throw new ServiceException(UserError.ACC_102.getErrCode(), "昵称已经被使用");
+            }
+        }
+
+        userDao.update(userId, nick, null, null, null,
+                null, null, null);
+    }
+
+    @Override
+    public void editRealName(long userId, String realName) {
+        if (userId <= 0 || realName.trim().equals("")) {
+            throw new IllegalArgumentException();
+        }
+
+        userDao.update(userId, null, realName, null, null,
+                null, null, null);
+    }
+
+    @Override
+    public void editUserGender(long userId, Integer gender) {
+        if (userId <= 0) {
+            throw new IllegalArgumentException();
+        }
+        
+        userDao.update(userId, null, null, gender, null, null, null, null);
+        
+    }
+
+    @Override
+    public void editUserBirthday(long userId, int birthYear, int birthMonth,
+            int birthDay) throws ServiceException {
+        // 数据不能为空
+        if (userId <= 0) {
+            throw new IllegalArgumentException();
+        }
+        
+        // 验证生日格式
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.set(birthYear, birthMonth - 1, birthDay);
+        } catch (Exception e) {
+            throw new ServiceException(UserError.ACC_104.getErrCode(), "生日格式错误", e);
+        }
+
+        userDao.update(userId, null, null, null, birthYear,
+                birthMonth, birthDay, null);
+    }
+
+    @Override
+    public void editSummary(long userId, String summary) {
+        if (userId <= 0) {
+            throw new IllegalArgumentException();
+        }
+
+        userDao.update(userId, null, null, null, null, null, null, summary);
     }
 
 }

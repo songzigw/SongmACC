@@ -80,14 +80,14 @@ public interface UserService {
      * @param nick
      * @param realName
      * @param gender
-     * @param birthdayYear
-     * @param birthdayMonth
-     * @param birthdayDay
+     * @param birthYear
+     * @param birthMonth
+     * @param birthDay
      * @param summary
      */
     public void editUserBasic(Long userId, String nick, String realName,
-            Integer gender, int birthdayYear, int birthdayMonth,
-            int birthdayDay, String summary) throws ServiceException;
+            Integer gender, int birthYear, int birthMonth,
+            int birthDay, String summary) throws ServiceException;
 
     /**
      * 修改用户头像
@@ -112,5 +112,16 @@ public interface UserService {
      * @param report
      */
     public void recordReport(UserReport report);
+
+    public void editUserNick(long userId, String nick) throws ServiceException;
+
+    public void editRealName(long userId, String realName);
+
+    public void editUserGender(long userId, Integer gender);
+
+    public void editUserBirthday(long userId, int birthYear, int birthMonth,
+            int birthDay) throws ServiceException;
+
+    public void editSummary(long userId, String summary);
     
 }

@@ -70,7 +70,7 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 
     @Override
     public void update(Long userId, String nick, String userName,
-            Integer gender, int birthYear, int birthMonth, int birthDay,
+            Integer gender, Integer birthYear, Integer birthMonth, Integer birthDay,
             String summary) {
         User user = new User(userId);
         user.setNick(nick);

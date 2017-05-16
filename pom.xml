@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.songm.acc</groupId>
 	<artifactId>SongmACC</artifactId>
@@ -18,8 +19,8 @@
 		<module>songmacc-web</module>
 		<module>songmacc-notify</module>
 		<module>songmacc-timetask</module>
-    <module>songmacc-webapi</module>
-  </modules>
+		<module>songmacc-webapi</module>
+	</modules>
 
 	<properties>
 		<file_encoding>UTF-8</file_encoding>
@@ -55,7 +56,7 @@
 				<artifactId>songmacc-service</artifactId>
 				<version>${songmacc.service.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>cn.songm.common</groupId>
 				<artifactId>songm-common-utils</artifactId>
@@ -72,10 +73,10 @@
 				<version>${songm.common.dao.version}</version>
 			</dependency>
 			<dependency>
-                <groupId>cn.songm.common</groupId>
-                <artifactId>songm-common-redis</artifactId>
-                <version>${songm.common.redis.version}</version>
-            </dependency>
+				<groupId>cn.songm.common</groupId>
+				<artifactId>songm-common-redis</artifactId>
+				<version>${songm.common.redis.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>cn.songm.common</groupId>
 				<artifactId>songm-common-service</artifactId>
@@ -111,11 +112,11 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>${spring_version}</version>
-                <scope>test</scope>
-            </dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring_version}</version>
+				<scope>test</scope>
+			</dependency>
 
 			<dependency>
 				<groupId>org.apache.activemq</groupId>
@@ -146,9 +147,9 @@
 			<artifactId>hamcrest-junit</artifactId>
 		</dependency>
 		<dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-        </dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

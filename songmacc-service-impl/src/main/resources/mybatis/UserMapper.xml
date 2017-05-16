@@ -67,7 +67,7 @@
 		set updated = #{updated,jdbcType=TIMESTAMP}
 		<if test="version != null">, version = #{version,jdbcType=VARCHAR}</if>
 		<if test="remark != null">, remark = #{remark,jdbcType=VARCHAR}</if>
-		<if test="password != nul">, password = #{password,jdbcType=VARCHAR}</if>
+		<if test="password != null">, password = #{password,jdbcType=VARCHAR}</if>
 		<if test="avatar != null">, avatar = #{avatar,jdbcType=VARCHAR}</if>
 		<if test="nick != null">, nick = #{nick,jdbcType=VARCHAR}</if>
 		<if test="realName != null">, real_name = #{realName,jdbcType=VARCHAR}</if>

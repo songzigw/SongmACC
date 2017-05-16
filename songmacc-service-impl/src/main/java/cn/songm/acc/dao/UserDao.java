@@ -24,7 +24,7 @@ public interface UserDao extends BaseDao<User> {
     void updatePhoto(Long userId, String avatar);
 
     void update(Long userId, String nick, String userName, Integer gender,
-            int birthdayYear, int birthdayMonth, int birthdayDay,
+            Integer birthYear, Integer birthMonth, Integer birthDay,
             String summary);
 
     int insert(User user);

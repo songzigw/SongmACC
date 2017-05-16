@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import cn.songm.acc.entity.User;
+import cn.songm.acc.service.UserError;
 import cn.songm.acc.service.UserService;
 import cn.songm.common.beans.Result;
 import cn.songm.common.service.ServiceException;
 import cn.songm.common.utils.JsonUtils;
 import cn.songm.common.utils.RandomCode;
+import cn.songm.common.utils.StringUtils;
 import cn.songm.common.web.BaseController;
 import cn.songm.sso.service.SongmSSOService;
 
@@ -61,6 +63,7 @@ public class UserController extends BaseController {
         User user = null;
         try {
             user = userService.checkLogin(account, password);
+            user.setPassword(password);
         } catch (ServiceException e) {
             result.setErrorCode(e.getErrCode());
             result.setErrorDesc(e.getErrNotice());
@@ -71,6 +74,7 @@ public class UserController extends BaseController {
             songmSsoService.login(Browser.getSessionId(req),
                     user.getUserId().toString(),
                     JsonUtils.toJson(user, user.getClass()));
+            result.setData(user);
         }
 
         ModelAndView mv = new ModelAndView("/data");
@@ -78,6 +82,18 @@ public class UserController extends BaseController {
                 JsonUtils.toJson(result, result.getClass()));
     }
 
+    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    public ModelAndView logout() {
+        Result<Object> result = new Result<Object>();
+
+        HttpServletRequest req = this.getRequest();
+        songmSsoService.logout(Browser.getSessionId(req));
+
+        ModelAndView mv = new ModelAndView("/data");
+        return mv.addObject("data",
+                JsonUtils.toJson(result, result.getClass()));
+    }
+    
     /**
      * 账号注册
      * @param account
@@ -86,16 +102,22 @@ public class UserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "registry", method = RequestMethod.POST)
-    public ModelAndView registry(String account, String password, String nick) {
+    public ModelAndView registry(String account, String password, String nick, String vcode) {
         Result<Object> result = new Result<Object>();
 
-        try {
-            userService.register(account, password, nick);
-        } catch (ServiceException e) {
-            result.setErrorCode(e.getErrCode());
-            result.setErrorDesc(e.getErrNotice());
+        String code = songmSsoService.getValidateCode(Browser.getSessionId(this.getRequest()));
+        if (!vcode.equalsIgnoreCase(code)) {
+            result.setErrorCode(UserError.ACC_116.getErrCode());
+            result.setErrorDesc("验证码错误");
+        } else {
+            try {
+                userService.register(account, password, nick);
+            } catch (ServiceException e) {
+                result.setErrorCode(e.getErrCode());
+                result.setErrorDesc(e.getErrNotice());
+            }
         }
-
+        
         ModelAndView mv = new ModelAndView("/data");
         return mv.addObject("data",
                 JsonUtils.toJson(result, result.getClass()));
@@ -110,9 +132,79 @@ public class UserController extends BaseController {
         HttpServletRequest req = this.getRequest();
 
         String uinfo = songmSsoService.getUserInfo(Browser.getSessionId(req));
-        // User user = JsonUtils.fromJson(uinfo, User.class);
+        User user = JsonUtils.fromJson(uinfo, User.class);
+        Result<User> result = new Result<User>();
+        result.setData(user);
 
         ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data", uinfo);
+        return mv.addObject("data", JsonUtils.toJson(result, result.getClass()));
+    }
+    
+    /**
+     * 修改用户信息
+     * @return
+     */
+    @RequestMapping(value = "member/user/edit", method = RequestMethod.POST)
+    public ModelAndView edit(String avatar, String nick, String realName,
+            Integer gender, Integer birthYear, Integer birthMonth,
+            Integer birthDay, String summary) {
+        HttpServletRequest req = this.getRequest();
+        // 定义返回的结果
+        Result<User> result = new Result<User>();
+        
+        // 获取在线用户信息
+        String uinfo = songmSsoService.getUserInfo(Browser.getSessionId(req));
+        User user = JsonUtils.fromJson(uinfo, User.class);
+
+        // 修改头像
+        if (!StringUtils.isEmptyOrNull(avatar)) {
+            userService.editUserPhoto(user.getUserId(), avatar);
+            user.setAvatar(avatar);
+        }
+        
+        // 信息修改
+        try {
+         // 修改昵称
+            if (!StringUtils.isEmptyOrNull(nick)) {
+                userService.editUserNick(user.getUserId(), nick);
+                user.setNick(nick);
+            }
+            // 修改RealName
+            if (!StringUtils.isEmptyOrNull(realName)) {
+                userService.editRealName(user.getUserId(), realName);
+                user.setRealName(realName);
+            }
+            // 修改Gender
+            if (gender != null) {
+                userService.editUserGender(user.getUserId(), gender);
+                user.setGender(gender);
+            }
+            // 修改BirthdayYear 修改BirthdayMonth 修改BirthdayDay
+            if (birthYear != null && birthMonth != null && birthDay != null) {
+                userService.editUserBirthday(user.getUserId(), birthYear, birthMonth, birthDay);
+                user.setBirthYear(birthYear);
+                user.setBirthMonth(birthMonth);
+                user.setBirthDay(birthDay);
+            }
+            // 修改Summary
+            if (summary != null) {
+                userService.editSummary(user.getUserId(), summary);
+                user.setSummary(summary);
+            }
+        } catch (ServiceException e) {
+            result.setErrorCode(e.getErrCode());
+            result.setErrorDesc(e.getErrDesc());
+        }
+        
+        // 修改单点登入服务
+        songmSsoService.login(Browser.getSessionId(req),
+                user.getUserId().toString(),
+                JsonUtils.toJson(user, user.getClass()));
+        
+        // 返回用户信息
+        result.setData(user);
+
+        ModelAndView mv = new ModelAndView("/data");
+        return mv.addObject("data", JsonUtils.toJson(result));
     }
 }
