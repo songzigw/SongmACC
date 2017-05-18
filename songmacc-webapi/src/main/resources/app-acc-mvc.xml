@@ -11,6 +11,9 @@
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 
+    <!-- 静态资源 -->
+    <mvc:resources mapping="/**/*.html" location="/" />
+
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views"></property>

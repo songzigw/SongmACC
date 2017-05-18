@@ -7,6 +7,8 @@ public interface UserDao extends BaseDao<User> {
 
     public static final String SEQ_NAME = "acc_user_id_seq";
 
+    public long getSeqNextValue();
+    
     User queryPrivacyByAccount(String account);
 
     int countByAccount(String account);

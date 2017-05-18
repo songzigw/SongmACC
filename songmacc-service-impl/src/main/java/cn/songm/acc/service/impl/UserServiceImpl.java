@@ -13,8 +13,6 @@ import cn.songm.acc.entity.UserReport;
 import cn.songm.acc.service.ServiceConfig;
 import cn.songm.acc.service.UserError;
 import cn.songm.acc.service.UserService;
-import cn.songm.common.dao.SeqBuild;
-import cn.songm.common.dao.SeqTableDao;
 import cn.songm.common.service.ServiceException;
 import cn.songm.common.utils.CodeUtils;
 import cn.songm.common.utils.StringUtils;
@@ -29,8 +27,6 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Autowired
     private UserReportDao userReportDao;
-    @Autowired
-    private SeqTableDao seqTableDao;
     @Autowired
     private ServiceConfig serviceConfig;
 
@@ -93,7 +89,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private User addUser(User user) {
-        user.setUserId(Long.valueOf(getSeqNextValue(UserDao.SEQ_NAME)));
+        user.setUserId(userDao.getSeqNextValue());
+        user.setVersion(serviceConfig.getVersion());
         userDao.insert(user);
         return user;
     }
@@ -202,16 +199,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void recordReport(UserReport report) {
         userReportDao.insert(report);
-    }
-
-    /**
-     * 根据序列名称,获取序列值
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public String getSeqNextValue(String seqName) {
-        SeqBuild seqBuild = new SeqBuild();
-        seqBuild.setSeqName(seqName);
-        return seqTableDao.getSeqNextValue(seqBuild);
     }
 
     @Override
