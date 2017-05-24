@@ -34,6 +34,18 @@ public class UserController extends BaseController {
     @Resource(name = "userService")
     private UserService userService;
 
+    @RequestMapping(value = "user")
+    public ModelAndView user(long userId) {
+        User user = userService.getUserById(userId);
+        user.setAccount(null);
+        user.setPassword(null);
+        Result<User> result = new Result<User>();
+        result.setData(user);
+        
+        ModelAndView mv = new ModelAndView("/data");
+        return mv.addObject("data", JsonUtils.toJson(result));
+    }
+    
     /**
      * 验证码
      * @return
