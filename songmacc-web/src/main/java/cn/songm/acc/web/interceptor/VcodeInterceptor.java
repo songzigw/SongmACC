@@ -37,7 +37,7 @@ public class VcodeInterceptor implements HandlerInterceptor {
         result.setErrorDesc("验证码错误");
         response.setContentType("text/json; charset=UTF-8");
         PrintWriter out = response.getWriter();
-        out.print(JsonUtils.toJson(result, result.getClass()));
+        out.print(JsonUtils.getInstance().toJson(result));
 
         return false;
     }

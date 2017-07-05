@@ -43,7 +43,7 @@ public class UserController extends BaseController {
         result.setData(user);
         
         ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data", JsonUtils.toJson(result));
+        return mv.addObject("data", JsonUtils.getInstance().toJson(result));
     }
     
     /**
@@ -85,13 +85,13 @@ public class UserController extends BaseController {
             HttpServletRequest req = this.getRequest();
             songmSsoService.login(Browser.getSessionId(req),
                     user.getUserId().toString(),
-                    JsonUtils.toJson(user, user.getClass()));
+                    JsonUtils.getInstance().toJson(user));
             result.setData(user);
         }
 
         ModelAndView mv = new ModelAndView("/data");
         return mv.addObject("data",
-                JsonUtils.toJson(result, result.getClass()));
+                JsonUtils.getInstance().toJson(result));
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
@@ -103,7 +103,7 @@ public class UserController extends BaseController {
 
         ModelAndView mv = new ModelAndView("/data");
         return mv.addObject("data",
-                JsonUtils.toJson(result, result.getClass()));
+                JsonUtils.getInstance().toJson(result));
     }
     
     /**
@@ -132,7 +132,7 @@ public class UserController extends BaseController {
         
         ModelAndView mv = new ModelAndView("/data");
         return mv.addObject("data",
-                JsonUtils.toJson(result, result.getClass()));
+                JsonUtils.getInstance().toJson(result));
     }
 
     /**
@@ -144,12 +144,12 @@ public class UserController extends BaseController {
         HttpServletRequest req = this.getRequest();
 
         String uinfo = songmSsoService.getUserInfo(Browser.getSessionId(req));
-        User user = JsonUtils.fromJson(uinfo, User.class);
+        User user = JsonUtils.getInstance().fromJson(uinfo, User.class);
         Result<User> result = new Result<User>();
         result.setData(user);
 
         ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data", JsonUtils.toJson(result, result.getClass()));
+        return mv.addObject("data", JsonUtils.getInstance().toJson(result));
     }
     
     /**
@@ -166,7 +166,7 @@ public class UserController extends BaseController {
         
         // 获取在线用户信息
         String uinfo = songmSsoService.getUserInfo(Browser.getSessionId(req));
-        User user = JsonUtils.fromJson(uinfo, User.class);
+        User user = JsonUtils.getInstance().fromJson(uinfo, User.class);
 
         // 修改头像
         if (!StringUtils.isEmptyOrNull(avatar)) {
@@ -211,12 +211,12 @@ public class UserController extends BaseController {
         // 修改单点登入服务
         songmSsoService.login(Browser.getSessionId(req),
                 user.getUserId().toString(),
-                JsonUtils.toJson(user, user.getClass()));
+                JsonUtils.getInstance().toJson(user));
         
         // 返回用户信息
         result.setData(user);
 
         ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data", JsonUtils.toJson(result));
+        return mv.addObject("data", JsonUtils.getInstance().toJson(result));
     }
 }

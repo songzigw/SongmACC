@@ -1,5 +1,7 @@
 package cn.songm.acc.notify;
 
+import java.util.Date;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -9,7 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import cn.songm.acc.entity.UserReport;
 import cn.songm.acc.service.UserService;
@@ -29,10 +32,10 @@ public class AccountNotify implements MessageListener {
             UserReport report = new UserReport();
             String ms = msg.getText();
             log.info("Receive message: {}", ms);
-            JSONObject jo = JSONObject.parseObject(ms);
-            report.setSesId(jo.getString("sesId"));
-            report.setRtime(jo.getDate("created"));
-            report.setUserId(jo.getLong("userId"));
+            JsonObject jObj = new JsonParser().parse(ms).getAsJsonObject();
+            report.setSesId(jObj.get("sesId").getAsString());
+            report.setRtime(new Date(jObj.get("created").getAsLong()));
+            report.setUserId(jObj.get("userId").getAsLong());
             userService.recordReport(report);
         } catch (JMSException e) {
             log.error(e.getMessage(), e);

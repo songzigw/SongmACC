@@ -35,7 +35,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         result.setErrorDesc("Session失效");
         response.setContentType("text/json; charset=UTF-8");
         PrintWriter out = response.getWriter();
-        out.print(JsonUtils.toJson(result, result.getClass()));
+        out.print(JsonUtils.getInstance().toJson(result));
         return false;
     }
 

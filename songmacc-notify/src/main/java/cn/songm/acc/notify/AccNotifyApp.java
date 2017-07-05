@@ -1,5 +1,6 @@
 package cn.songm.acc.notify;
 
+import cn.songm.acc.JsonUtilsInit;
 import cn.songm.common.service.AppBoot;
 
 /**
@@ -10,6 +11,7 @@ import cn.songm.common.service.AppBoot;
  */
 public class AccNotifyApp {
     public static void main(String[] args) {
+        JsonUtilsInit.initialization();
         AppBoot.start("app-acc-notify.xml", args);
     }
 }

@@ -57,11 +57,11 @@ public class UserController {
             // RequestContextHolder.getRequestAttributes())
             //        .getResponse();
             songmSsoService.login(Browser.getSessionId(req), user.getUserId().toString(),
-                    JsonUtils.toJson(user, user.getClass()));
+                    JsonUtils.getInstance().toJson(user));
         }
 
         ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data", JsonUtils.toJson(result, result.getClass()));
+        return mv.addObject("data", JsonUtils.getInstance().toJson(result));
     }
 
     @RequestMapping(value = "register", method = RequestMethod.GET)
@@ -81,7 +81,7 @@ public class UserController {
         }
 
         ModelAndView mv = new ModelAndView("/data");
-        mv.addObject("data", JsonUtils.toJson(result, result.getClass()));
+        mv.addObject("data", JsonUtils.getInstance().toJson(result));
         return mv;
     }
 
