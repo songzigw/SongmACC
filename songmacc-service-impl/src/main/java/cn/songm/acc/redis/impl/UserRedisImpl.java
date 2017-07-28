@@ -2,75 +2,133 @@ package cn.songm.acc.redis.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.springframework.data.redis.core.BoundHashOperations;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Repository;
 
-import cn.songm.acc.dao.Database.Account;
-import cn.songm.acc.dao.Database.UserF;
 import cn.songm.acc.entity.User;
 import cn.songm.acc.redis.UserRedis;
 import cn.songm.common.redis.BaseRedisImpl;
+import cn.songm.common.utils.SerializeUtil;
 
 @Repository("userRedis")
-public class UserRedisImpl extends BaseRedisImpl implements UserRedis {
+public class UserRedisImpl extends BaseRedisImpl<User> implements UserRedis {
 
     @Override
     public void save(final User user) {
-        String key = Account.ACC_USER.name() + ":" + user.getUserId();
-        BoundHashOperations<String, String, Object> ops = redisTemplate
-                .boundHashOps(key);
-
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put(UserF.USER_ID.name(), user.getUserId());
-        data.put(UserF.ACCOUNT.name(), user.getAccount());
-        data.put(UserF.PASSWORD.name(), user.getPassword());
-        data.put(UserF.NICK.name(), user.getNick());
-        data.put(UserF.REAL_NAME.name(), user.getRealName());
-        data.put(UserF.CREATED.name(), user.getCreated());
-        data.put(UserF.UPDATED.name(), user.getUpdated());
-        data.put(UserF.AVATAR.name(), user.getAvatar());
-        data.put(UserF.GENDER.name(), user.getGender());
-        data.put(UserF.BIRTH_YEAR.name(), user.getBirthYear());
-        data.put(UserF.BIRTH_MONTH.name(), user.getBirthMonth());
-        data.put(UserF.BIRTH_DAY.name(), user.getBirthDay());
-        data.put(UserF.SUMMARY.name(), user.getSummary());
-
-        ops.putAll(data);
+        redisTemplate.execute(new RedisCallback<User>() {
+            @Override
+            public User doInRedis(RedisConnection connection)
+                    throws DataAccessException {
+                return serialize(user, connection);
+            }
+        });
     }
 
     @Override
     public User read(final Long uid) {
-        String key = Account.ACC_USER.name() + ":" + uid;
-        BoundHashOperations<String, String, Object> ops = redisTemplate
-                .boundHashOps(key);
-
-        User user = new User();
-        user.setUserId((Long) ops.get(UserF.USER_ID.name()));
-        user.setAccount((String) ops.get(UserF.ACCOUNT.name()));
-        user.setPassword((String) ops.get(UserF.PASSWORD.name()));
-        user.setNick((String) ops.get(UserF.NICK.name()));
-        user.setRealName((String) ops.get(UserF.REAL_NAME.name()));
-        user.setCreated((Date) ops.get(UserF.CREATED.name()));
-        user.setUpdated((Date) ops.get(UserF.UPDATED.name()));
-        user.setAvatar((String) ops.get(UserF.AVATAR.name()));
-        user.setGender((Integer) ops.get(UserF.GENDER.name()));
-        user.setBirthYear((Integer) ops.get(UserF.BIRTH_YEAR.name()));
-        user.setBirthMonth((Integer) ops.get(UserF.BIRTH_MONTH.name()));
-        user.setBirthDay((Integer) ops.get(UserF.BIRTH_DAY.name()));
-        user.setSummary((String) ops.get(UserF.SUMMARY.name()));
-        return user;
+        return redisTemplate.execute(new RedisCallback<User>() {
+            @Override
+            public User doInRedis(RedisConnection connection)
+                    throws DataAccessException {
+                User user = new User();
+                user.setUserId(uid);
+                return unserialize(user, connection);
+            }
+        });
     }
 
     @Override
     public void delete(final Long uid) {
-        String skey = Account.ACC_USER.name() + ":" + uid;
-        Set<String> keys = redisTemplate.keys(skey);
-        if (!keys.isEmpty()) {
-            redisTemplate.delete(keys);
-        }
+        super.del(format(H_USER_ID_KEY, uid));
+    }
+
+    public static final String H_USER_ID_KEY = "h_user/%d";
+    public static final byte[] USER_FIELD_NO = "no".getBytes();
+    public static final byte[] USER_FIELD_VERSION = "version".getBytes();
+    public static final byte[] USER_FIELD_CREATED = "created".getBytes();
+    public static final byte[] USER_FIELD_UPDATED = "updated".getBytes();
+    public static final byte[] USER_FIELD_REMARK = "remark".getBytes();
+    public static final byte[] USER_FIELD_USERID = "user_id".getBytes();
+    public static final byte[] USER_FIELD_ACCOUNT = "account".getBytes();
+    public static final byte[] USER_FIELD_PASSWORD = "password".getBytes();
+    public static final byte[] USER_FIELD_NICK = "nick".getBytes();
+    public static final byte[] USER_FIELD_REALNAME = "realname".getBytes();
+    public static final byte[] USER_FIELD_AVATAR = "avatar".getBytes();
+    public static final byte[] USER_FIELD_GENDER = "gender".getBytes();
+    public static final byte[] USER_FIELD_BIRTHYEAR = "birthyear".getBytes();
+    public static final byte[] USER_FIELD_BIRTHMONTH = "birthmonth".getBytes();
+    public static final byte[] USER_FIELD_BIRTHDAY = "birthday".getBytes();
+    public static final byte[] USER_FIELD_SUMMARY = "summary".getBytes();
+    
+    @Override
+    public User serialize(User entity, RedisConnection connection) {
+        Map<byte[], byte[]> d = new HashMap<byte[], byte[]>();
+        d.put(USER_FIELD_NO, SerializeUtil.serialize(entity.getNo()));
+        d.put(USER_FIELD_VERSION, SerializeUtil.serialize(entity.getVersion()));
+        d.put(USER_FIELD_CREATED, SerializeUtil.serialize(entity.getCreated()));
+        d.put(USER_FIELD_UPDATED, SerializeUtil.serialize(entity.getUpdated()));
+        d.put(USER_FIELD_REMARK, SerializeUtil.serialize(entity.getRemark()));
+        d.put(USER_FIELD_USERID, SerializeUtil.serialize(entity.getUserId()));
+        d.put(USER_FIELD_ACCOUNT, SerializeUtil.serialize(entity.getAccount()));
+        d.put(USER_FIELD_PASSWORD, SerializeUtil.serialize(entity.getPassword()));
+        d.put(USER_FIELD_NICK, SerializeUtil.serialize(entity.getNick()));
+        d.put(USER_FIELD_REALNAME, SerializeUtil.serialize(entity.getRealName()));
+        d.put(USER_FIELD_AVATAR, SerializeUtil.serialize(entity.getAvatar()));
+        d.put(USER_FIELD_GENDER, SerializeUtil.serialize(entity.getGender()));
+        d.put(USER_FIELD_BIRTHYEAR, SerializeUtil.serialize(entity.getBirthYear()));
+        d.put(USER_FIELD_BIRTHMONTH, SerializeUtil.serialize(entity.getBirthMonth()));
+        d.put(USER_FIELD_BIRTHDAY, SerializeUtil.serialize(entity.getBirthDay()));
+        d.put(USER_FIELD_SUMMARY, SerializeUtil.serialize(entity.getSummary()));
+        
+        String key = format(H_USER_ID_KEY, entity.getUserId());
+        connection.hMSet(key.getBytes(), d);
+
+        return entity;
+    }
+
+    @Override
+    public User unserialize(User entity, RedisConnection connection) {
+        String key = format(H_USER_ID_KEY, entity.getUserId());
+        if (!connection.exists(key.getBytes())) return null;
+        List<byte[]> vals = connection.hMGet(key.getBytes(),
+                USER_FIELD_NO,
+                USER_FIELD_VERSION,
+                USER_FIELD_CREATED,
+                USER_FIELD_UPDATED,
+                USER_FIELD_REMARK,
+                USER_FIELD_USERID,
+                USER_FIELD_ACCOUNT,
+                USER_FIELD_PASSWORD,
+                USER_FIELD_NICK,
+                USER_FIELD_REALNAME,
+                USER_FIELD_AVATAR,
+                USER_FIELD_GENDER,
+                USER_FIELD_BIRTHYEAR,
+                USER_FIELD_BIRTHMONTH,
+                USER_FIELD_BIRTHDAY,
+                USER_FIELD_SUMMARY);
+        entity.setNo((String)SerializeUtil.unserialize(vals.get(0)));
+        entity.setVersion((String)SerializeUtil.unserialize(vals.get(1)));
+        entity.setCreated((Date)SerializeUtil.unserialize(vals.get(2)));
+        entity.setUpdated((Date)SerializeUtil.unserialize(vals.get(3)));
+        entity.setRemark((String)SerializeUtil.unserialize(vals.get(4)));
+        entity.setUserId((Long)SerializeUtil.unserialize(vals.get(5)));
+        entity.setAccount((String)SerializeUtil.unserialize(vals.get(6)));
+        entity.setPassword((String)SerializeUtil.unserialize(vals.get(7)));
+        entity.setNick((String)SerializeUtil.unserialize(vals.get(8)));
+        entity.setRealName((String)SerializeUtil.unserialize(vals.get(9)));
+        entity.setAvatar((String)SerializeUtil.unserialize(vals.get(10)));
+        entity.setGender((Integer)SerializeUtil.unserialize(vals.get(11)));
+        entity.setBirthYear((Integer)SerializeUtil.unserialize(vals.get(12)));
+        entity.setBirthMonth((Integer)SerializeUtil.unserialize(vals.get(13)));
+        entity.setBirthDay((Integer)SerializeUtil.unserialize(vals.get(14)));
+        entity.setSummary((String)SerializeUtil.unserialize(vals.get(15)));
+        return entity;
     }
 
 }
