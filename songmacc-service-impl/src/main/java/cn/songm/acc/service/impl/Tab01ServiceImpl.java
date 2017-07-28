@@ -48,7 +48,7 @@ public class Tab01ServiceImpl implements Tab01Service  {
 
     @Override
     public Tab01 getById(String no) {
-        return tab01Dao.getById(no);
+        return tab01Dao.selectOneById(no);
     }
 
 

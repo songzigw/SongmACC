@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private User addUser(User user) {
-        user.setUserId(userDao.getSeqNextValue());
+        user.setUserId(userDao.selectSequence());
         user.setVersion(serviceConfig.getVersion());
         userDao.insert(user);
         return user;
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long userId) {
-        return userDao.getById(userId);
+        return userDao.selectOneById(userId);
     }
 
     @Override

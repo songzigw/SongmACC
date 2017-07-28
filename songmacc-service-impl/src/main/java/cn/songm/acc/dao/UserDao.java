@@ -5,10 +5,6 @@ import cn.songm.common.dao.BaseDao;
 
 public interface UserDao extends BaseDao<User> {
 
-    public static final String SEQ_NAME = "acc_user_id_seq";
-
-    public long getSeqNextValue();
-    
     User queryPrivacyByAccount(String account);
 
     int countByAccount(String account);
@@ -30,7 +26,5 @@ public interface UserDao extends BaseDao<User> {
             String summary);
 
     int insert(User user);
-
-    User getById(Object userId);
 
 }

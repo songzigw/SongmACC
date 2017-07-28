@@ -3,57 +3,43 @@ package cn.songm.acc.dao.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import cn.songm.acc.dao.UserDao;
 import cn.songm.acc.entity.User;
 import cn.songm.common.dao.BaseDaoImpl;
-import cn.songm.common.dao.SeqBuild;
-import cn.songm.common.dao.SeqTableDao;
 
 @Repository("userDao")
 public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 
     public static final String SQL_PWD_BY_ACCOUNT = "pwdByAccount";
     
-    @Autowired
-    private SeqTableDao seqTableDao;
-    
-    @Override
-    public long getSeqNextValue() {
-        SeqBuild seqBuild = new SeqBuild();
-        seqBuild.setSeqName(UserDao.SEQ_NAME);
-        String v = seqTableDao.getSeqNextValue(seqBuild);
-        return Long.valueOf(v);
-    }
-    
     @Override
     public User queryPrivacyByAccount(String account) {
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("account", account);
-        return getBy(param);
+        return super.selectOneByColumn(param);
     }
 
     @Override
     public User queryPrivacyById(long userId) {
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("userId", userId);
-        return getBy(param);
+        return super.selectOneByColumn(param);
     }
 
     @Override
     public int countByAccount(String account) {
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("account", account);
-        return getCountByColumn(param).intValue();
+        return selectCountByColumn(param).intValue();
     }
 
     @Override
     public int countByNick(String nick) {
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("nick", nick);
-        return getCountByColumn(param).intValue();
+        return selectCountByColumn(param).intValue();
     }
 
     @Override
@@ -65,7 +51,7 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
     public User queryByAccount(String account) {
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("account", account);
-        return getBy(param);
+        return super.selectOneByColumn(param);
     }
 
     @Override

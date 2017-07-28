@@ -150,4 +150,8 @@
         <include refid="table_name" />
         where account = #{account,jdbcType=VARCHAR}
     </select>
+    
+    <select id="getSeqNextValue" resultType="java.lang.Long">
+        select FUN_SEQ ('acc_user_id_seq')
+    </select>
 </mapper>
