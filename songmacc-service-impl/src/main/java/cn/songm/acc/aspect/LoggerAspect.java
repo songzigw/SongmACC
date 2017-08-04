@@ -8,11 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-@Component("loggingAspect")
-public class LoggingAspect {
+@Component("loggerAspect")
+public class LoggerAspect {
 
     private static final Logger LOG = LoggerFactory
-            .getLogger(LoggingAspect.class);
+            .getLogger(LoggerAspect.class);
 
     public void before(JoinPoint point) {
         String cName = point.getTarget().getClass().getName();

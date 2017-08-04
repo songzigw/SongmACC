@@ -10,10 +10,10 @@
 	<!-- 开启aop注解 <aop:aspectj-autoproxy /> -->
 
 	<aop:config>
-		<aop:aspect ref="loggingAspect">
+		<aop:aspect ref="loggerAspect">
 			<aop:pointcut expression="execution(* cn.songm.acc.service.impl.*.*(..))"
-				id="pointcutLogging" />
-			<aop:around method="around" pointcut-ref="pointcutLogging" />
+				id="pointcutLogger" />
+			<aop:around method="around" pointcut-ref="pointcutLogger" />
 		</aop:aspect>
 		
 		<aop:aspect ref="userDaoAspect">
