@@ -113,7 +113,7 @@ public class UserRedisImpl extends BaseRedisImpl<User> implements UserRedis {
                 USER_FIELD_BIRTHDAY,
                 USER_FIELD_SUMMARY);
         entity.setNo((String)SerializeUtil.unserialize(vals.get(0)));
-        entity.setVersion((String)SerializeUtil.unserialize(vals.get(1)));
+        entity.setVersion((Integer)SerializeUtil.unserialize(vals.get(1)));
         entity.setCreated((Date)SerializeUtil.unserialize(vals.get(2)));
         entity.setUpdated((Date)SerializeUtil.unserialize(vals.get(3)));
         entity.setRemark((String)SerializeUtil.unserialize(vals.get(4)));

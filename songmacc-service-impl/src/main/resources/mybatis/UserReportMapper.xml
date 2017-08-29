@@ -3,7 +3,7 @@
 <mapper namespace="cn.songm.acc.dao.impl.UserReportDaoImpl">
 	<resultMap id="BaseResultMap" type="cn.songm.acc.entity.UserReport">
 		<id column="no" property="no" jdbcType="VARCHAR" />
-		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="INTEGER" />
 		<result column="created" property="created" jdbcType="TIMESTAMP" />
 		<result column="updated" property="updated" jdbcType="TIMESTAMP" />
 		<result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -35,7 +35,7 @@
 		<include refid="table_name" />
 		(no, version, created, updated, remark, ses_id, user_id, rtime)
 		values (#{no,jdbcType=VARCHAR},
-		#{version,jdbcType=VARCHAR},
+		#{version,jdbcType=INTEGER},
 		#{created,jdbcType=TIMESTAMP},
 	    #{updated,jdbcType=TIMESTAMP},
 		#{remark,jdbcType=VARCHAR}, #{sesId,jdbcType=VARCHAR},
@@ -45,8 +45,7 @@
 	<update id="updateByPrimaryKey" parameterType="cn.songm.acc.entity.UserReport">
 		update
 		<include refid="table_name" />
-		set updated = #{updated,jdbcType=TIMESTAMP}
-		<if test="version != null">, version = #{version,jdbcType=VARCHAR}</if>
+		set updated = #{updated,jdbcType=TIMESTAMP}, version = version +1
 		<if test="remark != null">, remark = #{remark,jdbcType=VARCHAR}</if>
 		where no = #{no,jdbcType=VARCHAR}
 	</update>

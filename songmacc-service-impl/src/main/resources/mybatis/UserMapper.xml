@@ -4,7 +4,7 @@
 	<resultMap id="BaseResultMap" type="cn.songm.acc.entity.User">
 	    <id column="user_id" property="userId" jdbcType="BIGINT" />
 		<result column="no" property="no" jdbcType="VARCHAR" />
-		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="INTEGER" />
 		<result column="created" property="created" jdbcType="TIMESTAMP" />
 		<result column="updated" property="updated" jdbcType="TIMESTAMP" />
 		<result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -46,7 +46,7 @@
 		(no, version, created, updated, remark, user_id, account,password,
 		nick, real_name, avatar, gender, birth_year, birth_month, birth_day, summary)
 		values (#{no,jdbcType=VARCHAR},
-		#{version,jdbcType=VARCHAR},
+		#{version,jdbcType=INTEGER},
 		#{created,jdbcType=TIMESTAMP},
 		#{updated,jdbcType=TIMESTAMP},
 		#{remark,jdbcType=VARCHAR},
@@ -64,8 +64,7 @@
 	<update id="updateByPrimaryKey" parameterType="cn.songm.acc.entity.User">
 		update
 		<include refid="table_name" />
-		set updated = #{updated,jdbcType=TIMESTAMP}
-		<if test="version != null">, version = #{version,jdbcType=VARCHAR}</if>
+		set updated = #{updated,jdbcType=TIMESTAMP}, version = version + 1
 		<if test="remark != null">, remark = #{remark,jdbcType=VARCHAR}</if>
 		<if test="password != null">, password = #{password,jdbcType=VARCHAR}</if>
 		<if test="avatar != null">, avatar = #{avatar,jdbcType=VARCHAR}</if>

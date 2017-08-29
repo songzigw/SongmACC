@@ -10,7 +10,6 @@ import cn.songm.acc.dao.UserDao;
 import cn.songm.acc.dao.UserReportDao;
 import cn.songm.acc.entity.User;
 import cn.songm.acc.entity.UserReport;
-import cn.songm.acc.service.ServiceConfig;
 import cn.songm.acc.service.UserError;
 import cn.songm.acc.service.UserService;
 import cn.songm.common.service.ServiceException;
@@ -27,8 +26,6 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Autowired
     private UserReportDao userReportDao;
-    @Autowired
-    private ServiceConfig serviceConfig;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -74,7 +71,6 @@ public class UserServiceImpl implements UserService {
         password = CodeUtils.md5(password);
         user.setPassword(password);
         user.setNick(nick);
-        user.setVersion(serviceConfig.getVersion());
         return this.addUser(user);
     }
 
@@ -90,7 +86,6 @@ public class UserServiceImpl implements UserService {
 
     private User addUser(User user) {
         user.setUserId(userDao.selectSequence());
-        user.setVersion(serviceConfig.getVersion());
         userDao.insert(user);
         return user;
     }
