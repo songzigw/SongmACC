@@ -29,10 +29,11 @@ public class AccountNotify implements MessageListener {
     public void onMessage(Message message) {
         ActiveMQTextMessage msg = (ActiveMQTextMessage) message;
         try {
-            UserReport report = new UserReport();
             String ms = msg.getText();
             log.info("Receive message: {}", ms);
+            // 保存用户报道日志
             JsonObject jObj = new JsonParser().parse(ms).getAsJsonObject();
+            UserReport report = new UserReport();
             report.setSesId(jObj.get("sesId").getAsString());
             report.setRtime(new Date(jObj.get("created").getAsLong()));
             report.setUserId(jObj.get("userId").getAsLong());
