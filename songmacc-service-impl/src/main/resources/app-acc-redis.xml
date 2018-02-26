@@ -18,7 +18,7 @@
 
 	<bean id="stringSerializer"
 		class="org.springframework.data.redis.serializer.StringRedisSerializer" />
-	<!-- 开启事务，可以通过transactional注解控制 -->
+	<!-- 开启事务，可以通过transaction注解控制 -->
 	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
 		<property name="connectionFactory" ref="jedisConnectionFactory" />
 		<property name="keySerializer" ref="stringSerializer" />
