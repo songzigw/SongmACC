@@ -39,7 +39,7 @@
 		#{created,jdbcType=TIMESTAMP},
 	    #{updated,jdbcType=TIMESTAMP},
 		#{remark,jdbcType=VARCHAR}, #{sesId,jdbcType=VARCHAR},
-		#{userId,jdbcType=BIGINT}, #{rtime,jdbcType=TIMESTAMP}
+		#{userId,jdbcType=BIGINT}, #{rtime,jdbcType=TIMESTAMP})
 	</insert>
 
 	<update id="updateByPrimaryKey" parameterType="cn.songm.acc.entity.UserReport">

@@ -16,7 +16,7 @@ cd ..
 #需要根据实际环境以及Java程序名称来修改这些参数
 ###################################
 #JDK所在路径
-JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home"
+JAVA_HOME="/home/zhangsong/app/jdk1.8.0_121"
 #需要启动的Java主程序（main方法类）
 APP_MAINCLASS=cn.songm.acc.notify.AccNotifyApp
  

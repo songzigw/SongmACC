@@ -23,6 +23,9 @@ public class UserReport extends Entity implements java.io.Serializable {
     /** 用户报到时间 */
     private Date rtime;
     
+    /** 以后每次报道 */
+    private Date access;
+    
     public String getSesId() {
         return sesId;
     }
@@ -45,6 +48,27 @@ public class UserReport extends Entity implements java.io.Serializable {
 
     public void setRtime(Date rtime) {
         this.rtime = rtime;
+    }
+
+    public Date getAccess() {
+        return access;
+    }
+
+    public void setAccess(Date access) {
+        this.access = access;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sBui = new StringBuilder();
+        sBui.append("UserReport [");
+        sBui.append(super.toString());
+        sBui.append(", sesId=").append(sesId);
+        sBui.append(", userId=").append(userId);
+        sBui.append(", rtime=").append(rtime);
+        sBui.append(", access=").append(access);
+        sBui.append("]");
+        return sBui.toString();
     }
 
 }

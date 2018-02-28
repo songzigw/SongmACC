@@ -160,11 +160,22 @@ public class User extends Entity implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return String.format(
-                "User [userId=%d, account=%s, password=%s, nick=%s, realName=%s, "
-                        + "avatar=%s, gender=%s, birthYear=%d, birthMonth=%d, birthDay=%d, summary=%s]",
-                userId, account, password, nick, realName, avatar, gender,
-                birthYear, birthMonth, birthDay, summary);
+        StringBuilder sBui = new StringBuilder();
+        sBui.append("User [");
+        sBui.append(super.toString());
+        sBui.append(", userId=").append(userId);
+        sBui.append(", account=").append(account);
+        sBui.append(", password=").append(password);
+        sBui.append(", nick=").append(nick);
+        sBui.append(", realName=").append(realName);
+        sBui.append(", avatar=").append(avatar);
+        sBui.append(", gender=").append(gender);
+        sBui.append(", birthYear=").append(birthYear);
+        sBui.append(", birthMonth=").append(birthMonth);
+        sBui.append(", birthDay=").append(birthDay);
+        sBui.append(", summary=").append(summary);
+        sBui.append("]");
+        return sBui.toString();
     }
 
 }

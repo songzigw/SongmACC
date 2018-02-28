@@ -36,7 +36,7 @@ public class AccountNotify implements MessageListener {
             UserReport report = new UserReport();
             report.setSesId(jObj.get("sesId").getAsString());
             report.setRtime(new Date(jObj.get("created").getAsLong()));
-            report.setUserId(jObj.get("userId").getAsLong());
+            report.setUserId(jObj.get("userId") != null ? jObj.get("userId").getAsLong() : null);
             userService.recordReport(report);
         } catch (JMSException e) {
             log.error(e.getMessage(), e);
