@@ -21,7 +21,7 @@ public class UserServiceTest {
     public void testRegister() {
         User u = null;
         try {
-            u = userService.register("zhangsong", "123456", "张松");
+            u = userService.register("zhangsong", "123456", "张松", "sysVcode", "vcode");
         } catch (ServiceException e) {
             return;
         }

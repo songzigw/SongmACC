@@ -29,8 +29,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public User register(String account, String password, String nick)
-            throws ServiceException {
+    public User register(String account, String password, String nick,
+            String sysVcode, String vcode) throws ServiceException {
+        if (!vcode.equalsIgnoreCase(sysVcode)) {
+            throw new ServiceException(UserError.ACC_116.getErrCode(), "验证码错误");
+        }
         if (StringUtils.isEmptyOrNull(password)
                 || StringUtils.isEmptyOrNull(nick)) {
             throw new IllegalArgumentException();
@@ -91,8 +94,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User checkLogin(String account, String password)
+    public User checkLogin(String account, String password, String sysVcode, String vcode)
             throws ServiceException {
+        if (!vcode.equalsIgnoreCase(sysVcode)) {
+            throw new ServiceException(UserError.ACC_116.getErrCode(), "验证码错误");
+        }
+        
         password = CodeUtils.md5(password);
         String pwd = userDao.queryPwdByAccount(account);
         if (pwd == null || !password.equals(pwd)) {

@@ -18,10 +18,12 @@ public interface UserService {
      * @param account
      * @param password
      * @param nick
+     * @param sysVcode
+     * @param vcode
      * @return
      * @throws ServiceException
      */
-    public User register(String account, String password, String nick)
+    public User register(String account, String password, String nick, String sysVcode, String vcode)
             throws ServiceException;
 
     /**
@@ -29,8 +31,10 @@ public interface UserService {
      * 
      * @param account
      * @param password
+     * @param sysVcode
+     * @param vcode
      */
-    public User checkLogin(String account, String password)
+    public User checkLogin(String account, String password, String sysVcode, String vcode)
             throws ServiceException;
 
     /**
