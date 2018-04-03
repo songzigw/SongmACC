@@ -44,18 +44,18 @@
             data: {account: acc, password: pwd, vcode: vco},
             dataType: 'json',
             success: function(ret) {
+                $btn.text('登入');
+                $form.data('runing', false);
                 if (!ret.succeed) {
                     showError(ret.errorDesc);
-                } else {
-                    alert("登入成功 Success!!!");
+                    return;
                 }
-                $btn.text('登入');
-                $form.data('runing', false);
+                alert("登入成功 Success!!!");
             },
             error: function() {
-                showError('登入失败');
                 $btn.text('登入');
                 $form.data('runing', false);
+                showError('登入失败');
             }
         });
     }

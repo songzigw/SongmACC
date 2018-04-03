@@ -89,9 +89,9 @@ public interface UserService {
      * @param birthDay
      * @param summary
      */
-    public void editUserBasic(Long userId, String nick, String realName,
-            Integer gender, int birthYear, int birthMonth,
-            int birthDay, String summary) throws ServiceException;
+    public void editUserBasic(long userId, String nick, String realName,
+            Integer gender, Integer birthYear, Integer birthMonth,
+            Integer birthDay, String summary) throws ServiceException;
 
     /**
      * 修改用户头像

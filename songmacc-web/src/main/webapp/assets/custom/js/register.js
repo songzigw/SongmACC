@@ -45,18 +45,18 @@
             data: {account: acc, password: pwd, nick: nic, vcode: vco},
             dataType: 'json',
             success: function(ret) {
+                $btn.text('注册');
+                $form.data('runing', false);
                 if (!ret.succeed) {
                     showError(ret.errorDesc);
-                } else {
-                    alert("注册成功!!!");
+                    return;
                 }
-                $btn.text('注册');
-                $form.data('runing', false);
+                alert("注册成功!!!");
             },
-            error: function() {
-                showError('注册失败');
+            error  : function() {
                 $btn.text('注册');
                 $form.data('runing', false);
+                showError('注册失败');
             }
         });
     }

@@ -33,7 +33,7 @@ $(document).ready(function() {
             </div>
             <div style="width: 168px;">
             <ul class="list-unstyled nav-bar">
-            <li v-for="menu in menus" class="active"><a :href="menu.uri">{{menu.name}}</a></li>
+            <li v-for="menu in menus" v-bind:class="{active: menu.isActive}"><a :href="menu.uri">{{menu.name}}</a></li>
             </ul>
             </div>
             </div>

@@ -7,21 +7,6 @@
         <dependent-module archiveName="songmacc-service-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/songmacc-service/songmacc-service">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="songm-common-beans-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/songm-common-beans/songm-common-beans">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="songm-common-service-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/songm-common-service/songm-common-service">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="songmsso-service-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/songmsso-service/songmsso-service">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="songm-common-utils-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/songm-common-utils/songm-common-utils">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="songm-common-web-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/songm-common-web/songm-common-web">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="songmacc-web"/>
         <property name="java-output-path" value="/songmacc-web/target/classes"/>
     </wb-module>

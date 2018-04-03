@@ -165,9 +165,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserBasic(Long userId, String nick, String userName,
-            Integer gender, int birthYear, int birthMonth,
-            int birthDay, String summary) throws ServiceException {
+    public void editUserBasic(long userId, String nick, String userName,
+            Integer gender, Integer birthYear, Integer birthMonth,
+            Integer birthDay, String summary) throws ServiceException {
         // 数据不能为空
         if (userId <= 0 || nick.trim().equals("")
                 || userName.trim().equals("")) {
@@ -178,11 +178,13 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(UserError.ACC_106.getErrCode(), "昵称格式错误");
         }
         // 验证生日格式
-        Calendar calendar = Calendar.getInstance();
-        try {
-            calendar.set(birthYear, birthMonth - 1, birthDay);
-        } catch (Exception e) {
-            throw new ServiceException(UserError.ACC_104.getErrCode(), "生日格式错误", e);
+        if (birthYear != null && birthMonth != null && birthDay != null) {
+        	Calendar calendar = Calendar.getInstance();
+            try {
+                calendar.set(birthYear, birthMonth - 1, birthDay);
+            } catch (Exception e) {
+                throw new ServiceException(UserError.ACC_104.getErrCode(), "生日格式错误", e);
+            }
         }
         // 验证昵称
         User user = this.getUserById(userId);

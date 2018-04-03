@@ -62,7 +62,7 @@ $(document).ready(function() {
         </div>
         </div>
         
-        <songm-footer/>
+        <songm-footer></songm-footer>
         </div>
     </div>
 </body>
