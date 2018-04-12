@@ -22,7 +22,13 @@ public class User extends Entity implements java.io.Serializable {
     private String nick;
     /** 真实姓名 */
     private String realName;
-    /** 头像路径 */
+    /** 头像服务器 */
+    private String avatarServer;
+    /** 原始头像路径 */
+    private String avatarOldPath;
+    /** 最终头像路径 */
+    private String avatarPath;
+    /** 最终头像 */
     private String avatar;
     /** 性别 */
     private Integer gender;
@@ -138,7 +144,31 @@ public class User extends Entity implements java.io.Serializable {
         this.gender = gender;
     }
 
-    @Override
+    public String getAvatarServer() {
+		return avatarServer;
+	}
+
+	public void setAvatarServer(String avatarServer) {
+		this.avatarServer = avatarServer;
+	}
+
+	public String getAvatarPath() {
+		return avatarPath;
+	}
+
+	public void setAvatarPath(String avatarPath) {
+		this.avatarPath = avatarPath;
+	}
+
+	public String getAvatarOldPath() {
+		return avatarOldPath;
+	}
+
+	public void setAvatarOldPath(String avatarOldPath) {
+		this.avatarOldPath = avatarOldPath;
+	}
+
+	@Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -168,6 +198,9 @@ public class User extends Entity implements java.io.Serializable {
         sBui.append(", password=").append(password);
         sBui.append(", nick=").append(nick);
         sBui.append(", realName=").append(realName);
+        sBui.append(", avatarServer=").append(avatarServer);
+        sBui.append(", avatarPath=").append(avatarPath);
+        sBui.append(", avatarOldPath=").append(avatarOldPath);
         sBui.append(", avatar=").append(avatar);
         sBui.append(", gender=").append(gender);
         sBui.append(", birthYear=").append(birthYear);

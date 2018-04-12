@@ -6,9 +6,10 @@
 	<parent>
 		<groupId>cn.songm.acc</groupId>
 		<artifactId>SongmACC</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 	<artifactId>songmacc-timetask</artifactId>
+	<version>0.0.1</version>
 	<name>${project.artifactId}</name>
 	<url>http://maven.apache.org</url>
 	

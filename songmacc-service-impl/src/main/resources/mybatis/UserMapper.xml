@@ -12,6 +12,9 @@
 		<result column="password" property="password" jdbcType="VARCHAR" />
 		<result column="nick" property="nick" jdbcType="VARCHAR" />
 		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="avatar_server" property="avatarServer" jdbcType="VARCHAR" />
+		<result column="avatar_old_path" property="avatarOldPath" jdbcType="VARCHAR" />
+		<result column="avatar_path" property="avatarPath" jdbcType="VARCHAR" />
 		<result column="avatar" property="avatar" jdbcType="VARCHAR" />
 		<result column="gender" property="gender" jdbcType="INTEGER" />
 		<result column="birth_year" property="birthYear" jdbcType="INTEGER" />
@@ -24,8 +27,8 @@
 
 	<sql id="Base_Column_List">
 		no, version, created, updated, remark, user_id, account,
-		password, nick, real_name, avatar, gender, birth_year,
-		birth_month, birth_day, summary
+		password, nick, real_name, avatar_server, avatar_old_path,
+		avatar_path, avatar, gender, birth_year, birth_month, birth_day, summary
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Long">
@@ -43,8 +46,7 @@
 	<insert id="insert" parameterType="cn.songm.acc.entity.User">
 		insert into
 		<include refid="table_name" />
-		(no, version, created, updated, remark, user_id, account,password,
-		nick, real_name, avatar, gender, birth_year, birth_month, birth_day, summary)
+		(<include refid="Base_Column_List" />)
 		values (#{no,jdbcType=VARCHAR},
 		#{version,jdbcType=INTEGER},
 		#{created,jdbcType=TIMESTAMP},
@@ -53,12 +55,17 @@
 		#{userId,jdbcType=BIGINT},
 		#{account,jdbcType=VARCHAR},
 		#{password,jdbcType=VARCHAR},
-		#{nick,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR},
+		#{nick,jdbcType=VARCHAR},
+		#{realName,jdbcType=VARCHAR},
+		#{accountServer,jdbcType=VARCHAR},
+		#{accountOldPath,jdbcType=VARCHAR},
+		#{accountPath,jdbcType=VARCHAR},
 		#{avatar,jdbcType=VARCHAR},
 		#{gender,jdbcType=VARCHAR},
 		#{birthYear,jdbcType=VARCHAR},
 		#{birthMonth,jdbcType=VARCHAR},
-		#{birthDay,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR})
+		#{birthDay,jdbcType=VARCHAR},
+		#{summary,jdbcType=VARCHAR})
 	</insert>
 
 	<update id="updateByPrimaryKey" parameterType="cn.songm.acc.entity.User">
@@ -67,6 +74,9 @@
 		set updated = #{updated,jdbcType=TIMESTAMP}, version = version + 1
 		<if test="remark != null">, remark = #{remark,jdbcType=VARCHAR}</if>
 		<if test="password != null">, password = #{password,jdbcType=VARCHAR}</if>
+		<if test="avatarServer != null">, avatar_server = #{avatarServer,jdbcType=VARCHAR}</if>
+		<if test="avatarOldPath != null">, avatar_old_path = #{avatarOldPath,jdbcType=VARCHAR}</if>
+		<if test="avatarPath != null">, avatar_path = #{avatarPath,jdbcType=VARCHAR}</if>
 		<if test="avatar != null">, avatar = #{avatar,jdbcType=VARCHAR}</if>
 		<if test="nick != null">, nick = #{nick,jdbcType=VARCHAR}</if>
 		<if test="realName != null">, real_name = #{realName,jdbcType=VARCHAR}</if>

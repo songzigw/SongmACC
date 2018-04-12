@@ -121,7 +121,6 @@
   left: auto;
   right: 0;
   min-width: auto;
-  border-radius: 0px;
   box-shadow: 0 5px 20px rgba(26, 26, 26, 0.1);
 }
 .songm .topbar.fixed {

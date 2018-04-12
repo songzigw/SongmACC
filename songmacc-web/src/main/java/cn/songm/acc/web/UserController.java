@@ -23,7 +23,9 @@ public class UserController extends AccBaseController {
 
     @RequestMapping(value = "user/*")
     public ModelAndView toUserEdit() {
-        return new ModelAndView("/user_edit");
+    	ModelAndView mv = getGlobalData();
+    	mv.setViewName("/user_edit");
+        return mv;
     }
     
     @RequestMapping(value = "user/edit.json", method=RequestMethod.POST)

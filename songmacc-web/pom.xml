@@ -6,15 +6,16 @@
 	<parent>
 		<groupId>cn.songm.acc</groupId>
 		<artifactId>SongmACC</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 	<artifactId>songmacc-web</artifactId>
+	<version>0.0.1</version>
 	<packaging>war</packaging>
 	<name>${project.artifactId}</name>
 	<url>http://maven.apache.org</url>
 
     <properties>
-        <songmsso.service.version>0.0.1-SNAPSHOT</songmsso.service.version>
+        <songmsso.service.version>0.0.1</songmsso.service.version>
     </properties>
 
     <dependencies>

@@ -13,12 +13,12 @@
 <script src="${pageContext.request.contextPath}/assets/custom/js/user.edit.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    var userEdit = new UserEdit();
+    userEdit = new UserEdit();
 });
 </script>
 </head>
-<body class="page-body songm" id="user_edit_page">
-
+<body class="page-body songm">
+	<div id="user_edit_page">
     <songm-topbar :frame="frame"></songm-topbar>
 
     <div class="page-container">
@@ -40,9 +40,7 @@ $(document).ready(function() {
             
             <div class="account-content">
             
-            <component v-bind:is="view">
-                <songm-user-base></songm-user-base>
-            </component>            
+            <component v-bind:is="view" v-bind:frame="frame"></component>            
             
             </div>
         </div>
@@ -51,5 +49,6 @@ $(document).ready(function() {
     </div>
     
     <songm-footer></songm-footer>
+    </div>
 </body>
 </html>

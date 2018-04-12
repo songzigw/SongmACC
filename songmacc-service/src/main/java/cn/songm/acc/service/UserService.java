@@ -97,9 +97,12 @@ public interface UserService {
      * 修改用户头像
      * 
      * @param userId
-     * @param avatar
+     * @param avatarServer  头像服务器
+     * @param avatarOldPath 原始头像路径
+     * @param avatarPath    最终头像路径
+     * @param avatar        最终头像
      */
-    public void editUserPhoto(Long userId, String avatar);
+	public void editUserPhoto(long userId, String avatarServer, String avatarOldPath, String avatarPath, String avatar);
 
     /**
      * 修改用户登入密码

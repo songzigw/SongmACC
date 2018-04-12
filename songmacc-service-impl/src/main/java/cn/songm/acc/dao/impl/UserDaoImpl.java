@@ -62,8 +62,11 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
     }
 
     @Override
-    public void updatePhoto(Long userId, String avatar) {
+    public void updatePhoto(long userId, String avatarServer, String avatarOldPath, String avatarPath, String avatar) {
         User user = new User(userId);
+        user.setAvatarServer(avatarServer);
+        user.setAvatarOldPath(avatarOldPath);
+        user.setAvatarPath(avatarPath);
         user.setAvatar(avatar);
         update(user);
     }

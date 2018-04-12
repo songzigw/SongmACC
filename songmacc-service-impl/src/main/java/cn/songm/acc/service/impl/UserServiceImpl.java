@@ -160,8 +160,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserPhoto(Long userId, String avatar) {
-        userDao.updatePhoto(userId, avatar);
+    public void editUserPhoto(long userId, String avatarServer, String avatarOldPath, String avatarPath, String avatar) {
+        userDao.updatePhoto(userId, avatarServer, avatarOldPath, avatarPath, avatar);
     }
 
     @Override

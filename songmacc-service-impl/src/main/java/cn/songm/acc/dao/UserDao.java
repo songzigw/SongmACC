@@ -19,7 +19,7 @@ public interface UserDao extends BaseDao<User> {
 
     void updatePsw(Long userId, String newPsw);
 
-    void updatePhoto(Long userId, String avatar);
+    void updatePhoto(long userId, String avatarServer, String avatarOldPath, String avatarPath, String avatar);
 
     void update(Long userId, String nick, String userName, Integer gender,
             Integer birthYear, Integer birthMonth, Integer birthDay,

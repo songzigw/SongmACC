@@ -13,6 +13,8 @@
 
     // context path
     f.contextPath = null;
+    f.userAvatarDefault = null;
+    f.userAvatarUpload = null;
     // 当前在线用户信息
     f.currUser = {};
     // 初始化完成

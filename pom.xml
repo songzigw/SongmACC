@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.songm.acc</groupId>
 	<artifactId>SongmACC</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>pom</packaging>
 	<distributionManagement>
         <site>
@@ -45,37 +45,37 @@
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-utils</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-beans</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-mq</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-redis</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-dao</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-service</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-web</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
                 <exclusions>
                     <exclusion>
                         <groupId>javax.servlet</groupId>
@@ -87,7 +87,7 @@
             <dependency>
                 <groupId>cn.songm.acc</groupId>
                 <artifactId>songmacc-service</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.0.1</version>
             </dependency>
 
             <dependency>

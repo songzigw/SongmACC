@@ -45,17 +45,17 @@
                         <label class="radio-inline" style="padding-left: 0;">
                         <select style="min-width: 70px;" v-model="user.birthYear">
                             <option>----</option>
-                            <option v-for="year in years">{{year}}</option>
+                            <option v-for="year in years" :value="year">{{year}}</option>
                         </select>年</label>
                         <label class="radio-inline" style="padding-left: 0;">
                         <select style="min-width: 70px;" v-model="user.birthMonth">
                             <option>--</option>
-                            <option v-for="month in months">{{month}}</option>
+                            <option v-for="month in months" :value="month">{{month}}</option>
                         </select>月</label>
                         <label class="radio-inline" style="padding-left: 0;">
                         <select style="min-width: 70px;" v-model="user.birthDay">
                             <option>--</option>
-                            <option v-for="day in days">{{day}}</option>
+                            <option v-for="day in days" :value="day">{{day}}</option>
                         </select>日</label>
                         </p>
                     </div>
@@ -81,26 +81,26 @@
 </script>
 
 <script type="text/x-template" id="songm-user-avatar-template">
-    <div class="panel panel-default">
+    <div class="panel panel-default" ref="avatar">
         <div class="panel-heading">头像修改</div>
         <div class="panel-body">
 
-            <form role="form" class="form-horizontal" onsubmit="return false;">
-                
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="">自我介绍：</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control" style="height: 70px;" v-model="user.summary"></textarea>
-                    </div>
-                </div>
-                <div class="form-group-separator"></div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">&nbsp;</label>
-                    <div class="col-sm-10">
-                        <button type="button" class="btn btn-blue" v-on:click="submit">保存设置</button>
-                    </div>
-                </div>
-            </form>
+            <div class="row">
+	               <div class="col-md-7">
+	                   <strong>原始图片</strong><br>
+	                   <div class="img-container">
+	                   <img src="" class="img-responsive cropper-hidden">
+	                   </div>
+	                   <button type="button" class="btn btn-secondary" id="dropzone-imgupload" style="margin-bottom:30px;">上传图片</button>
+	               </div>
+	               <div class="col-md-5">
+	                   <strong>截取图片</strong><br>
+                       <div class="img-shade">
+                        <div id="img-preview" class="img-preview"></div>
+                       </div>
+                       <button type="button" class="btn btn-secondary" v-on:click="cutFigure">保存设置</button>
+	               </div>
+	        </div>
             
         </div>
     </div>
