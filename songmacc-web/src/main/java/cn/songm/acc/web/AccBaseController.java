@@ -17,11 +17,17 @@ public class AccBaseController extends BaseController {
 	protected String userAvatarDefault;
 	@Value("${user.avatar.upload}")
 	protected String userAvatarUpload;
+	@Value("${user.avatar.cut}")
+	protected String userAvatarCut;
 	
     @Resource(name = "songmSsoService")
     protected SongmSSOService songmSsoService;
     @Resource(name = "userService")
     protected UserService userService;
+    
+    protected String getSessionId() {
+    	return Browser.getSessionId(getRequest());
+    }
     
     protected User getSessionUser() {
         String sessionId = Browser.getSessionId(this.getRequest());
@@ -30,10 +36,16 @@ public class AccBaseController extends BaseController {
         return JsonUtils.getInstance().fromJson(userJson, User.class);
     }
     
+    protected String getSessionUid() {
+    	String sessionId = Browser.getSessionId(this.getRequest());
+        return songmSsoService.getUserId(sessionId); 
+    }
+    
     public ModelAndView getGlobalData() {
     	ModelAndView mv = new ModelAndView();
     	mv.addObject("userAvatarDefault", userAvatarDefault);
     	mv.addObject("userAvatarUpload", userAvatarUpload);
+    	mv.addObject("userAvatarCut", userAvatarCut);
     	return mv;
     }
 }

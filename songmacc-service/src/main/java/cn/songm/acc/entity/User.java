@@ -8,7 +8,7 @@ import cn.songm.common.beans.Entity;
  * @author zhangsong
  * 
  */
-public class User extends Entity implements java.io.Serializable {
+public class User extends Entity {
 
     private static final long serialVersionUID = 8776550770295897410L;
 

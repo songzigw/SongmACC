@@ -40,28 +40,12 @@
             "created": null,
             "updated": null};
     var coordinates = {};
-    
+
     var UserEdit = function() {
         this._init();
-        var int = setInterval(function() {
-            if (f.isInit) {
-                user.account = f.currUser.account;
-                user.nick = f.currUser.nick;
-                user.realName = f.currUser.realName;
-                user.avatarOld = (f.currUser.avatarServer + f.currUser.avatarOldPath) || f.userAvatarDefault;
-                user.gender = f.currUser.gender;
-                user.birthYear = f.currUser.birthYear;
-                user.birthMonth = f.currUser.birthMonth;
-                user.birthDay = f.currUser.birthDay;
-                user.summary = f.currUser.summary;
-                user.created = f.currUser.created;
-                user.updated = f.currUser.updated;
-                clearInterval(int);
-            }
-        }, 200);
     };
-    
     UserEdit.user = user;
+    UserEdit.coordinates = coordinates;
     
     UserEdit.prototype._init = function() {
         var _t = this;
@@ -77,9 +61,26 @@
                 'songm-user-avatar': temSongmUserAvatar,
                 'songm-user-binds': temSongmUserBinds,
                 'songm-user-password': temSongmUserPassword
+            },
+            watch: {
+            	'frame.isInit': function(nV, oV) {
+        			if (nV) {
+        				user.account = f.currUser.account;
+                        user.nick = f.currUser.nick;
+                        user.realName = f.currUser.realName;
+                        user.avatarOld = (f.currUser.avatarServer + f.currUser.avatarOldPath) || f.userAvatarDefault;
+                        user.gender = f.currUser.gender;
+                        user.birthYear = f.currUser.birthYear;
+                        user.birthMonth = f.currUser.birthMonth;
+                        user.birthDay = f.currUser.birthDay;
+                        user.summary = f.currUser.summary;
+                        user.created = f.currUser.created;
+                        user.updated = f.currUser.updated;
+                        _t.selectMenu();
+        			}
+        		}
             }
         });
-        _t.selectMenu();
     };
     
     var temSongmUserBase = {
@@ -94,7 +95,8 @@
         },
         methods: {
             submit : function() {
-            	if (!this.user.nick) {
+            	var _t = this;
+            	if (!_t.user.nick) {
             		toastr.error('用户昵称不能为空', '提示信息', f.alertOpts);
             		return;
             	}
@@ -102,13 +104,27 @@
                 	url     : f.contextPath + '/member/user/edit.json',
                 	method  : 'POST',
                 	dataType: 'json',
-                	data: {ajax: 'ajax'},
+                	data: {ajax: 'ajax',
+                		nick: _t.user.nick,
+                		real_name: _t.user.realName,
+                		gender: _t.user.gender,
+                		birth_year: _t.user.birthYear,
+                		birth_month: _t.user.birthMonth,
+                		birth_day: _t.user.birthDay,
+                		summary: _t.user.summary},
                 	success: function(ret) {
                 		if (!ret.succeed) {
                 			toastr.error(ret.errorDesc, '提示信息', f.alertOpts);
                 			return;
                 		}
                 		toastr.success('修改成功', '提示信息', f.alertOpts);
+                		f.currUser.nick = _t.user.nick;
+                		f.currUser.realName = _t.user.realName;
+                		f.currUser.gender = _t.user.gender;
+                		f.currUser.birthYeary = _t.user.birthYear;
+                		f.currUser.birthMonth = _t.user.birthMonth;
+                		f.currUser.birthDay = _t.user.birthDay;
+                		f.currUser.summary = _t.user.summary;
                 	},
                 	error  : function(err) {
                 		toastr.error('请求异常', '提示信息', f.alertOpts);
@@ -128,13 +144,12 @@
     	methods: {
     		cutFigure: function() {
     			$.ajax({
-                	url     : f.contextPath + '/member/user/avatar.json',
-                	method  : 'PUT',
+                	url     : f.userAvatarCut,
+                	method  : 'GET',
                 	dataType: 'json',
                 	data: {ajax: 'ajax',
-                		avatar_server: user.avatarServer,
-                		avatar_old_path: user.avatarOldPath,
-                		avatar_old: user.avatarOld,
+                		avatar_server: f.currUser.avatarServer,
+                		avatar_old_path: f.currUser.avatarOldPath,
                 		x: coordinates.x,
                 		y: coordinates.y,
                 		width: coordinates.width,
@@ -145,8 +160,8 @@
                 			toastr.error(ret.errorDesc, '提示信息', f.alertOpts);
                 			return;
                 		}
-                		f.current.avatarServer = ret.data.server;
-                		f.current.avatarPath = ret.data.path;
+                		f.currUser.avatarServer = ret.data.server;
+                		f.currUser.avatarPath = ret.data.path;
                 		f.currUser.avatar = ret.data.server + ret.data.path;
                 		toastr.success('修改成功', '提示信息', f.alertOpts);
                 	},
@@ -177,7 +192,8 @@
     	        success: function(file, ret) {
     	        	console.log(JSON.stringify(ret));
     	            user.avatarOld = ret.data.server + ret.data.path;
-    	            f.currUser.avatarOld = user.avatarOld;
+    	            f.currUser.avatarServer = ret.data.server;
+    	            f.currUser.avatarOldPath = ret.data.path;
     	        },
     	        error  : function(file, err) {
     	        	toastr.error('上传异常', '提示信息', f.alertOpts);
@@ -189,13 +205,16 @@
     
     function initImgPreview() {
     	$('.img-container', $avatar).empty().append('<img src="'
-    	+ user.avatar + '" class="img-responsive cropper-hidden">');
+    	+ user.avatarOld + '" class="img-responsive cropper-hidden">');
     	$('#img-preview', $avatar).empty();
     	$('.img-container img', $avatar).cropper({
 	        aspectRatio: 1,
 	        preview: $('#img-preview', $avatar),
 	        done: function(data) {
-	        	coordinates = data;
+	        	coordinates.x = data.x;
+	        	coordinates.y = data.y;
+	        	coordinates.width = data.width;
+	        	coordinates.height = data.height;
 	        }
 	    });
     	$('#img-preview', $avatar).css({
@@ -215,6 +234,75 @@
     	template: '#songm-user-password-template',
     	data : function() {
     		return {user: user}
+    	},
+    	methods: {
+    		editAccount: function() {
+    			var _t = this;
+            	if (!_t.user.account) {
+            		toastr.error('账号不能为空', '提示信息', f.alertOpts);
+            		return;
+            	}
+            	if (!_t.user.password) {
+            		toastr.error('请输入密码', '提示信息', f.alertOpts);
+            		return;
+            	}
+            	if (_t.user.password != _t.user.password2) {
+            		toastr.error('两次密码不一致', '提示信息', f.alertOpts);
+            		return;
+            	}
+    			$.ajax({
+                	url     : f.contextPath + '/member/user/account.json',
+                	method  : 'PUT',
+                	dataType: 'json',
+                	data: {ajax: 'ajax',
+                		account: _t.user.account,
+                		password: _t.user.password},
+                	success: function(ret) {
+                		if (!ret.succeed) {
+                			toastr.error(ret.errorDesc, '提示信息', f.alertOpts);
+                			return;
+                		}
+                		toastr.success('修改成功', '提示信息', f.alertOpts);
+                		f.currUser.account = _t.user.account;
+                	},
+                	error  : function(err) {
+                		toastr.error('请求异常', '提示信息', f.alertOpts);
+                	}
+                });
+    		},
+    		editPassword: function() {
+    			var _t = this;
+            	if (!_t.user.oldPwd) {
+            		toastr.error('请输入原始密码', '提示信息', f.alertOpts);
+            		return;
+            	}
+            	if (!_t.user.newPwd) {
+            		toastr.error('请输入新密码', '提示信息', f.alertOpts);
+            		return;
+            	}
+            	if (_t.user.newPwd != _t.user.newPwd2) {
+            		toastr.error('两次密码不一致', '提示信息', f.alertOpts);
+            		return;
+            	}
+    			$.ajax({
+                	url     : f.contextPath + '/member/user/password.json',
+                	method  : 'PUT',
+                	dataType: 'json',
+                	data: {ajax: 'ajax',
+                		account: _t.user.oldPwd,
+                		password: _t.user.newPwd},
+                	success: function(ret) {
+                		if (!ret.succeed) {
+                			toastr.error(ret.errorDesc, '提示信息', f.alertOpts);
+                			return;
+                		}
+                		toastr.success('修改成功', '提示信息', f.alertOpts);
+                	},
+                	error  : function(err) {
+                		toastr.error('请求异常', '提示信息', f.alertOpts);
+                	}
+                });
+    		}
     	}
     };
     

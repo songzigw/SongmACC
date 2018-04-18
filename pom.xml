@@ -89,6 +89,11 @@
                 <artifactId>songmacc-service</artifactId>
                 <version>0.0.1</version>
             </dependency>
+            <dependency>
+                <groupId>cn.songm.sso</groupId>
+                <artifactId>songmsso-service</artifactId>
+                <version>0.0.1</version>
+            </dependency>
 
             <dependency>
                 <groupId>ch.qos.logback</groupId>

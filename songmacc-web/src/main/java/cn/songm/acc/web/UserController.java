@@ -30,7 +30,7 @@ public class UserController extends AccBaseController {
     
     @RequestMapping(value = "user/edit.json", method=RequestMethod.POST)
     @ResponseBody
-    public Result<Object> eidtUser(
+    public Result<Object> editUser(
     		@RequestParam(name = "nick")
     		String nick,
     		@RequestParam(name = "real_name", required = false)
@@ -41,7 +41,7 @@ public class UserController extends AccBaseController {
     		Integer birthYear,
     		@RequestParam(name = "birth_month", required = false)
     		Integer birthMonth,
-    		@RequestParam(name = "real_day", required = false)
+    		@RequestParam(name = "birth_day", required = false)
     		Integer birthDay,
     		@RequestParam(name = "summary", required = false)
     		String summary) {
@@ -54,6 +54,40 @@ public class UserController extends AccBaseController {
 			result.setErrorDesc(e.getErrDesc());
 		}
         return result;
+    }
+    
+    @RequestMapping(value = "user/account.json", method=RequestMethod.PUT)
+    public Result<Object> eidtAccount(
+    		@RequestParam(name = "account")
+    		String account,
+    		@RequestParam(name = "password")
+    		String password) {
+    	Result<Object> result = new Result<Object>();
+    	User u = this.getSessionUser();
+    	try {
+			userService.editUserAccount(u.getUserId(), account, password);
+		} catch (ServiceException e) {
+			result.setErrorCode(e.getErrCode());
+			result.setErrorDesc(e.getErrDesc());
+		}
+    	return result;
+    }
+    
+    @RequestMapping(value = "user/password.json", method=RequestMethod.PUT)
+    public Result<Object> editPassword(
+    		@RequestParam(name = "old_pwd")
+    		String oldPwd,
+    		@RequestParam(name = "new_pwd")
+    		String newPwd) {
+    	Result<Object> result = new Result<Object>();
+    	User u = this.getSessionUser();
+    	try {
+			userService.editUserPassword(u.getUserId(), oldPwd, newPwd);
+		} catch (ServiceException e) {
+			result.setErrorCode(e.getErrCode());
+			result.setErrorDesc(e.getErrDesc());
+		}
+    	return result;
     }
     
     @RequestMapping(value = "user/online.json", method=RequestMethod.POST)

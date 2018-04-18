@@ -9,8 +9,8 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="">账号：</label>
                     <div class="col-sm-10">
-                        <p style="padding-top:7px;"><strong>{{user.account}}</strong></p>
-                        <p>当前用户账号为空，可以设置您的账号</p>
+                        <p v-if="!user.account">账号为空，<a href="password">请设置</a></p>
+                        <p style="padding-top:7px;" v-else><strong>{{user.account}}</strong></p>
                     </div>
                 </div>
                 <div class="form-group-separator"></div>
@@ -101,6 +101,80 @@
                        <button type="button" class="btn btn-secondary" v-on:click="cutFigure">保存设置</button>
 	               </div>
 	        </div>
+            
+        </div>
+    </div>
+</script>
+
+<script type="text/x-template" id="songm-user-password-template">
+    <div class="panel panel-default" ref="avatar">
+        <div class="panel-heading">密码设置</div>
+        <div class="panel-body">
+
+            <form role="form" class="form-horizontal" onsubmit="return false;" v-if="!user.account">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="">账号：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="账号" v-model="user.account">
+                    </div>
+                </div>
+                <div class="form-group-separator"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="">密码：</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" placeholder="密码" v-model="user.password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="">确认密码：</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" placeholder="确认密码" v-model="user.password2">
+                    </div>
+                </div>
+                
+                <div class="form-group-separator"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">&nbsp;</label>
+                    <div class="col-sm-10">
+                        <button type="button" class="btn btn-blue" v-on:click="editAccount">保存设置</button>
+                    </div>
+                </div>
+            </form>
+            <form role="form" class="form-horizontal" onsubmit="return false;" v-else>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="">账号：</label>
+                    <div class="col-sm-10">
+                        <p style="padding-top:7px;"><strong>{{user.account}}</strong></p>
+                    </div>
+                </div>
+                <div class="form-group-separator"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="">原始密码：</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" placeholder="原始密码" v-model="user.oldPwd">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="">新密码：</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" placeholder="新密码" v-model="user.newPwd">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="">确认密码：</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" placeholder="确认新密码" v-model="user.newPwd2">
+                    </div>
+                </div>
+                
+                <div class="form-group-separator"></div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">&nbsp;</label>
+                    <div class="col-sm-10">
+                        <button type="button" class="btn btn-blue" v-on:click="editPassword">保存设置</button>
+                    </div>
+                </div>
+            </form>
             
         </div>
     </div>

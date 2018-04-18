@@ -17,10 +17,12 @@ public interface UserDao extends BaseDao<User> {
 
     User queryPrivacyById(long userId);
 
-    void updatePsw(Long userId, String newPsw);
+    void updatePassword(Long userId, String password);
 
     void updatePhoto(long userId, String avatarServer, String avatarOldPath, String avatarPath, String avatar);
 
+    void updateAccount(long userId, String account, String password);
+    
     void update(Long userId, String nick, String userName, Integer gender,
             Integer birthYear, Integer birthMonth, Integer birthDay,
             String summary);

@@ -14,7 +14,9 @@ import cn.songm.acc.service.UserError;
 import cn.songm.acc.service.UserService;
 import cn.songm.common.service.ServiceException;
 import cn.songm.common.utils.CodeUtils;
+import cn.songm.common.utils.JsonUtils;
 import cn.songm.common.utils.StringUtils;
+import cn.songm.sso.service.SongmUserService;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -26,6 +28,8 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Autowired
     private UserReportDao userReportDao;
+    @Autowired
+    private SongmUserService songmUserService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -141,7 +145,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserPasswore(Long userId, String oldPsw, String newPsw)
+    public void editUserPassword(long userId, String oldPsw, String newPsw)
             throws ServiceException {
         // 验证密码格式
         if (!StringUtils.matches(newPsw, "^.{6,20}$")) {
@@ -156,12 +160,14 @@ public class UserServiceImpl implements UserService {
         }
 
         newPsw = CodeUtils.md5(newPsw);
-        userDao.updatePsw(userId, newPsw);
+        userDao.updatePassword(userId, newPsw);
     }
 
     @Override
     public void editUserPhoto(long userId, String avatarServer, String avatarOldPath, String avatarPath, String avatar) {
         userDao.updatePhoto(userId, avatarServer, avatarOldPath, avatarPath, avatar);
+        User user = this.getUserById(userId);
+        songmUserService.editUserInfo(String.valueOf(userId), JsonUtils.getInstance().toJson(user));
     }
 
     @Override
@@ -169,8 +175,7 @@ public class UserServiceImpl implements UserService {
             Integer gender, Integer birthYear, Integer birthMonth,
             Integer birthDay, String summary) throws ServiceException {
         // 数据不能为空
-        if (userId <= 0 || nick.trim().equals("")
-                || userName.trim().equals("")) {
+        if (userId <= 0 || nick.trim().equals("")) {
             throw new IllegalArgumentException();
         }
         // 验证昵称格式
@@ -198,6 +203,14 @@ public class UserServiceImpl implements UserService {
 
         userDao.update(userId, nick, userName, gender, birthYear,
                 birthMonth, birthDay, summary);
+        user.setNick(nick);
+		user.setRealName(userName);
+		user.setGender(gender);
+		user.setBirthYear(birthYear);
+		user.setBirthMonth(birthMonth);
+		user.setBirthDay(birthDay);
+		user.setSummary(summary);
+		songmUserService.editUserInfo(String.valueOf(userId), JsonUtils.getInstance().toJson(user));
     }
 
     @Override
@@ -227,8 +240,9 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        userDao.update(userId, nick, null, null, null,
-                null, null, null);
+        userDao.update(userId, nick, null, null, null, null, null, null);
+        user.setNick(nick);
+        songmUserService.editUserInfo(String.valueOf(userId), JsonUtils.getInstance().toJson(user));
     }
 
     @Override
@@ -237,8 +251,9 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException();
         }
 
-        userDao.update(userId, null, realName, null, null,
-                null, null, null);
+        userDao.update(userId, null, realName, null, null, null, null, null);
+        User user = this.getUserById(userId);
+        songmUserService.editUserInfo(String.valueOf(userId), JsonUtils.getInstance().toJson(user));
     }
 
     @Override
@@ -248,7 +263,8 @@ public class UserServiceImpl implements UserService {
         }
         
         userDao.update(userId, null, null, gender, null, null, null, null);
-        
+        User user = this.getUserById(userId);
+        songmUserService.editUserInfo(String.valueOf(userId), JsonUtils.getInstance().toJson(user));
     }
 
     @Override
@@ -267,8 +283,9 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(UserError.ACC_104.getErrCode(), "生日格式错误", e);
         }
 
-        userDao.update(userId, null, null, null, birthYear,
-                birthMonth, birthDay, null);
+        userDao.update(userId, null, null, null, birthYear, birthMonth, birthDay, null);
+        User user = this.getUserById(userId);
+        songmUserService.editUserInfo(String.valueOf(userId), JsonUtils.getInstance().toJson(user));
     }
 
     @Override
@@ -278,6 +295,24 @@ public class UserServiceImpl implements UserService {
         }
 
         userDao.update(userId, null, null, null, null, null, null, summary);
+        User user = this.getUserById(userId);
+        songmUserService.editUserInfo(String.valueOf(userId), JsonUtils.getInstance().toJson(user));
     }
+
+	@Override
+	public void editUserAccount(long userId, String account, String password) throws ServiceException {
+		User user = this.getUserById(userId);
+		if (StringUtils.isNotBlank(user.getAccount())) {
+			throw new ServiceException(UserError.ACC_AEXIST.getErrCode(), "用户账号已经存在");
+		}
+		
+		// 验证密码格式
+        if (!StringUtils.matches(password, "^.{6,20}$")) {
+            throw new ServiceException(UserError.ACC_107.getErrCode(), "密码格式错误");
+        }
+
+        userDao.updateAccount(userId, account, CodeUtils.md5(password));
+        songmUserService.editUserInfo(String.valueOf(userId), JsonUtils.getInstance().toJson(user));
+	}
 
 }

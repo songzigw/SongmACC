@@ -55,9 +55,9 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
     }
 
     @Override
-    public void updatePsw(Long userId, String newPsw) {
+    public void updatePassword(Long userId, String password) {
         User user = new User(userId);
-        user.setPassword(newPsw);
+        user.setPassword(password);
         update(user);
     }
 
@@ -85,5 +85,13 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
         user.setSummary(summary);
         update(user);
     }
+
+	@Override
+	public void updateAccount(long userId, String account, String password) {
+		User user = new User(userId);
+		user.setAccount(account);
+        user.setPassword(password);
+        update(user);
+	}
 
 }

@@ -51,11 +51,13 @@ public enum UserError implements ErrorInfo {
     /** 用户登入Session失效 */
     ACC_115("ACC_115"),
     
-    
     // 验证码异常-------------
     /** 验证码错误 */
-    ACC_116("ACC_116");
+    ACC_116("ACC_116"),
 
+    /** 账号已经存在 */
+	ACC_AEXIST("ACC_117");
+	
     private final String errCode;
     
     @Override

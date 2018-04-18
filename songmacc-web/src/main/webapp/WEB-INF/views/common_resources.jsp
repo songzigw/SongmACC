@@ -29,6 +29,7 @@
 frame.init({
     contextPath: '${pageContext.request.contextPath}',
     userAvatarDefault: '${userAvatarDefault}',
-    userAvatarUpload: '${userAvatarUpload}'
+    userAvatarUpload: '${userAvatarUpload}',
+    userAvatarCut: '${userAvatarCut}',
 });
 </script>
