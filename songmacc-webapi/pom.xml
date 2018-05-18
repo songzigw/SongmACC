@@ -14,10 +14,6 @@
 	<name>${project.artifactId}</name>
 	<url>http://maven.apache.org</url>
 
-	<properties>
-		<songmsso.service.version>0.0.1</songmsso.service.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>cn.songm.acc</groupId>
@@ -26,7 +22,6 @@
 		<dependency>
 			<groupId>cn.songm.sso</groupId>
 			<artifactId>songmsso-service</artifactId>
-			<version>${songmsso.service.version}</version>
 		</dependency>
 		
 		<dependency>
