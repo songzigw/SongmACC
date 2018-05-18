@@ -1,6 +1,6 @@
 package cn.songm.acc.entity;
 
-import cn.songm.common.beans.Entity;
+import cn.songm.common.beans.EntityAdapter;
 
 /**
  * 用户信息
@@ -8,7 +8,7 @@ import cn.songm.common.beans.Entity;
  * @author zhangsong
  * 
  */
-public class User extends Entity {
+public class User extends EntityAdapter {
 
     private static final long serialVersionUID = 8776550770295897410L;
 

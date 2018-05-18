@@ -1,22 +1,17 @@
 package cn.songm.acc.webapi;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.songm.acc.entity.User;
-import cn.songm.acc.service.UserError;
 import cn.songm.acc.service.UserService;
 import cn.songm.common.beans.Result;
 import cn.songm.common.service.ServiceException;
-import cn.songm.common.utils.JsonUtils;
-import cn.songm.common.utils.RandomCode;
-import cn.songm.common.utils.StringUtils;
-import cn.songm.common.web.BaseController;
 import cn.songm.sso.service.SongmSSOService;
 
 /**
@@ -27,196 +22,105 @@ import cn.songm.sso.service.SongmSSOService;
  */
 @Controller
 @RequestMapping("/")
-public class UserController extends BaseController {
+public class UserController extends BaseAccController {
 
     @Resource(name = "songmSsoService")
     private SongmSSOService songmSsoService;
     @Resource(name = "userService")
     private UserService userService;
 
-    @RequestMapping(value = "user")
-    public ModelAndView user(long userId) {
+    /**
+     * 获取用户信息
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "user.json")
+    @ResponseBody
+    public Result<User> getUser(long userId) {
         User user = userService.getUserById(userId);
         user.setAccount(null);
         user.setPassword(null);
         Result<User> result = new Result<User>();
         result.setData(user);
         
-        ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data", JsonUtils.getInstance().toJson(result));
-    }
-    
-    /**
-     * 验证码
-     * @return
-     */
-    @RequestMapping(value = "vcode", method = RequestMethod.GET)
-    public ModelAndView validateCode() {
-        HttpServletRequest req = this.getRequest();
-
-        RandomCode rcode = new RandomCode();
-        songmSsoService.setValidateCode(
-                Browser.getSessionId(req), rcode.getCode());
-
-        ModelAndView mv = new ModelAndView("/vcode");
-        return mv.addObject("rcode", rcode);
-    }
-    
-    /**
-     * 登入检查
-     * @param account
-     * @param password
-     * @return
-     */
-    @RequestMapping(value = "loginc", method = RequestMethod.POST)
-    public ModelAndView loginCheck(String account, String password) {
-        Result<Object> result = new Result<Object>();
-
-        User user = null;
-        try {
-            user = userService.checkLogin(account, password);
-            user.setPassword(password);
-        } catch (ServiceException e) {
-            result.setErrorCode(e.getErrCode());
-            result.setErrorDesc(e.getErrNotice());
-        }
-
-        if (result.isSucceed()) {
-            HttpServletRequest req = this.getRequest();
-            songmSsoService.login(Browser.getSessionId(req),
-                    user.getUserId().toString(),
-                    JsonUtils.getInstance().toJson(user));
-            result.setData(user);
-        }
-
-        ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data",
-                JsonUtils.getInstance().toJson(result));
-    }
-
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public ModelAndView logout() {
-        Result<Object> result = new Result<Object>();
-
-        HttpServletRequest req = this.getRequest();
-        songmSsoService.logout(Browser.getSessionId(req));
-
-        ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data",
-                JsonUtils.getInstance().toJson(result));
-    }
-    
-    /**
-     * 账号注册
-     * @param account
-     * @param password
-     * @param nick
-     * @return
-     */
-    @RequestMapping(value = "registry", method = RequestMethod.POST)
-    public ModelAndView registry(String account, String password, String nick, String vcode) {
-        Result<Object> result = new Result<Object>();
-
-        String code = songmSsoService.getValidateCode(Browser.getSessionId(this.getRequest()));
-        if (!vcode.equalsIgnoreCase(code)) {
-            result.setErrorCode(UserError.ACC_116.getErrCode());
-            result.setErrorDesc("验证码错误");
-        } else {
-            try {
-                userService.register(account, password, nick);
-            } catch (ServiceException e) {
-                result.setErrorCode(e.getErrCode());
-                result.setErrorDesc(e.getErrNotice());
-            }
-        }
-        
-        ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data",
-                JsonUtils.getInstance().toJson(result));
+        return result;
     }
 
     /**
-     * 获取登入用户
+     * 获取当前在线用户
      * @return
      */
-    @RequestMapping(value = "member/user", method = RequestMethod.POST)
-    public ModelAndView member() {
-        HttpServletRequest req = this.getRequest();
-
-        String uinfo = songmSsoService.getUserInfo(Browser.getSessionId(req));
-        User user = JsonUtils.getInstance().fromJson(uinfo, User.class);
-        Result<User> result = new Result<User>();
-        result.setData(user);
-
-        ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data", JsonUtils.getInstance().toJson(result));
+    @RequestMapping(value = "member/online.json")
+    @ResponseBody
+    public Result<User> getOnline() {
+    	Result<User> result = new Result<>();
+        result.setData(getSessionUser());
+        return result;
     }
     
     /**
      * 修改用户信息
      * @return
      */
-    @RequestMapping(value = "member/user/edit", method = RequestMethod.POST)
-    public ModelAndView edit(String avatar, String nick, String realName,
-            Integer gender, Integer birthYear, Integer birthMonth,
-            Integer birthDay, String summary) {
-        HttpServletRequest req = this.getRequest();
-        // 定义返回的结果
-        Result<User> result = new Result<User>();
-        
-        // 获取在线用户信息
-        String uinfo = songmSsoService.getUserInfo(Browser.getSessionId(req));
-        User user = JsonUtils.getInstance().fromJson(uinfo, User.class);
-
-        // 修改头像
-        if (!StringUtils.isEmptyOrNull(avatar)) {
-            userService.editUserPhoto(user.getUserId(), avatar);
-            user.setAvatar(avatar);
-        }
-        
-        // 信息修改
+    @RequestMapping(value = "member/user/edit.json", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<Object> editUser(
+    		@RequestParam(name = "nick")
+    		String nick,
+    		@RequestParam(name = "real_name", required = false)
+    		String realName,
+    		@RequestParam(name = "gender", required = false)
+    		Integer gender,
+    		@RequestParam(name = "birth_year", required = false)
+    		Integer birthYear,
+    		@RequestParam(name = "birth_month", required = false)
+    		Integer birthMonth,
+    		@RequestParam(name = "birth_day", required = false)
+    		Integer birthDay,
+    		@RequestParam(name = "summary", required = false)
+    		String summary) {
+    	Result<Object> result = new Result<Object>();
+        User u = this.getSessionUser();
         try {
-         // 修改昵称
-            if (!StringUtils.isEmptyOrNull(nick)) {
-                userService.editUserNick(user.getUserId(), nick);
-                user.setNick(nick);
-            }
-            // 修改RealName
-            if (!StringUtils.isEmptyOrNull(realName)) {
-                userService.editRealName(user.getUserId(), realName);
-                user.setRealName(realName);
-            }
-            // 修改Gender
-            if (gender != null) {
-                userService.editUserGender(user.getUserId(), gender);
-                user.setGender(gender);
-            }
-            // 修改BirthdayYear 修改BirthdayMonth 修改BirthdayDay
-            if (birthYear != null && birthMonth != null && birthDay != null) {
-                userService.editUserBirthday(user.getUserId(), birthYear, birthMonth, birthDay);
-                user.setBirthYear(birthYear);
-                user.setBirthMonth(birthMonth);
-                user.setBirthDay(birthDay);
-            }
-            // 修改Summary
-            if (summary != null) {
-                userService.editSummary(user.getUserId(), summary);
-                user.setSummary(summary);
-            }
-        } catch (ServiceException e) {
-            result.setErrorCode(e.getErrCode());
-            result.setErrorDesc(e.getErrDesc());
-        }
-        
-        // 修改单点登入服务
-        songmSsoService.login(Browser.getSessionId(req),
-                user.getUserId().toString(),
-                JsonUtils.getInstance().toJson(user));
-        
-        // 返回用户信息
-        result.setData(user);
-
-        ModelAndView mv = new ModelAndView("/data");
-        return mv.addObject("data", JsonUtils.getInstance().toJson(result));
+			userService.editUserBasic(u.getUserId(), nick, realName, gender, birthYear, birthMonth, birthDay, summary);
+		} catch (ServiceException e) {
+			result.setErrorCode(e.getErrCode());
+			result.setErrorDesc(e.getErrDesc());
+		}
+        return result;
+    }
+    
+    @RequestMapping(value = "member/user/account.json", method=RequestMethod.PUT)
+    public Result<Object> eidtAccount(
+    		@RequestParam(name = "account")
+    		String account,
+    		@RequestParam(name = "password")
+    		String password) {
+    	Result<Object> result = new Result<Object>();
+    	User u = this.getSessionUser();
+    	try {
+			userService.editUserAccount(u.getUserId(), account, password);
+		} catch (ServiceException e) {
+			result.setErrorCode(e.getErrCode());
+			result.setErrorDesc(e.getErrDesc());
+		}
+    	return result;
+    }
+    
+    @RequestMapping(value = "member/user/password.json", method=RequestMethod.PUT)
+    public Result<Object> editPassword(
+    		@RequestParam(name = "old_pwd")
+    		String oldPwd,
+    		@RequestParam(name = "new_pwd")
+    		String newPwd) {
+    	Result<Object> result = new Result<Object>();
+    	User u = this.getSessionUser();
+    	try {
+			userService.editUserPassword(u.getUserId(), oldPwd, newPwd);
+		} catch (ServiceException e) {
+			result.setErrorCode(e.getErrCode());
+			result.setErrorDesc(e.getErrDesc());
+		}
+    	return result;
     }
 }

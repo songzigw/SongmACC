@@ -95,7 +95,15 @@
     
     Vue.component('songm-topbar', {
         template: '#songm-topbar-template',
-        props: ['frame']
+        props: ['frame'],
+        methods: {
+        	login: function() {
+        		document.location.href = f.contextPath + "/login";
+        	},
+        	regist: function() {
+        		document.location.href = f.contextPath + "/register";
+        	}
+        }
     });
 })((function() {
     if (!window.frame) {

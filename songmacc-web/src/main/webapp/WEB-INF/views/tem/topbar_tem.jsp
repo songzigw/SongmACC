@@ -21,8 +21,8 @@
     </div>
     <div class="user-info">
     <template v-if="frame.currUser == null">
-    <button class="btn btn-blue btn-sm">登入</button>
-    <button class="btn btn-blue btn-sm">注册</button>
+    <button class="btn btn-blue btn-sm" v-on:click="login">登入</button>
+    <button class="btn btn-blue btn-sm" v-on:click="regist">注册</button>
     </template>
     <template v-else>
     <div class="profile btn-group">
