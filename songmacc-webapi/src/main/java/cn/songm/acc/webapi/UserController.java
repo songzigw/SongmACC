@@ -36,7 +36,9 @@ public class UserController extends BaseAccController {
      */
     @RequestMapping(value = "user.json")
     @ResponseBody
-    public Result<User> getUser(long userId) {
+    public Result<User> getUser(
+    		@RequestParam(name = "user_id")
+    		long userId) {
         User user = userService.getUserById(userId);
         user.setAccount(null);
         user.setPassword(null);

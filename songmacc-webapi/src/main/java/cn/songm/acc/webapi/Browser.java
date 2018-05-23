@@ -8,6 +8,8 @@ import cn.songm.sso.entity.Session;
 
 public class Browser {
 
+	public static final String HEADER_SESSIONID_KEY = "Songmsso-Sessionid";
+	
     /**
      * 获取客户端唯一Id
      * 
@@ -22,6 +24,9 @@ public class Browser {
         }
         if (sessionId == null) {
             sessionId = request.getParameter(Session.USER_SESSION_KEY);
+        }
+        if (sessionId == null) {
+        	sessionId = request.getHeader(HEADER_SESSIONID_KEY);
         }
         return sessionId;
     }

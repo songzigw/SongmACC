@@ -57,9 +57,9 @@
 		#{password,jdbcType=VARCHAR},
 		#{nick,jdbcType=VARCHAR},
 		#{realName,jdbcType=VARCHAR},
-		#{accountServer,jdbcType=VARCHAR},
-		#{accountOldPath,jdbcType=VARCHAR},
-		#{accountPath,jdbcType=VARCHAR},
+		#{avatarServer,jdbcType=VARCHAR},
+		#{avatarOldPath,jdbcType=VARCHAR},
+		#{avatarPath,jdbcType=VARCHAR},
 		#{avatar,jdbcType=VARCHAR},
 		#{gender,jdbcType=VARCHAR},
 		#{birthYear,jdbcType=VARCHAR},
@@ -160,7 +160,7 @@
         where account = #{account,jdbcType=VARCHAR}
     </select>
     
-    <select id="getSeqNextValue" resultType="java.lang.Long">
+    <select id="sequenceNext" resultType="java.lang.Long">
         select FUN_SEQ ('acc_user_id_seq')
     </select>
 </mapper>

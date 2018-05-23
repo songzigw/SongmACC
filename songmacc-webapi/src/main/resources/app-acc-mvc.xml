@@ -18,6 +18,15 @@
     <!-- 
     <mvc:resources mapping="/**/*.html" location="/" />
      -->
+    
+    <!-- 浏览器跨域访问 -->
+    <mvc:cors>
+    <mvc:mapping path="/**"
+        allowed-origins="*"
+        allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
+        allowed-headers="Origin, X-Requested-With, Content-Type, Accept, Authorization, Last-Modified, Songmsso-Sessionid"
+        allow-credentials="true"/>
+    </mvc:cors>
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -69,7 +78,7 @@
 			<bean class="cn.songm.acc.webapi.interceptor.VcodeInterceptor" />
 		</mvc:interceptor>
 		<mvc:interceptor>
-			<mvc:mapping path="/member/*" />
+			<mvc:mapping path="/member/**" />
 			<bean class="cn.songm.acc.webapi.interceptor.LoginInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>

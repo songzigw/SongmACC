@@ -2,8 +2,10 @@ package cn.songm.acc.webapi;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,6 +15,8 @@ import cn.songm.common.service.ServiceException;
 import cn.songm.common.utils.JsonUtils;
 import cn.songm.common.utils.RandomCode;
 
+@Controller
+@RequestMapping("/")
 public class LoginController extends BaseAccController {
 
 	/**
@@ -59,8 +63,15 @@ public class LoginController extends BaseAccController {
 	 */
 	@RequestMapping(value = "register.json")
     @ResponseBody
-    public Result<Object> register(String account, String password,
-            String nick, String vcode, HttpServletRequest request) {
+    public Result<Object> register(
+    		@RequestParam(name = "account")
+    		String account,
+    		@RequestParam(name = "password")
+    		String password,
+    		@RequestParam(name = "nick")
+            String nick,
+            @RequestParam(name = "vcode")
+            String vcode, HttpServletRequest request) {
         Result<Object> result = new Result<Object>();
         
         String sessionId = Browser.getSessionId(request);
