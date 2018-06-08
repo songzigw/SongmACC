@@ -10,9 +10,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import cn.songm.acc.service.UserError;
-import cn.songm.acc.webapi.Browser;
 import cn.songm.common.beans.Result;
 import cn.songm.common.utils.JsonUtils;
+import cn.songm.common.web.Browser;
 import cn.songm.sso.service.SongmSSOService;
 
 public class LoginInterceptor implements HandlerInterceptor {

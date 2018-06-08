@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import cn.songm.acc.webapi.Browser;
+import cn.songm.common.web.Browser;
 import cn.songm.common.web.CookieUtils;
 import cn.songm.sso.entity.Session;
 import cn.songm.sso.service.SongmSSOService;
@@ -31,7 +31,7 @@ public class MustInterceptor implements HandlerInterceptor {
         }
         
         Session session = songmSsoService.report(Browser.getSessionId(request));
-        CookieUtils.addCookie(response, Session.USER_SESSION_KEY, session.getSesId(), 0);
+        CookieUtils.addCookie(response, Browser.COOKIE_SESSIONID_KEY, session.getSesId(), 0);
         response.addHeader(Browser.HEADER_SESSIONID_KEY, session.getSesId());
         LOG.info("SessionId: {}", session.getSesId());
         return true;

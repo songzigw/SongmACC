@@ -14,6 +14,7 @@ import cn.songm.common.beans.Result;
 import cn.songm.common.service.ServiceException;
 import cn.songm.common.utils.JsonUtils;
 import cn.songm.common.utils.RandomCode;
+import cn.songm.common.web.Browser;
 
 @Controller
 @RequestMapping("/")

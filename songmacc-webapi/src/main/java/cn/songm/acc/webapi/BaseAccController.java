@@ -6,6 +6,7 @@ import cn.songm.acc.entity.User;
 import cn.songm.acc.service.UserService;
 import cn.songm.common.utils.JsonUtils;
 import cn.songm.common.web.BaseController;
+import cn.songm.common.web.Browser;
 import cn.songm.sso.service.SongmSSOService;
 
 public class BaseAccController extends BaseController {
