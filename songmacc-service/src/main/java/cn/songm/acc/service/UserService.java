@@ -17,13 +17,13 @@ public interface UserService {
 	 * 
 	 * @param account
 	 * @param password
-	 * @param nick
+	 * @param nickname
 	 * @param sysVcode
 	 * @param vcode
 	 * @return
 	 * @throws ServiceException
 	 */
-	public User register(String account, String password, String nick, String sysVcode, String vcode)
+	public User register(String account, String password, String nickname, String sysVcode, String vcode)
 			throws ServiceException;
 
 	/**
@@ -47,10 +47,10 @@ public interface UserService {
 	/**
 	 * 验证昵称是否重复
 	 * 
-	 * @param nick
+	 * @param nickname
 	 * @return
 	 */
-	public boolean verifyNickRep(String nick);
+	public boolean verifyNickRep(String nickname);
 
 	/**
 	 * 根据主键获取
@@ -80,7 +80,7 @@ public interface UserService {
 	 * 编辑用户基本信息
 	 * 
 	 * @param userId
-	 * @param nick
+	 * @param nickname
 	 * @param realName
 	 * @param gender
 	 * @param birthYear
@@ -88,7 +88,7 @@ public interface UserService {
 	 * @param birthDay
 	 * @param summary
 	 */
-	public void editUserBasic(long userId, String nick, String realName, Integer gender, Integer birthYear,
+	public void editUserBasic(long userId, String nickname, String realName, Integer gender, Integer birthYear,
 			Integer birthMonth, Integer birthDay, String summary) throws ServiceException;
 
 	public void editUserAccount(long userId, String account, String password) throws ServiceException;
@@ -99,14 +99,10 @@ public interface UserService {
 	 * @param userId
 	 * @param avatarServer
 	 *            头像服务器
-	 * @param avatarOldPath
-	 *            原始头像路径
 	 * @param avatarPath
 	 *            最终头像路径
-	 * @param avatar
-	 *            最终头像
 	 */
-	public void editUserPhoto(long userId, String avatarServer, String avatarOldPath, String avatarPath, String avatar);
+	public void editUserPhoto(long userId, String avatarServer, String avatarPath);
 
 	/**
 	 * 修改用户登入密码
@@ -124,7 +120,7 @@ public interface UserService {
 	 */
 	public void recordReport(UserReport report);
 
-	public void editUserNick(long userId, String nick) throws ServiceException;
+	public void editNickname(long userId, String nickname) throws ServiceException;
 
 	public void editRealName(long userId, String realName);
 

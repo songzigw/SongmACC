@@ -56,7 +56,7 @@ public class UserRedisImpl extends BaseRedisImpl<User> implements UserRedis {
     public static final byte[] USER_FIELD_USERID = "user_id".getBytes();
     public static final byte[] USER_FIELD_ACCOUNT = "account".getBytes();
     public static final byte[] USER_FIELD_PASSWORD = "password".getBytes();
-    public static final byte[] USER_FIELD_NICK = "nick".getBytes();
+    public static final byte[] USER_FIELD_NICKNAME = "nickname".getBytes();
     public static final byte[] USER_FIELD_REALNAME = "realname".getBytes();
     public static final byte[] USER_FIELD_AVATAR = "avatar".getBytes();
     public static final byte[] USER_FIELD_GENDER = "gender".getBytes();
@@ -76,7 +76,7 @@ public class UserRedisImpl extends BaseRedisImpl<User> implements UserRedis {
         d.put(USER_FIELD_USERID, SerializeUtil.serialize(entity.getUserId()));
         d.put(USER_FIELD_ACCOUNT, SerializeUtil.serialize(entity.getAccount()));
         d.put(USER_FIELD_PASSWORD, SerializeUtil.serialize(entity.getPassword()));
-        d.put(USER_FIELD_NICK, SerializeUtil.serialize(entity.getNick()));
+        d.put(USER_FIELD_NICKNAME, SerializeUtil.serialize(entity.getNickname()));
         d.put(USER_FIELD_REALNAME, SerializeUtil.serialize(entity.getRealName()));
         d.put(USER_FIELD_AVATAR, SerializeUtil.serialize(entity.getAvatar()));
         d.put(USER_FIELD_GENDER, SerializeUtil.serialize(entity.getGender()));
@@ -104,7 +104,7 @@ public class UserRedisImpl extends BaseRedisImpl<User> implements UserRedis {
                 USER_FIELD_USERID,
                 USER_FIELD_ACCOUNT,
                 USER_FIELD_PASSWORD,
-                USER_FIELD_NICK,
+                USER_FIELD_NICKNAME,
                 USER_FIELD_REALNAME,
                 USER_FIELD_AVATAR,
                 USER_FIELD_GENDER,
@@ -120,7 +120,7 @@ public class UserRedisImpl extends BaseRedisImpl<User> implements UserRedis {
         entity.setUserId((Long)SerializeUtil.unserialize(vals.get(5)));
         entity.setAccount((String)SerializeUtil.unserialize(vals.get(6)));
         entity.setPassword((String)SerializeUtil.unserialize(vals.get(7)));
-        entity.setNick((String)SerializeUtil.unserialize(vals.get(8)));
+        entity.setNickname((String)SerializeUtil.unserialize(vals.get(8)));
         entity.setRealName((String)SerializeUtil.unserialize(vals.get(9)));
         entity.setAvatar((String)SerializeUtil.unserialize(vals.get(10)));
         entity.setGender((Integer)SerializeUtil.unserialize(vals.get(11)));

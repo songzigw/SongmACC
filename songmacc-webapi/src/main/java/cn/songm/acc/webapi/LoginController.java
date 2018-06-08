@@ -29,9 +29,9 @@ public class LoginController extends BaseAccController {
 	 */
 	@RequestMapping(value = "login.json")
     @ResponseBody
-    public Result<Object> login(String account, String password, String vcode,
+    public Result<User> login(String account, String password, String vcode,
             HttpServletRequest request) {
-        Result<Object> result = new Result<Object>();
+        Result<User> result = new Result<User>();
         
         String sessionId = Browser.getSessionId(request);
         String sysVcode = songmSsoService.getValidateCode(sessionId);
@@ -49,6 +49,7 @@ public class LoginController extends BaseAccController {
         songmSsoService.login(sessionId,
                 user.getUserId().toString(),
                 JsonUtils.getInstance().toJson(user));
+        result.setData(user);
         return result; 
     }
 	

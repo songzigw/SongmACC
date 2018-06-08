@@ -19,11 +19,11 @@ public interface UserDao extends BaseDao<User> {
 
     void updatePassword(Long userId, String password);
 
-    void updatePhoto(long userId, String avatarServer, String avatarOldPath, String avatarPath, String avatar);
+    void updatePhoto(long userId, String avatarServer, String avatarPath);
 
     void updateAccount(long userId, String account, String password);
     
-    void update(Long userId, String nick, String userName, Integer gender,
+    void update(Long userId, String nickname, String userName, Integer gender,
             Integer birthYear, Integer birthMonth, Integer birthDay,
             String summary);
 

@@ -33,13 +33,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public User register(String account, String password, String nick,
+    public User register(String account, String password, String nickname,
             String sysVcode, String vcode) throws ServiceException {
         if (!vcode.equalsIgnoreCase(sysVcode)) {
             throw new ServiceException(UserError.ACC_116.getErrCode(), "验证码错误");
         }
         if (StringUtils.isEmptyOrNull(password)
-                || StringUtils.isEmptyOrNull(nick)) {
+                || StringUtils.isEmptyOrNull(nickname)) {
             throw new IllegalArgumentException();
         }
 
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 验证昵称格式
-        if (!StringUtils.matches(nick, "^.{1,12}$")) {
+        if (!StringUtils.matches(nickname, "^.{1,12}$")) {
             throw new ServiceException(UserError.ACC_106.getErrCode(), "昵称格式错误");
         }
         // 验证密码格式
@@ -66,9 +66,9 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(UserError.ACC_107.getErrCode(), "密码格式错误");
         }
         // 验证昵称中的关键字
-        verifyNicKey(nick);
+        verifyNicKey(nickname);
         // 验证昵称是否重复
-        if (this.verifyNickRep(nick)) {
+        if (this.verifyNickRep(nickname)) {
             throw new ServiceException(UserError.ACC_102.getErrCode(), "昵称已经被使用");
         }
 
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         // 加密处理
         password = CodeUtils.md5(password);
         user.setPassword(password);
-        user.setNick(nick);
+        user.setNickname(nickname);
         return this.addUser(user);
     }
 
@@ -122,8 +122,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean verifyNickRep(String nick) {
-        int n = userDao.countByNick(nick);
+    public boolean verifyNickRep(String nickname) {
+        int n = userDao.countByNick(nickname);
         if (n != 0) {
             return true;
         }
@@ -164,22 +164,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserPhoto(long userId, String avatarServer, String avatarOldPath, String avatarPath, String avatar) {
-        userDao.updatePhoto(userId, avatarServer, avatarOldPath, avatarPath, avatar);
+    public void editUserPhoto(long userId, String avatarServer, String avatarPath) {
+        userDao.updatePhoto(userId, avatarServer, avatarPath);
         User user = this.getUserById(userId);
         songmUserService.editUserInfo(String.valueOf(userId), JsonUtils.getInstance().toJson(user));
     }
 
     @Override
-    public void editUserBasic(long userId, String nick, String userName,
+    public void editUserBasic(long userId, String nickname, String userName,
             Integer gender, Integer birthYear, Integer birthMonth,
             Integer birthDay, String summary) throws ServiceException {
         // 数据不能为空
-        if (userId <= 0 || nick.trim().equals("")) {
+        if (userId <= 0 || nickname.trim().equals("")) {
             throw new IllegalArgumentException();
         }
         // 验证昵称格式
-        if (!StringUtils.matches(nick, "^.{1,12}$")) {
+        if (!StringUtils.matches(nickname, "^.{1,12}$")) {
             throw new ServiceException(UserError.ACC_106.getErrCode(), "昵称格式错误");
         }
         // 验证生日格式
@@ -193,17 +193,17 @@ public class UserServiceImpl implements UserService {
         }
         // 验证昵称
         User user = this.getUserById(userId);
-        if (!user.getNick().equals(nick)) {
+        if (!user.getNickname().equals(nickname)) {
             // 验证昵称中的关键字
-            verifyNicKey(nick);
-            if (this.verifyNickRep(nick)) {
+            verifyNicKey(nickname);
+            if (this.verifyNickRep(nickname)) {
                 throw new ServiceException(UserError.ACC_102.getErrCode(), "昵称已经被使用");
             }
         }
 
-        userDao.update(userId, nick, userName, gender, birthYear,
+        userDao.update(userId, nickname, userName, gender, birthYear,
                 birthMonth, birthDay, summary);
-        user.setNick(nick);
+        user.setNickname(nickname);
 		user.setRealName(userName);
 		user.setGender(gender);
 		user.setBirthYear(birthYear);
@@ -219,29 +219,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserNick(long userId, String nick) throws ServiceException {
+    public void editNickname(long userId, String nickname) throws ServiceException {
         // 数据不能为空
-        if (userId <= 0 || nick.trim().equals("")) {
+        if (userId <= 0 || nickname.trim().equals("")) {
             throw new IllegalArgumentException();
         }
         
         // 验证昵称格式
-        if (!StringUtils.matches(nick, "^.{1,12}$")) {
+        if (!StringUtils.matches(nickname, "^.{1,12}$")) {
             throw new ServiceException(UserError.ACC_106.getErrCode(), "昵称格式错误");
         }
         
         // 验证昵称
         User user = this.getUserById(userId);
-        if (!user.getNick().equals(nick)) {
+        if (!user.getNickname().equals(nickname)) {
             // 验证昵称中的关键字
-            verifyNicKey(nick);
-            if (this.verifyNickRep(nick)) {
+            verifyNicKey(nickname);
+            if (this.verifyNickRep(nickname)) {
                 throw new ServiceException(UserError.ACC_102.getErrCode(), "昵称已经被使用");
             }
         }
 
-        userDao.update(userId, nick, null, null, null, null, null, null);
-        user.setNick(nick);
+        userDao.update(userId, nickname, null, null, null, null, null, null);
+        user.setNickname(nickname);
         songmUserService.editUserInfo(String.valueOf(userId), JsonUtils.getInstance().toJson(user));
     }
 

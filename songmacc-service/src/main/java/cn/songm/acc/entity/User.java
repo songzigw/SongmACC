@@ -19,13 +19,11 @@ public class User extends EntityAdapter {
     /** 密码 */
     private String password;
     /** 昵称 */
-    private String nick;
+    private String nickname;
     /** 真实姓名 */
     private String realName;
     /** 头像服务器 */
     private String avatarServer;
-    /** 原始头像路径 */
-    private String avatarOldPath;
     /** 最终头像路径 */
     private String avatarPath;
     /** 最终头像 */
@@ -112,12 +110,12 @@ public class User extends EntityAdapter {
         this.birthDay = birthDay;
     }
 
-    public String getNick() {
-        return nick;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNick(String nick) {
-        this.nick = nick;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getRealName() {
@@ -160,14 +158,6 @@ public class User extends EntityAdapter {
 		this.avatarPath = avatarPath;
 	}
 
-	public String getAvatarOldPath() {
-		return avatarOldPath;
-	}
-
-	public void setAvatarOldPath(String avatarOldPath) {
-		this.avatarOldPath = avatarOldPath;
-	}
-
 	@Override
     public int hashCode() {
         final int prime = 31;
@@ -196,11 +186,10 @@ public class User extends EntityAdapter {
         sBui.append(", userId=").append(userId);
         sBui.append(", account=").append(account);
         sBui.append(", password=").append(password);
-        sBui.append(", nick=").append(nick);
+        sBui.append(", nickname=").append(nickname);
         sBui.append(", realName=").append(realName);
         sBui.append(", avatarServer=").append(avatarServer);
         sBui.append(", avatarPath=").append(avatarPath);
-        sBui.append(", avatarOldPath=").append(avatarOldPath);
         sBui.append(", avatar=").append(avatar);
         sBui.append(", gender=").append(gender);
         sBui.append(", birthYear=").append(birthYear);
