@@ -20,6 +20,7 @@
      -->
     
     <!-- 浏览器跨域访问 -->
+    <!--
     <mvc:cors>
     <mvc:mapping path="/**"
         allowed-origins="*"
@@ -27,6 +28,7 @@
         allowed-headers="Origin, X-Requested-With, Content-Type, Accept, Authorization, Last-Modified, Songmsso-Sessionid"
         allow-credentials="true"/>
     </mvc:cors>
+     -->
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
