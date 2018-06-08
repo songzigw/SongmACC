@@ -26,8 +26,8 @@
 
 	<sql id="Base_Column_List">
 		no, version, created, updated, remark, user_id, account,
-		password, nickname, real_name, avatar_server, avatar_old_path,
-		avatar_path, avatar, gender, birth_year, birth_month, birth_day, summary
+		password, nickname, real_name, avatar_server, avatar_path,
+	    avatar, gender, birth_year, birth_month, birth_day, summary
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Long">
