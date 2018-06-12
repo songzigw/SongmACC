@@ -11,6 +11,7 @@ import cn.songm.common.service.AppBoot;
 public class AccountApp {
 
     public static void main(String[] args) {
-        AppBoot.start("application-acc.xml", args);
+    	JsonUtilsInit.initialization();
+    	AppBoot.start("application-acc.xml", args);
     }
 }

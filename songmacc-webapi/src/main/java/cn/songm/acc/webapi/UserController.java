@@ -92,6 +92,19 @@ public class UserController extends BaseAccController {
         return result;
     }
     
+    @RequestMapping(value = "member/user/avatar.json", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<Object> editAvatar(
+    		@RequestParam(name = "avatar_server")
+    		String avatarServer,
+    		@RequestParam(name = "avatar_path")
+    		String avatarPath) {
+    	Result<Object> result = new Result<Object>();
+        User u = this.getSessionUser();
+        userService.editUserPhoto(u.getUserId(), avatarServer, avatarPath);
+        return result;
+    }
+    
     @RequestMapping(value = "member/user/account.json", method=RequestMethod.PUT)
     public Result<Object> eidtAccount(
     		@RequestParam(name = "account")
