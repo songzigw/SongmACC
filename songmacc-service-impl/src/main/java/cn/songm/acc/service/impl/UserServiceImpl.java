@@ -166,8 +166,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void editUserPhoto(long userId, String avatarServer, String avatarPath) {
         userDao.updatePhoto(userId, avatarServer, avatarPath);
-        User user = this.getUserById(userId);
-        songmUserService.editUserInfo(String.valueOf(userId), JsonUtils.getInstance().toJson(user));
+		songmUserService.editUserInfo(String.valueOf(userId),
+				JsonUtils.getInstance().toJson(getUserById(userId)));
     }
 
     @Override

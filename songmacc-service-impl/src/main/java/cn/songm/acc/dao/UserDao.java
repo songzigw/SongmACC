@@ -9,7 +9,7 @@ public interface UserDao extends BaseDao<User> {
 
     int countByAccount(String account);
 
-    int countByNick(String nick);
+    int countByNick(String nickname);
 
     String queryPwdByAccount(String account);
 

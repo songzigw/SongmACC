@@ -36,9 +36,9 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
     }
 
     @Override
-    public int countByNick(String nick) {
+    public int countByNick(String nickname) {
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put("nick", nick);
+        param.put("nickname", nickname);
         return selectCountByColumn(param).intValue();
     }
 
