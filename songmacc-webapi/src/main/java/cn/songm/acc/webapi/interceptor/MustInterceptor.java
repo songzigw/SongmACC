@@ -25,13 +25,15 @@ public class MustInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler) throws Exception {
         LOG.info("URI: {}", request.getRequestURI());
-        if (request.getMethod().equals("OPTIONS")
-        		&& request.getHeader("Access-Control-Request-Method") != null) {
-        	return true;
-        }
+//        if (request.getMethod().equals("OPTIONS")
+//        		&& request.getHeader("Access-Control-Request-Method") != null) {
+//        	return true;
+//        }
         
         Session session = songmSsoService.report(Browser.getSessionId(request));
+        // 写入Cookie
         CookieUtils.addCookie(response, Browser.COOKIE_SESSIONID_KEY, session.getSesId(), 0);
+        // 写入消息头
         response.addHeader(Browser.HEADER_SESSIONID_KEY, session.getSesId());
         LOG.info("SessionId: {}", session.getSesId());
         return true;

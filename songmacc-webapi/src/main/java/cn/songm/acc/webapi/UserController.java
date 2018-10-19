@@ -66,7 +66,7 @@ public class UserController extends BaseAccController {
      */
     @RequestMapping(value = "member/user/edit.json", method = RequestMethod.POST)
     @ResponseBody
-    public Result<Object> editUser(
+    public Result<User> editUser(
     		@RequestParam(name = "nick")
     		String nick,
     		@RequestParam(name = "real_name", required = false)
@@ -81,10 +81,18 @@ public class UserController extends BaseAccController {
     		Integer birthDay,
     		@RequestParam(name = "summary", required = false)
     		String summary) {
-    	Result<Object> result = new Result<Object>();
+    	Result<User> result = new Result<User>();
         User u = this.getSessionUser();
         try {
 			userService.editUserBasic(u.getUserId(), nick, realName, gender, birthYear, birthMonth, birthDay, summary);
+			u.setNickname(nick);
+			u.setRealName(realName);
+			u.setGender(gender);
+			u.setBirthYear(birthYear);
+			u.setBirthMonth(birthMonth);
+			u.setBirthDay(birthDay);
+			u.setSummary(summary);
+			result.setData(u);
 		} catch (ServiceException e) {
 			result.setErrorCode(e.getErrCode());
 			result.setErrorDesc(e.getErrDesc());

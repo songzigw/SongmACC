@@ -23,10 +23,10 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler) throws Exception {
-        if (request.getMethod().equals("OPTIONS")
-        		&& request.getHeader("Access-Control-Request-Method") != null) {
-        	return true;
-        }
+//        if (request.getMethod().equals("OPTIONS")
+//        		&& request.getHeader("Access-Control-Request-Method") != null) {
+//        	return true;
+//        }
     	
     	String userInfo = songmSsoService
                 .getUserInfo(Browser.getSessionId(request));

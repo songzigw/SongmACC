@@ -74,16 +74,12 @@
 
     <!-- 注册拦截器 -->
 	<mvc:interceptors>
-		<bean class="cn.songm.acc.webapi.interceptor.MustInterceptor" />
-		<mvc:interceptor>
-			<mvc:mapping path="/login/check" />
-			<bean class="cn.songm.acc.webapi.interceptor.VcodeInterceptor" />
-		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/member/**" />
-			<bean class="cn.songm.acc.webapi.interceptor.LoginInterceptor" />
-		</mvc:interceptor>
-	</mvc:interceptors>
+        <bean class="cn.songm.acc.webapi.interceptor.MustInterceptor" />
+        <mvc:interceptor>
+            <mvc:mapping path="/member/**" />
+            <bean class="cn.songm.acc.webapi.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- 
 	<bean id="handlerExceptionResolver"

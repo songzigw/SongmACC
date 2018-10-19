@@ -1,5 +1,8 @@
 package cn.songm.acc.webapi;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import cn.songm.acc.entity.User;
 import cn.songm.common.beans.Result;
 import cn.songm.common.service.ServiceException;
+import cn.songm.common.utils.CodeUtils;
 import cn.songm.common.utils.JsonUtils;
 import cn.songm.common.utils.RandomCode;
 import cn.songm.common.web.Browser;
@@ -118,4 +122,21 @@ public class LoginController extends BaseAccController {
         ModelAndView mv = new ModelAndView("/vcode");
         return mv.addObject("rcode", rcode);
     }
+	
+	@RequestMapping(value = "vcode/base64", method = RequestMethod.GET)
+	@ResponseBody
+	public String validateCodeBase64(HttpServletRequest request) {
+        RandomCode rcode = new RandomCode();
+        songmSsoService.setValidateCode(Browser.getSessionId(request), rcode.getCode());
+        
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try {
+			rcode.getRandcode(os);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return CodeUtils.encode64(os.toByteArray());
+    }
+	
 }
