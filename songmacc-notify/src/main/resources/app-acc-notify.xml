@@ -50,7 +50,7 @@
 		<property name="messageListener" ref="accountNotify" />
 	</bean>
 
-	<dubbo:application name="consumer-songmacc-notify" />
+	<dubbo:application name="songmacc-notify" />
 	<dubbo:registry address="${dubbo.registry.server}" />
 	<dubbo:reference id="userService" interface="cn.songm.acc.service.UserService" />
 </beans>
