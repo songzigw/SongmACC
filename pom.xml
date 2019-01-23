@@ -75,12 +75,6 @@
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-web</artifactId>
                 <version>0.1</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>javax.servlet</groupId>
-                        <artifactId>servlet-api</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>
