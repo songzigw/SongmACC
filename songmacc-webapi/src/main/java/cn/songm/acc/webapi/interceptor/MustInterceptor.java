@@ -25,10 +25,6 @@ public class MustInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler) throws Exception {
         LOG.info("URI: {}", request.getRequestURI());
-//        if (request.getMethod().equals("OPTIONS")
-//        		&& request.getHeader("Access-Control-Request-Method") != null) {
-//        	return true;
-//        }
         
         Session session = songmSsoService.report(Browser.getSessionId(request));
         // 写入Cookie
