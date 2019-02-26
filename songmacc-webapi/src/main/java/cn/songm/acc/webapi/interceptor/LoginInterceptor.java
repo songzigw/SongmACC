@@ -9,23 +9,23 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.songm.acc.entity.User;
 import cn.songm.acc.service.UserError;
 import cn.songm.common.beans.Result;
 import cn.songm.common.utils.JsonUtils;
 import cn.songm.common.web.Browser;
-import cn.songm.sso.service.SongmSSOService;
+import cn.songm.sso.service.SSOService;
 
 public class LoginInterceptor implements HandlerInterceptor {
 
-    @Resource(name = "songmSsoService")
-    private SongmSSOService songmSsoService;
+    @Resource(name = "ssoService")
+    private SSOService ssoService;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler) throws Exception {
-    	String userInfo = songmSsoService
-                .getUserInfo(Browser.getSessionId(request));
-        if (userInfo != null) {
+    	User user = (User) ssoService.getUser(Browser.getSessionId(request));
+        if (user != null) {
             return true;
         }
 

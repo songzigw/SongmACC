@@ -26,8 +26,6 @@
 	<modules>
 		<module>songmacc-service</module>
 		<module>songmacc-service-impl</module>
-		<module>songmacc-notify</module>
-		<module>songmacc-timetask</module>
 		<module>songmacc-webapi</module>
 	</modules>
 

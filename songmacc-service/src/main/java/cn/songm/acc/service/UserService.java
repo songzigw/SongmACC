@@ -1,7 +1,6 @@
 package cn.songm.acc.service;
 
 import cn.songm.acc.entity.User;
-import cn.songm.acc.entity.UserReport;
 import cn.songm.common.service.ServiceException;
 
 /**
@@ -112,13 +111,6 @@ public interface UserService {
 	 * @param newPsw
 	 */
 	public void editUserPassword(long userId, String oldPsw, String newPsw) throws ServiceException;
-
-	/**
-	 * 记录用户的报到信息
-	 * 
-	 * @param report
-	 */
-	public void recordReport(UserReport report);
 
 	public void editNickname(long userId, String nickname) throws ServiceException;
 

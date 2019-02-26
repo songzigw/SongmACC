@@ -34,10 +34,6 @@
             <groupId>cn.songm.common</groupId>
             <artifactId>songm-common-redis</artifactId>
         </dependency>
-        <dependency>
-            <groupId>cn.songm.sso</groupId>
-            <artifactId>songmsso-service</artifactId>
-        </dependency>
 
 		<dependency>
             <groupId>org.eclipse.paho</groupId>

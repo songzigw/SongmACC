@@ -4,15 +4,14 @@ import javax.annotation.Resource;
 
 import cn.songm.acc.entity.User;
 import cn.songm.acc.service.UserService;
-import cn.songm.common.utils.JsonUtils;
 import cn.songm.common.web.BaseController;
 import cn.songm.common.web.Browser;
-import cn.songm.sso.service.SongmSSOService;
+import cn.songm.sso.service.SSOService;
 
 public class BaseAccController extends BaseController {
 
-	@Resource(name = "songmSsoService")
-    protected SongmSSOService songmSsoService;
+	@Resource(name = "ssoService")
+    protected SSOService ssoService;
     @Resource(name = "userService")
     protected UserService userService;
     
@@ -21,14 +20,12 @@ public class BaseAccController extends BaseController {
     }
     
     protected User getSessionUser() {
-        String sessionId = Browser.getSessionId(this.getRequest());
-        String userJson = songmSsoService.getUserInfo(sessionId);
-        if (userJson == null) return null;
-        return JsonUtils.getInstance().fromJson(userJson, User.class);
+        String sesId = Browser.getSessionId(this.getRequest());
+        return (User) ssoService.getUser(sesId);
     }
     
     protected String getSessionUid() {
     	String sessionId = Browser.getSessionId(this.getRequest());
-        return songmSsoService.getUserId(sessionId); 
+        return ssoService.getUserId(sessionId); 
     }
 }

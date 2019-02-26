@@ -38,8 +38,8 @@ public class LoginController extends BaseAccController {
             HttpServletRequest request) {
         Result<User> result = new Result<User>();
         
-        String sessionId = Browser.getSessionId(request);
-        String sysVcode = songmSsoService.getValidateCode(sessionId);
+        String sesId = Browser.getSessionId(request);
+        String sysVcode = (String) ssoService.getAttr(sesId, ITEM_KEY_VCODE);
         
         User user = null;
         try {
@@ -48,11 +48,12 @@ public class LoginController extends BaseAccController {
             result.setErrorCode(e.getErrCode());
             result.setErrorDesc(e.getErrNotice());
             return result;
-        }
+        } finally {
+        	ssoService.delAttr(sesId, ITEM_KEY_VCODE);
+		}
 
-        songmSsoService.delValidateCode(sessionId);
-        songmSsoService.login(sessionId,
-                user.getUserId().toString(),
+        // 登入成功
+        ssoService.login(sesId, user.getUserId().toString(),
                 JsonUtils.getInstance().toJson(user));
         result.setData(user);
         return result; 
@@ -80,8 +81,8 @@ public class LoginController extends BaseAccController {
             String vcode, HttpServletRequest request) {
         Result<Object> result = new Result<Object>();
         
-        String sessionId = Browser.getSessionId(request);
-        String sysVcode = songmSsoService.getValidateCode(sessionId);
+        String sesId = Browser.getSessionId(request);
+        String sysVcode = (String) ssoService.getAttr(sesId, ITEM_KEY_VCODE);
 
         try {
             userService.register(account, password, nick, sysVcode, vcode);
@@ -89,9 +90,10 @@ public class LoginController extends BaseAccController {
             result.setErrorCode(e.getErrCode());
             result.setErrorDesc(e.getErrNotice());
             return result;
-        }
+        } finally {
+        	ssoService.delAttr(sesId, ITEM_KEY_VCODE);
+		}
 
-        songmSsoService.delValidateCode(sessionId);
         return result;
     }
 	
@@ -105,7 +107,7 @@ public class LoginController extends BaseAccController {
         Result<Object> result = new Result<Object>();
 
         HttpServletRequest req = this.getRequest();
-        songmSsoService.logout(Browser.getSessionId(req));
+        ssoService.logout(Browser.getSessionId(req));
 
         return result;
     }
@@ -117,7 +119,7 @@ public class LoginController extends BaseAccController {
 	@RequestMapping(value = "vcode", method = RequestMethod.GET)
     public ModelAndView validateCode(HttpServletRequest request) {
         RandomCode rcode = new RandomCode();
-        songmSsoService.setValidateCode(Browser.getSessionId(request), rcode.getCode());
+        ssoService.setAttr(Browser.getSessionId(request), ITEM_KEY_VCODE, rcode.getCode());
         
         ModelAndView mv = new ModelAndView("/vcode");
         return mv.addObject("rcode", rcode);
@@ -125,18 +127,15 @@ public class LoginController extends BaseAccController {
 	
 	@RequestMapping(value = "vcode/base64", method = RequestMethod.GET)
 	@ResponseBody
-	public String validateCodeBase64(HttpServletRequest request) {
+	public String validateCodeBase64(HttpServletRequest request) throws IOException {
         RandomCode rcode = new RandomCode();
-        songmSsoService.setValidateCode(Browser.getSessionId(request), rcode.getCode());
+        ssoService.setAttr(Browser.getSessionId(request), ITEM_KEY_VCODE, rcode.getCode());
         
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-			rcode.getRandcode(os);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        rcode.getRandcode(os);
         
         return CodeUtils.encode64(os.toByteArray());
     }
 	
+	public static final String ITEM_KEY_VCODE = "item_key_vcode";
 }

@@ -12,7 +12,7 @@ import cn.songm.acc.entity.User;
 import cn.songm.acc.service.UserService;
 import cn.songm.common.beans.Result;
 import cn.songm.common.service.ServiceException;
-import cn.songm.sso.service.SongmSSOService;
+import cn.songm.sso.service.SSOService;
 
 /**
  * 用户控制器
@@ -24,8 +24,8 @@ import cn.songm.sso.service.SongmSSOService;
 @RequestMapping("/")
 public class UserController extends BaseAccController {
 
-    @Resource(name = "songmSsoService")
-    private SongmSSOService songmSsoService;
+    @Resource(name = "ssoService")
+    private SSOService ssoService;
     @Resource(name = "userService")
     private UserService userService;
 
