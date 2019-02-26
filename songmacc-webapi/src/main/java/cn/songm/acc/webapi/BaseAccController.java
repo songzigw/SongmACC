@@ -20,12 +20,12 @@ public class BaseAccController extends BaseController {
     }
     
     protected User getSessionUser() {
-        String sesId = Browser.getSessionId(this.getRequest());
+        String sesId = Browser.getSessionId(getRequest());
         return (User) ssoService.getUser(sesId);
     }
     
-    protected String getSessionUid() {
-    	String sessionId = Browser.getSessionId(this.getRequest());
+    protected String getSessionUserId() {
+    	String sessionId = Browser.getSessionId(getRequest());
         return ssoService.getUserId(sessionId); 
     }
 }

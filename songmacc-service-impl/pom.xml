@@ -52,7 +52,7 @@
                 <encoding>utf-8</encoding>
                 <appendAssemblyId>false</appendAssemblyId>
                 <descriptors>
-                    <descriptor>assemble/package.xml</descriptor>
+                    <descriptor>package.xml</descriptor>
                 </descriptors>
             </configuration>
             <executions>

@@ -82,16 +82,11 @@ public class UserController extends BaseAccController {
     		@RequestParam(name = "summary", required = false)
     		String summary) {
     	Result<User> result = new Result<User>();
-        User u = this.getSessionUser();
+        long userId = Long.parseLong(this.getSessionUserId());
         try {
-			userService.editUserBasic(u.getUserId(), nick, realName, gender, birthYear, birthMonth, birthDay, summary);
-			u.setNickname(nick);
-			u.setRealName(realName);
-			u.setGender(gender);
-			u.setBirthYear(birthYear);
-			u.setBirthMonth(birthMonth);
-			u.setBirthDay(birthDay);
-			u.setSummary(summary);
+			userService.editUserBasic(userId, nick, realName, gender, birthYear, birthMonth, birthDay, summary);
+			User u = userService.getUserById(userId);
+			ssoService.editUser(String.valueOf(userId), u);
 			result.setData(u);
 		} catch (ServiceException e) {
 			result.setErrorCode(e.getErrCode());
@@ -108,8 +103,10 @@ public class UserController extends BaseAccController {
     		@RequestParam(name = "avatar_path")
     		String avatarPath) {
     	Result<Object> result = new Result<Object>();
-        User u = this.getSessionUser();
-        userService.editUserPhoto(u.getUserId(), avatarServer, avatarPath);
+    	long userId = Long.parseLong(this.getSessionUserId());
+        userService.editUserPhoto(userId, avatarServer, avatarPath);
+        User u = userService.getUserById(userId);
+		ssoService.editUser(String.valueOf(userId), u);
         return result;
     }
     
@@ -120,9 +117,11 @@ public class UserController extends BaseAccController {
     		@RequestParam(name = "password")
     		String password) {
     	Result<Object> result = new Result<Object>();
-    	User u = this.getSessionUser();
+    	long userId = Long.parseLong(this.getSessionUserId());
     	try {
-			userService.editUserAccount(u.getUserId(), account, password);
+			userService.editUserAccount(userId, account, password);
+			User u = userService.getUserById(userId);
+			ssoService.editUser(String.valueOf(userId), u);
 		} catch (ServiceException e) {
 			result.setErrorCode(e.getErrCode());
 			result.setErrorDesc(e.getErrDesc());
@@ -137,9 +136,11 @@ public class UserController extends BaseAccController {
     		@RequestParam(name = "new_pwd")
     		String newPwd) {
     	Result<Object> result = new Result<Object>();
-    	User u = this.getSessionUser();
+    	long userId = Long.parseLong(this.getSessionUserId());
     	try {
-			userService.editUserPassword(u.getUserId(), oldPwd, newPwd);
+			userService.editUserPassword(userId, oldPwd, newPwd);
+			User u = userService.getUserById(userId);
+			ssoService.editUser(String.valueOf(userId), u);
 		} catch (ServiceException e) {
 			result.setErrorCode(e.getErrCode());
 			result.setErrorDesc(e.getErrDesc());
