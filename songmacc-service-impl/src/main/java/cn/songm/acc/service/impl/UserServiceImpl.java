@@ -22,8 +22,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
-    @Autowired
-    //private SongmUserService songmUserService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)

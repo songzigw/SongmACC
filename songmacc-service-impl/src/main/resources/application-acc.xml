@@ -10,7 +10,6 @@
 
 	<import resource="app-acc-mybatis.xml" />
 	<import resource="app-acc-provider.xml" />
-	<import resource="app-acc-consumer.xml"/>
 	<import resource="app-acc-redis.xml" />
 	<import resource="app-acc-aspect.xml" />
 
