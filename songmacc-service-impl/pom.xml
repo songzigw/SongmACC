@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>songmacc-service-impl</artifactId>
 	<version>0.0.2</version>
-	<name>{project.artifactId}</name>
+	<name>${project.artifactId}</name>
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
