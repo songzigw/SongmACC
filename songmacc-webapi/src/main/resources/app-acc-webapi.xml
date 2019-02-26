@@ -8,6 +8,7 @@
 	<context:property-placeholder location="classpath:config.properties" />
 	<context:component-scan base-package="cn.songm.acc.webapi" />
 
+    <bean id="monitor" class="cn.songm.monitor.api.Monitor"></bean>
 	<import resource="app-acc-mvc.xml" />
 	<import resource="app-acc-consumer.xml" />
 
